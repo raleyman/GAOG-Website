@@ -1,0 +1,66 @@
+# Your site — what's here and how to grow it
+
+This folder is your whole website: Home, Publications (with a blog-style post system), Team Biographies, and Contact — styled and optimized for search engines. You don't need to open or understand any of these files. For almost everything below, the fastest path is: tell Claude what you want added or changed, and hand over this folder (or the live GitHub/Vercel project once it's connected).
+
+## What's new in this round
+
+- **Publications now show as a thumbnail grid**, not a stacked list — so as you add more (10, 20+), visitors scan cards instead of scrolling a long column. The retardant article is now the final AerialFire Magazine reprint (July/August 2026 issue), with the magazine's own cover as its thumbnail and the PDF download pointing at that reprint.
+- **Scalable content system.** Consultants, services, and publications now live in three simple data files instead of being hand-typed into the page HTML. Adding one is a small, safe edit — not a rebuild.
+- **New service: Business Consulting** — "Considering starting a business in the fire space? We help vet your idea and get you started."
+- **New Contact page** (`/contact`) — a proper form (name, email, organization, topic dropdown, message) plus your email and response-time info, separate from the homepage.
+- **Blog / Publications system** (`/publications`) — an index page listing every article, and each article gets its own real page at `/publications/<its-name>` with full text, byline, date, and an optional PDF download. Great for search engines — much better than a PDF alone.
+- **CAL FIRE and USFS given equal billing** on the homepage, and the positioning broadened from "statewide" to national fireline leadership and global reach — so the language doesn't read as California-only or favor one agency.
+- **New homepage hero photo** — the flat dark background is replaced with a full-bleed black-and-white aerial wildfire photo, with the logo large and glowing on the right side (`assets/hero-photo.jpg`). Every other page's header banner still carries the smaller watermark version of the icon.
+
+## How to add things later (the easy way)
+
+Just tell Claude (or whoever's helping you) what you want, for example:
+- "Add a new consultant, [name], [title], here's their bio..."
+- "We're now offering a new service called X, here's the description..."
+- "Here's a new article we wrote, can you publish it as a blog post?"
+
+That person edits one of the three files below and runs one command (`python3 generate.py`) to rebuild the pages — nothing else needs to change, and nothing gets accidentally broken.
+
+### The three files that drive the site (all in `content/`)
+
+- **`content/team.json`** — one entry per consultant: name, role, a short teaser bio (shown on the card), education, `photo` (path to their headshot), and `full_bio` — a list of paragraphs for their complete biography. Clicking a consultant's photo, or the "Read Full Biography" link, opens their full bio in a popup right on the page. Add a new entry to add a new consultant; removing one takes them off the site. If a person has no `photo`, their card just shows colored initials instead — still works fine, just less personal. If a person has no `full_bio`, the card just won't be clickable — no popup, no broken link.
+- **`content/services.json`** — one entry per service (icon, title, description) shown on the homepage. Add an entry to add a new service.
+- **`content/publications.json`** — one entry per article/blog post: title, authors, date, short excerpt, and the full body text (broken into paragraphs/subheadings). Add an entry to publish a new post; it automatically gets its own page and shows up in the Publications list as a thumbnail card. Optional fields: `thumbnail` (an image path — shown on the card and used to keep the grid scannable even with 10+ posts; if omitted, the card just shows a plain document icon) and `featured_in` (e.g. `"AerialFire Magazine"` — shows as a small badge on the card and a credit line on the article page, for pieces that were published somewhere else first).
+
+### The one command: `generate.py`
+
+After any of those three files change, running:
+
+```
+python3 generate.py
+```
+
+from inside this folder rebuilds the affected pages (homepage services, team page, publications index, and individual publication pages) and refreshes `sitemap.xml` automatically. It never touches your hand-written page design, navigation, or footer — only the content blocks marked for it. If you're not comfortable running this yourself, just ask Claude to do it for you — that's the normal way this will work going forward.
+
+## Team photos
+
+Every consultant now has a real headshot on the Team Biographies page (`assets/team/`), cropped square and optimized for the web. To swap a photo or add one for a new hire, drop the image anywhere handy, ask Claude to crop and add it, and it'll update `content/team.json`'s `photo` field and re-run the generator.
+
+I also noticed the GAOG Google Drive has some internal files unrelated to the website (an operations/billing workbook and a Perimeter Solutions field binder marked proprietary) sitting in the same shared folder as the site assets. I didn't use or touch those — just flagging in case you want the website assets kept in a more separate folder going forward.
+
+## How to get this live on Vercel (no coding required)
+
+1. Go to vercel.com and sign up for a free account (you can sign up with just an email or a GitHub account).
+2. Once logged in, click **"Add New Project"**.
+3. Vercel will offer to let you drag-and-drop a folder, or import from GitHub. For a simple site like this, dragging this whole folder onto the upload area is the fastest path — Vercel detects it's a static site automatically.
+4. Click Deploy. Within about a minute you'll get a free web address like `global-air-operations.vercel.app` — that's your staging link. Share that with me or anyone else to preview it before it's public.
+5. **Important:** the pages currently have a "noindex" tag in them so Google doesn't index the staging link. Tell me when you're ready to go live and I'll remove that before the final switch.
+
+## Swapping over your real domain (globalairoperations.com)
+
+When you're happy with the staging version:
+
+1. In the Vercel project, go to **Settings → Domains** and add `www.globalairoperations.com`.
+2. Vercel will give you one or two DNS records to add (usually a CNAME or an A record).
+3. Log into GoDaddy, find that domain's DNS settings, and add the records Vercel gave you. I can walk you through this step-by-step when you're there — just share your screen or paste what GoDaddy shows you.
+4. DNS changes usually go live within a few minutes to a few hours.
+5. Once it's live, tell me and I'll remove the "noindex" tags and submit the sitemap to Google Search Console so it starts getting indexed properly.
+
+## Making changes later
+
+Once it's live, you never need to touch code. Just come back and tell me what you want changed — new consultant, new service, new blog post, updated bio, different wording — and I'll edit the content files, run the generator, and send you the updated version to re-deploy (or, if you connect your computer/GitHub, I can push updates more directly).
