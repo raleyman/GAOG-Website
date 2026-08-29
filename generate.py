@@ -220,13 +220,13 @@ def build_service_page(svc, publications_by_slug):
 
 <main id="main">
 
-  <div class="page-header">
+  <div class="page-header page-header-photo">
+    <img class="page-header-photo-img" src="/assets/services-hero.jpg" alt="" aria-hidden="true" />
     <div class="container">
       <p class="eyebrow"><a href="/services" style="color:inherit;">Services</a></p>
       <h1>{esc(svc['title'])}</h1>
       <p>{esc(svc.get('summary') or svc['description'])}</p>
     </div>
-    <img class="page-header-watermark" src="/assets/logo-icon.png" alt="" aria-hidden="true" />
   </div>
 
   <section class="section-alt">
