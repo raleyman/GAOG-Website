@@ -791,9 +791,9 @@ section { padding: 88px 0; }
   border-radius: 999px;
   padding: 3px 10px;
 }
-.watch-category-article { color: #3d5a73; background: rgba(61, 90, 115, 0.14); }
-.watch-category-blog { color: #4a6b45; background: rgba(74, 107, 69, 0.14); }
-.watch-category-business { color: #8a6414; background: rgba(212, 163, 23, 0.18); }
+.watch-category-article { color: #2f4d66; background: rgba(61, 90, 115, 0.22); }
+.watch-category-blog { color: #3c5c38; background: rgba(74, 107, 69, 0.22); }
+.watch-category-business { color: #7a5610; background: rgba(212, 163, 23, 0.28); }
 .watch-source-name { font-size: 0.8rem; color: var(--color-muted); }
 .watch-date { font-size: 0.8rem; color: var(--color-muted); }
 .watch-item h3 { font-size: 1.12rem; margin-bottom: 8px; line-height: 1.35; }
