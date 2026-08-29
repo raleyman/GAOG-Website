@@ -17,9 +17,9 @@
   --color-ink: #1a1a1a;
   --color-body: #3c4954;
   --color-muted: #6b7885;
-  --color-line: #e2e6ea;
-  --color-surface: #ffffff;
-  --color-surface-alt: #f6f8fa;
+  --color-line: #e5e2dd;
+  --color-surface: #faf9f6;
+  --color-surface-alt: #f2f0eb;
 
   --font-display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
@@ -28,6 +28,11 @@
   --shadow-sm: 0 1px 2px rgba(10, 20, 32, 0.06);
   --shadow-md: 0 8px 24px rgba(10, 20, 32, 0.10);
   --shadow-lg: 0 20px 48px rgba(10, 20, 32, 0.16);
+
+  /* Subtle raised-card treatment: soft gradient + layered shadow + a faint top highlight */
+  --card-gradient: linear-gradient(165deg, #ffffff 0%, var(--color-surface) 55%, #f1eee7 100%);
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 1px 2px rgba(20, 18, 14, 0.05), 0 10px 22px rgba(20, 18, 14, 0.07);
+  --shadow-card-hover: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 1px 3px rgba(20, 18, 14, 0.07), 0 16px 30px rgba(20, 18, 14, 0.12);
 
   --max-width: 1160px;
 }
@@ -308,16 +313,16 @@ section { padding: 88px 0; }
 
 .service-card {
   display: block;
-  background: var(--color-surface);
+  background: var(--card-gradient);
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
   padding: 32px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-card);
   text-decoration: none;
   color: inherit;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-.service-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.service-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
 .service-icon {
   width: 46px; height: 46px;
   border-radius: 10px;
@@ -347,16 +352,16 @@ section { padding: 88px 0; }
 .svc-card {
   display: flex;
   gap: 20px;
-  background: var(--color-surface);
+  background: var(--card-gradient);
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
   padding: 28px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-card);
   text-decoration: none;
   color: inherit;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-.svc-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.svc-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
 .svc-card-icon {
   width: 46px; height: 46px;
   border-radius: 10px;
