@@ -382,15 +382,21 @@ FOOTER = """<footer class="site-footer">
 
 def render_insight_item(entry, articles_by_slug):
     """One entry in the unified Insights feed — either our own full-length
-    article (type: article, links internally) or a curated external story
-    (type: watch, links out to the source, source-tagged)."""
+    article (type: article; links out to wherever it was actually published
+    if entry['url'] is set, otherwise to its page on this site) or a curated
+    external story (type: watch, always links out to the source)."""
     if entry["type"] == "article":
         article = articles_by_slug[entry["slug"]]
         title = article["title"]
-        href = f"/insights/{entry['slug']}"
         badge = '<span class="watch-source watch-source-own">Our Analysis</span>'
-        link_attrs = ""
-        icon = ""
+        if entry.get("url"):
+            href = entry["url"]
+            link_attrs = ' target="_blank" rel="noopener"'
+            icon = ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>'
+        else:
+            href = f"/insights/{entry['slug']}"
+            link_attrs = ""
+            icon = ""
     else:
         title = entry["title"]
         href = entry["url"]
