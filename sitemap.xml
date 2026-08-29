@@ -16,7 +16,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.globalairoperations.com/publications</loc>
+    <loc>https://www.globalairoperations.com/insights</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -51,7 +51,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.globalairoperations.com/publications/retardant-is-not-just-for-airtankers-anymore</loc>
+    <loc>https://www.globalairoperations.com/insights/retardant-is-not-just-for-airtankers-anymore</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

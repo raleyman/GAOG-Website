@@ -2,16 +2,17 @@
 """
 Regenerates the parts of this site that are driven by the JSON files in /content.
 
-Run this any time content/services.json, content/team.json, or
-content/publications.json changes:
+Run this any time content/services.json, content/team.json,
+content/articles.json, or content/insights.json changes:
 
     python3 generate.py
 
 It rewrites the marked blocks in index.html and team-biographies.html,
-rebuilds publications.html (the blog index) and services.html (the
-services index), and writes one page per publication under
-publications/<slug>.html and one page per service under
-services/<slug>.html. It also refreshes sitemap.xml.
+rebuilds insights.html (the combined "Insights" feed: original articles +
+curated industry-watch entries) and services.html (the services index),
+and writes one page per full-length article under insights/<slug>.html and
+one page per service under services/<slug>.html. It also refreshes
+sitemap.xml.
 
 Nothing else on the site is touched — hand-written pages (contact.html,
 START-HERE.md, styles.css) are left alone.
@@ -90,7 +91,7 @@ def render_included_list(items):
 
 def build_services_index(services):
     cards = "\n".join(render_svc_index_card(s) for s in services)
-    nav = NAV.format(pub_active="", svc_active=' class="is-active"')
+    nav = NAV.format(insights_active="", svc_active=' class="is-active"')
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -160,21 +161,21 @@ def build_services_index(services):
 """
 
 
-def build_service_page(svc, publications_by_slug):
+def build_service_page(svc, articles_by_slug):
     body_html = "".join(f"        <p>{esc(p)}</p>\n" for p in svc["body"])
     included_html = render_included_list(svc.get("included"))
     credentials_html = ""
     if svc.get("credentials_note"):
         credentials_html = f'        <div class="credentials-note">{esc(svc["credentials_note"])}</div>\n'
     related_html = ""
-    related_pub = publications_by_slug.get(svc.get("related_publication"))
+    related_pub = articles_by_slug.get(svc.get("related_publication"))
     if related_pub:
         related_html = f"""        <div class="related-link">
           <span class="related-link-label">Related Reading</span>
-          <a href="/publications/{related_pub['slug']}">{esc(related_pub['title'])} &rarr;</a>
+          <a href="/insights/{related_pub['slug']}">{esc(related_pub['title'])} &rarr;</a>
         </div>
 """
-    nav = NAV.format(pub_active="", svc_active=' class="is-active"')
+    nav = NAV.format(insights_active="", svc_active=' class="is-active"')
 
     return f"""<!doctype html>
 <html lang="en">
@@ -323,7 +324,7 @@ def build_team_ld(team):
     return "\n<script type=\"application/ld+json\">\n" + json.dumps(payload, indent=2) + "\n</script>\n"
 
 
-# ---------------------------------------------------------------- publications
+# ---------------------------------------------------------------- insights
 NAV = """<header class="site-header">
   <nav class="nav container">
     <a class="nav-brand" href="/">
@@ -336,7 +337,7 @@ NAV = """<header class="site-header">
     <ul class="nav-links">
       <li><a href="/" data-path="/">Home</a></li>
       <li><a href="/services" data-path="/services"{svc_active}>Services</a></li>
-      <li><a href="/publications" data-path="/publications"{pub_active}>Publications</a></li>
+      <li><a href="/insights" data-path="/insights"{insights_active}>Insights</a></li>
       <li><a href="/team-biographies" data-path="/team-biographies">Team Biographies</a></li>
       <li class="nav-cta"><a class="btn btn-primary" href="/contact">Contact Us</a></li>
     </ul>
@@ -356,7 +357,7 @@ FOOTER = """<footer class="site-footer">
           <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/services">Services</a></li>
-            <li><a href="/publications">Publications</a></li>
+            <li><a href="/insights">Insights</a></li>
             <li><a href="/team-biographies">Team Biographies</a></li>
             <li><a href="/contact">Contact</a></li>
           </ul>
@@ -379,28 +380,39 @@ FOOTER = """<footer class="site-footer">
 </html>"""
 
 
-def render_pub_card(pub):
-    if pub.get("thumbnail"):
-        thumb_inner = f'<img src="{esc(pub["thumbnail"])}" alt="" loading="lazy" />'
+def render_insight_item(entry, articles_by_slug):
+    """One entry in the unified Insights feed — either our own full-length
+    article (type: article, links internally) or a curated external story
+    (type: watch, links out to the source, source-tagged)."""
+    if entry["type"] == "article":
+        article = articles_by_slug[entry["slug"]]
+        title = article["title"]
+        href = f"/insights/{entry['slug']}"
+        badge = '<span class="watch-source watch-source-own">Our Analysis</span>'
+        link_attrs = ""
+        icon = ""
     else:
-        thumb_inner = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></svg>'
-    featured = f'<span class="pub-featured">{esc(pub["featured_in"])}</span>' if pub.get("featured_in") else ""
-    return f"""        <a class="pub-card" href="/publications/{pub['slug']}">
-          <div class="pub-card-thumb">{thumb_inner}</div>
-          <div class="pub-card-body">
-            {featured}
-            <h3>{esc(pub['title'])}</h3>
-            <span class="pub-card-byline">{esc(' & '.join(pub['authors']))} &middot; {esc(pub['date'])}</span>
-            <p class="pub-excerpt clamp">{esc(pub['excerpt'])}</p>
+        title = entry["title"]
+        href = entry["url"]
+        badge = f'<span class="watch-source">{esc(entry["source"])}</span>'
+        link_attrs = ' target="_blank" rel="noopener"'
+        icon = ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>'
+
+    return f"""        <article class="watch-item">
+          <div class="watch-meta">
+            {badge}
+            <span class="watch-date">{esc(entry['date'])}</span>
           </div>
-        </a>
+          <h3><a href="{esc(href)}"{link_attrs}>{esc(title)}{icon}</a></h3>
+          <p class="watch-take"><strong>Why it matters:</strong> {esc(entry['take'])}</p>
+        </article>
 """
 
 
-def build_publications_index(publications):
-    cards = "\n".join(render_pub_card(p) for p in publications) if publications else \
-        '        <div class="pub-empty">More publications are on the way.</div>\n'
-    nav = NAV.format(pub_active=' class="is-active"', svc_active="")
+def build_insights_index(insights_entries, articles_by_slug):
+    items = "\n".join(render_insight_item(e, articles_by_slug) for e in insights_entries) if insights_entries else \
+        '        <div class="pub-empty">More entries are on the way.</div>\n'
+    nav = NAV.format(insights_active=' class="is-active"', svc_active="")
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -410,15 +422,15 @@ def build_publications_index(publications):
 <!-- PRE-LAUNCH: remove once live on www.globalairoperations.com -->
 <meta name="robots" content="noindex, nofollow" />
 
-<title>Publications | Global Air Operations Group</title>
-<meta name="description" content="Field-informed writing from Global Air Operations Group on aviation operations, incident management, and emergency response." />
-<link rel="canonical" href="{DOMAIN}/publications" />
+<title>Insights | Global Air Operations Group</title>
+<meta name="description" content="Original analysis from Global Air Operations Group, plus a running, curated watch on the wildfire and aviation news we think is worth your attention." />
+<link rel="canonical" href="{DOMAIN}/insights" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Global Air Operations Group" />
-<meta property="og:title" content="Publications | Global Air Operations Group" />
-<meta property="og:description" content="Field-informed writing from Global Air Operations Group on aviation operations, incident management, and emergency response." />
-<meta property="og:url" content="{DOMAIN}/publications" />
+<meta property="og:title" content="Insights | Global Air Operations Group" />
+<meta property="og:description" content="Original analysis, plus a running, curated watch on the wildfire and aviation news we think is worth your attention." />
+<meta property="og:url" content="{DOMAIN}/insights" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
@@ -437,17 +449,17 @@ def build_publications_index(publications):
 
   <div class="page-header">
     <div class="container">
-      <p class="eyebrow">Resources</p>
-      <h1>Publications</h1>
-      <p>Field-informed writing on aviation operations, incident management, and emergency response — from consultants who have done the work.</p>
+      <p class="eyebrow">Insights</p>
+      <h1>Wildfire Aviation Insights</h1>
+      <p>Original analysis from our consultants, plus a running, curated watch on the industry news and reports we think are worth your time.</p>
     </div>
     <img class="page-header-watermark" src="/assets/logo-icon.png" alt="" aria-hidden="true" />
   </div>
 
   <section>
     <div class="container">
-      <div class="grid-pubs">
-{cards}      </div>
+      <div class="watch-card">
+{items}      </div>
     </div>
   </section>
 
@@ -463,7 +475,7 @@ def render_body_block(block):
     return f"        <p>{esc(block['text'])}</p>\n"
 
 
-def build_publication_page(pub):
+def build_article_page(pub):
     byline = " and ".join(pub["authors"])
     body_html = "".join(render_body_block(b) for b in pub["body"])
     featured_line = f' &middot; Featured in {esc(pub["featured_in"])}' if pub.get("featured_in") else ""
@@ -483,7 +495,7 @@ def build_publication_page(pub):
       </div>"""
 
     authors_ld = json.dumps([{"@type": "Person", "name": a} for a in pub["authors"]])
-    nav = NAV.format(pub_active=' class="is-active"', svc_active="")
+    nav = NAV.format(insights_active=' class="is-active"', svc_active="")
 
     return f"""<!doctype html>
 <html lang="en">
@@ -496,13 +508,13 @@ def build_publication_page(pub):
 
 <title>{esc(pub['title'])} | Global Air Operations Group</title>
 <meta name="description" content="{esc(pub['description'])}" />
-<link rel="canonical" href="{DOMAIN}/publications/{pub['slug']}" />
+<link rel="canonical" href="{DOMAIN}/insights/{pub['slug']}" />
 
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Global Air Operations Group" />
 <meta property="og:title" content="{esc(pub['title'])}" />
 <meta property="og:description" content="{esc(pub['description'])}" />
-<meta property="og:url" content="{DOMAIN}/publications/{pub['slug']}" />
+<meta property="og:url" content="{DOMAIN}/insights/{pub['slug']}" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
@@ -519,7 +531,7 @@ def build_publication_page(pub):
   "headline": {json.dumps(pub['title'])},
   "author": {authors_ld},
   "publisher": {{ "@type": "Organization", "name": "Global Air Operations Group" }},
-  "mainEntityOfPage": "{DOMAIN}/publications/{pub['slug']}",
+  "mainEntityOfPage": "{DOMAIN}/insights/{pub['slug']}",
   "description": {json.dumps(pub['description'])}
 }}
 </script>
@@ -533,7 +545,7 @@ def build_publication_page(pub):
 
   <div class="page-header">
     <div class="container">
-      <p class="eyebrow"><a href="/publications" style="color:inherit;">Publications</a></p>
+      <p class="eyebrow"><a href="/insights" style="color:inherit;">Insights</a></p>
       <h1>{esc(pub['title'])}</h1>
       <p>By {esc(byline)} &middot; {esc(pub['date'])}{featured_line}</p>
     </div>
@@ -555,15 +567,15 @@ def build_publication_page(pub):
 
 
 # ---------------------------------------------------------------- sitemap
-def build_sitemap(publications, services):
+def build_sitemap(articles, services):
     urls = [
         ("/", "1.0"),
         ("/services", "0.9"),
         ("/team-biographies", "0.8"),
-        ("/publications", "0.8"),
+        ("/insights", "0.8"),
         ("/contact", "0.7"),
     ] + [(f"/services/{s['slug']}", "0.7") for s in services] \
-      + [(f"/publications/{p['slug']}", "0.6") for p in publications]
+      + [(f"/insights/{p['slug']}", "0.6") for p in articles]
     entries = "\n".join(
         f"  <url>\n    <loc>{DOMAIN}{path}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>{prio}</priority>\n  </url>"
         for path, prio in urls
@@ -575,7 +587,8 @@ def build_sitemap(publications, services):
 def main():
     services = load("services.json")
     team = load("team.json")
-    publications = load("publications.json")
+    articles = load("articles.json")
+    insights_entries = load("insights.json")
 
     # index.html
     index_path = os.path.join(SITE, "index.html")
@@ -612,25 +625,38 @@ def main():
         f.write(team_html)
     print(f"team-biographies.html: {len(team)} team members")
 
-    # publications.html (blog index)
-    pubs_index_path = os.path.join(SITE, "publications.html")
-    with open(pubs_index_path, "w") as f:
-        f.write(build_publications_index(publications))
-    print(f"publications.html: {len(publications)} post(s) listed")
+    # insights.html (the combined feed: our articles + curated industry watch)
+    articles_by_slug = {a["slug"]: a for a in articles}
+    insights_index_path = os.path.join(SITE, "insights.html")
+    with open(insights_index_path, "w") as f:
+        f.write(build_insights_index(insights_entries, articles_by_slug))
+    print(f"insights.html: {len(insights_entries)} entrie(s) listed")
 
-    # publications/<slug>.html
-    pubs_dir = os.path.join(SITE, "publications")
-    os.makedirs(pubs_dir, exist_ok=True)
-    # clean out any post pages for slugs no longer in the data
-    valid_files = {f"{p['slug']}.html" for p in publications}
-    for fname in os.listdir(pubs_dir):
+    # insights/<slug>.html — one full page per original article
+    insights_dir = os.path.join(SITE, "insights")
+    os.makedirs(insights_dir, exist_ok=True)
+    # clean out any article pages for slugs no longer in the data
+    valid_files = {f"{a['slug']}.html" for a in articles}
+    for fname in os.listdir(insights_dir):
         if fname.endswith(".html") and fname not in valid_files:
-            os.remove(os.path.join(pubs_dir, fname))
-    for pub in publications:
-        out_path = os.path.join(pubs_dir, f"{pub['slug']}.html")
+            os.remove(os.path.join(insights_dir, fname))
+    for article in articles:
+        out_path = os.path.join(insights_dir, f"{article['slug']}.html")
         with open(out_path, "w") as f:
-            f.write(build_publication_page(pub))
-        print(f"  publications/{pub['slug']}.html written")
+            f.write(build_article_page(article))
+        print(f"  insights/{article['slug']}.html written")
+
+    # retire the old /publications URLs (renamed to /insights, pre-launch)
+    old_pubs_index = os.path.join(SITE, "publications.html")
+    if os.path.exists(old_pubs_index):
+        os.remove(old_pubs_index)
+        print("removed stale publications.html")
+    old_pubs_dir = os.path.join(SITE, "publications")
+    if os.path.isdir(old_pubs_dir):
+        for fname in os.listdir(old_pubs_dir):
+            os.remove(os.path.join(old_pubs_dir, fname))
+        os.rmdir(old_pubs_dir)
+        print("removed stale publications/ directory")
 
     # services.html (services index)
     services_index_path = os.path.join(SITE, "services.html")
@@ -639,7 +665,6 @@ def main():
     print(f"services.html: {len(services)} service(s) listed")
 
     # services/<slug>.html
-    publications_by_slug = {p["slug"]: p for p in publications}
     svc_dir = os.path.join(SITE, "services")
     os.makedirs(svc_dir, exist_ok=True)
     valid_svc_files = {f"{s['slug']}.html" for s in services}
@@ -649,13 +674,13 @@ def main():
     for svc in services:
         out_path = os.path.join(svc_dir, f"{svc['slug']}.html")
         with open(out_path, "w") as f:
-            f.write(build_service_page(svc, publications_by_slug))
+            f.write(build_service_page(svc, articles_by_slug))
         print(f"  services/{svc['slug']}.html written")
 
     # sitemap.xml
     sitemap_path = os.path.join(SITE, "sitemap.xml")
     with open(sitemap_path, "w") as f:
-        f.write(build_sitemap(publications, services))
+        f.write(build_sitemap(articles, services))
     print("sitemap.xml refreshed")
 
 

@@ -717,6 +717,56 @@ section { padding: 88px 0; }
   font-size: 0.95rem;
 }
 
+/* -------------------- Insights feed (articles + curated industry watch) -------------------- */
+.watch-card {
+  background: var(--card-gradient);
+  border: 1px solid rgba(20, 18, 14, 0.09);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.watch-item {
+  padding: 28px 36px;
+  border-bottom: 1px solid rgba(20, 18, 14, 0.08);
+}
+.watch-item:last-child { border-bottom: none; }
+.watch-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-family: var(--font-display);
+}
+.watch-source {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-red-500);
+  background: var(--color-red-100);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.watch-source-own {
+  color: #fff;
+  background: var(--color-black-800);
+}
+.watch-date { font-size: 0.8rem; color: var(--color-muted); }
+.watch-item h3 { font-size: 1.12rem; margin-bottom: 8px; line-height: 1.35; }
+.watch-item h3 a {
+  color: var(--color-black-900);
+  text-decoration: none;
+  background-image: linear-gradient(transparent calc(100% - 1.5px), var(--color-red-400) 1.5px);
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 0.2s ease;
+}
+.watch-item h3 a:hover { background-size: 100% 100%; }
+.watch-item h3 a svg { width: 15px; height: 15px; margin-left: 4px; vertical-align: -2px; opacity: 0.55; }
+.watch-take { font-size: 0.95rem; color: var(--color-body); margin: 0; }
+.watch-take strong { color: var(--color-black-900); }
+@media (max-width: 640px) { .watch-item { padding: 22px 22px; } }
+
 /* -------------------- Publications grid (thumbnail cards) -------------------- */
 .grid-pubs {
   display: grid;
