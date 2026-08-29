@@ -63,8 +63,11 @@ def render_service_card(svc):
 
 
 def render_svc_index_card(svc):
+    bg_html = ""
+    if svc.get("card_bg_image"):
+        bg_html = f'<img class="svc-card-bg" src="{esc(svc["card_bg_image"])}" alt="" aria-hidden="true" />\n          '
     return f"""        <a class="svc-card" href="/services/{svc['slug']}">
-          <div class="svc-card-icon">
+          {bg_html}<div class="svc-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">{svc['icon']}</svg>
           </div>
           <div class="svc-card-body">
@@ -464,7 +467,7 @@ def build_insights_index(insights_entries, articles_by_slug):
 
   <section>
     <div class="container">
-      <div class="watch-card">
+      <div class="watch-list">
 {items}      </div>
     </div>
   </section>
