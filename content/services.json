@@ -2,6 +2,7 @@
   {
     "slug": "operational-strategy-incident-support",
     "icon": "<path d=\"M2 22l6-6M13 2l9 9-4 4-9-9 4-4zM6 16l4 4-3 3-4-4 3-3z\"/>",
+    "card_bg_image": "/assets/services/operational-strategy-bg.jpg",
     "title": "Operational Strategy & Incident Support",
     "description": "Expertise spanning aviation operations, fire chemicals, communications, and strategy & tactics.",
     "summary": "Operational strategy and incident support from consultants who have held these roles in the field, not just studied them from the outside.",
@@ -22,6 +23,7 @@
   {
     "slug": "policy-program-development",
     "icon": "<path d=\"M9 12l2 2 4-4M7.8 4.2a9 9 0 1 1-3.6 3.6\"/>",
+    "card_bg_image": "/assets/services/policy-program-bg.jpg",
     "title": "Policy & Program Development",
     "description": "Policy creation, review, and implementation aligned with best practices and organizational objectives.",
     "summary": "Policy and program work grounded in what actually holds up in the field, built by consultants who have written and lived under the policies they're helping you develop.",
@@ -61,6 +63,7 @@
   {
     "slug": "aar-continuous-improvement",
     "icon": "<path d=\"M3 12a9 9 0 1 0 9-9M3 12l4-2M3 12l2 4M12 7v5l3 2\"/>",
+    "card_bg_image": "/assets/services/aar-continuous-improvement-bg.jpg",
     "title": "AAR & Continuous Improvement",
     "description": "Facilitated after-action reviews to capture critical lessons learned and translate findings into actionable safety enhancements.",
     "summary": "Facilitated after-action reviews that turn a difficult incident into a clear, actionable path forward, led by consultants with command-level experience running the reviews themselves.",
