@@ -914,9 +914,10 @@ section { padding: 88px 0; }
 .article-body {
   max-width: 740px;
   margin: 0 auto;
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  background: var(--card-gradient);
+  border: 1px solid rgba(20, 18, 14, 0.09);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
   padding: 48px clamp(24px, 5vw, 64px);
 }
 .article-body h2 { text-align: center; }
