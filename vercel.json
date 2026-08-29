@@ -1,4 +1,21 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/publications",
+      "destination": "/insights",
+      "permanent": true
+    },
+    {
+      "source": "/publications/retardant-is-not-just-for-airtankers-anymore",
+      "destination": "/insights/retardant-is-not-just-for-airtankers-anymore",
+      "permanent": true
+    },
+    {
+      "source": "/publications/:slug",
+      "destination": "/insights/:slug",
+      "permanent": true
+    }
+  ]
 }

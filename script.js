@@ -35,6 +35,29 @@ document.addEventListener("DOMContentLoaded", function () {
     var closeBtn = document.getElementById("bioModalClose");
     var lastFocused = null;
 
+    function getFocusableInModal() {
+      var selector = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+      return Array.prototype.filter.call(
+        overlay.querySelectorAll(selector),
+        function (el) { return el.offsetParent !== null; }
+      );
+    }
+
+    function trapFocus(e) {
+      if (e.key !== "Tab" || overlay.hidden) return;
+      var focusable = getFocusableInModal();
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
     function openBio(id) {
       var tpl = document.getElementById(id);
       if (!tpl) return;
@@ -80,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && !overlay.hidden) closeBio();
+      trapFocus(e);
     });
   }
 });

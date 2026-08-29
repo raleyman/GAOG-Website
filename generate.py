@@ -24,6 +24,13 @@ import os
 SITE = os.path.dirname(os.path.abspath(__file__))
 CONTENT = os.path.join(SITE, "content")
 DOMAIN = "https://www.globalairoperations.com"
+OG_IMAGE = f"{DOMAIN}/assets/og-image.jpg"
+OG_IMAGE_TAGS = (
+    f'<meta property="og:image" content="{OG_IMAGE}" />\n'
+    '<meta property="og:image:width" content="1200" />\n'
+    '<meta property="og:image:height" content="630" />\n'
+    f'<meta name="twitter:image" content="{OG_IMAGE}" />'
+)
 
 
 def slugify(name):
@@ -110,6 +117,7 @@ def build_services_index(services):
 <meta property="og:title" content="Services | Global Air Operations Group" />
 <meta property="og:description" content="Consulting services built around aviation operations, program and business development." />
 <meta property="og:url" content="{DOMAIN}/services" />
+{OG_IMAGE_TAGS}
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
@@ -195,6 +203,7 @@ def build_service_page(svc, articles_by_slug):
 <meta property="og:title" content="{esc(svc['title'])} | Global Air Operations Group" />
 <meta property="og:description" content="{esc(svc.get('summary') or svc['description'])}" />
 <meta property="og:url" content="{DOMAIN}/services/{svc['slug']}" />
+{OG_IMAGE_TAGS}
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
@@ -369,7 +378,7 @@ FOOTER = """<footer class="site-footer">
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; <span id="year"></span> Global Air Operations Group. All Rights Reserved.</span>
+      <span>&copy; <span id="year">2026</span> Global Air Operations Group. All Rights Reserved.</span>
     </div>
   </div>
 </footer>
@@ -416,9 +425,11 @@ def render_insight_item(entry, articles_by_slug):
         if category == "business":
             take_label = "Worth a look:"
 
+    featured_html = '<span class="watch-featured">Featured</span> ' if entry.get("featured") else ""
+
     return f"""        <article class="watch-item">
           <div class="watch-meta">
-            {badge}
+            {featured_html}{badge}
             <span class="watch-date">{esc(entry['date'])}</span>
           </div>
           <h3><a href="{esc(href)}"{link_attrs}>{esc(title)}{icon}</a></h3>
@@ -449,6 +460,7 @@ def build_insights_index(insights_entries, articles_by_slug):
 <meta property="og:title" content="Insights | Global Air Operations Group" />
 <meta property="og:description" content="Original analysis, plus a running, curated watch on the wildfire, aviation, and business news we think is worth your attention." />
 <meta property="og:url" content="{DOMAIN}/insights" />
+{OG_IMAGE_TAGS}
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
@@ -474,8 +486,9 @@ def build_insights_index(insights_entries, articles_by_slug):
     <img class="page-header-watermark" src="/assets/logo-icon.png" alt="" aria-hidden="true" />
   </div>
 
-  <section>
+  <section aria-labelledby="watch-list-heading">
     <div class="container">
+      <h2 id="watch-list-heading" class="visually-hidden">Latest Insights</h2>
       <div class="watch-list">
 {items}      </div>
     </div>
@@ -489,7 +502,7 @@ def build_insights_index(insights_entries, articles_by_slug):
 
 def render_body_block(block):
     if block["type"] == "h3":
-        return f"        <h3>{esc(block['text'])}</h3>\n"
+        return f"        <h2>{esc(block['text'])}</h2>\n"
     return f"        <p>{esc(block['text'])}</p>\n"
 
 
@@ -506,7 +519,7 @@ def build_article_page(pub):
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></svg>
           </span>
           <div class="pub-meta">
-            <h3>Download as PDF</h3>
+            <h2>Download as PDF</h2>
             <span>Formatted with letterhead &middot; {esc(pub['date'])}</span>
           </div>
         </a>
@@ -533,6 +546,7 @@ def build_article_page(pub):
 <meta property="og:title" content="{esc(pub['title'])}" />
 <meta property="og:description" content="{esc(pub['description'])}" />
 <meta property="og:url" content="{DOMAIN}/insights/{pub['slug']}" />
+{OG_IMAGE_TAGS}
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
