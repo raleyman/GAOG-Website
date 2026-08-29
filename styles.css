@@ -450,8 +450,9 @@ section { padding: 88px 0; }
   line-height: 1.45;
   border-left: 3px solid var(--color-red-500);
   padding-left: 24px;
-  margin: 0;
+  margin: 210px 0 0;
 }
+@media (max-width: 860px) { .pull-quote { margin-top: 0; } }
 .pull-quote cite {
   display: block;
   margin-top: 16px;
