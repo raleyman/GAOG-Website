@@ -8,8 +8,10 @@ content/publications.json changes:
     python3 generate.py
 
 It rewrites the marked blocks in index.html and team-biographies.html,
-rebuilds publications.html (the blog index), and writes one page per
-publication under publications/<slug>.html. It also refreshes sitemap.xml.
+rebuilds publications.html (the blog index) and services.html (the
+services index), and writes one page per publication under
+publications/<slug>.html and one page per service under
+services/<slug>.html. It also refreshes sitemap.xml.
 
 Nothing else on the site is touched — hand-written pages (contact.html,
 START-HERE.md, styles.css) are left alone.
@@ -48,13 +50,208 @@ def esc(s):
 
 # ---------------------------------------------------------------- services
 def render_service_card(svc):
-    return f"""        <article class="service-card">
+    return f"""        <a class="service-card" href="/services/{svc['slug']}">
           <div class="service-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">{svc['icon']}</svg>
           </div>
           <h3>{esc(svc['title'])}</h3>
           <p>{esc(svc['description'])}</p>
-        </article>
+          <span class="service-more">Learn more &rarr;</span>
+        </a>
+"""
+
+
+def render_svc_index_card(svc):
+    return f"""        <a class="svc-card" href="/services/{svc['slug']}">
+          <div class="svc-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">{svc['icon']}</svg>
+          </div>
+          <div class="svc-card-body">
+            <h3>{esc(svc['title'])}</h3>
+            <p>{esc(svc.get('summary') or svc['description'])}</p>
+            <span class="svc-card-more">Learn more &rarr;</span>
+          </div>
+        </a>
+"""
+
+
+def render_included_list(items):
+    if not items:
+        return ""
+    lis = "".join(
+        f'          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>{esc(item)}</li>\n'
+        for item in items
+    )
+    return f"""        <h3>What's Included</h3>
+        <ul class="included-list">
+{lis}        </ul>
+"""
+
+
+def build_services_index(services):
+    cards = "\n".join(render_svc_index_card(s) for s in services)
+    nav = NAV.format(pub_active="", svc_active=' class="is-active"')
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- PRE-LAUNCH: remove once live on www.globalairoperations.com -->
+<meta name="robots" content="noindex, nofollow" />
+
+<title>Services | Global Air Operations Group</title>
+<meta name="description" content="Consulting services from Global Air Operations Group: operational strategy and incident support, policy and program development, training and exercises, after-action review, and business consulting." />
+<link rel="canonical" href="{DOMAIN}/services" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Global Air Operations Group" />
+<meta property="og:title" content="Services | Global Air Operations Group" />
+<meta property="og:description" content="Consulting services built around aviation operations, program and business development." />
+<meta property="og:url" content="{DOMAIN}/services" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" type="image/png" href="/assets/favicon.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&amp;display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+{nav}
+
+<main id="main">
+
+  <div class="page-header">
+    <div class="container">
+      <p class="eyebrow">What We Do</p>
+      <h1>Consulting Services</h1>
+      <p>Services built around aviation operations, program and business development — led by consultants who have done the work themselves.</p>
+    </div>
+    <img class="page-header-watermark" src="/assets/logo-icon.png" alt="" aria-hidden="true" />
+  </div>
+
+  <section>
+    <div class="container">
+      <div class="grid-svc">
+{cards}      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" aria-labelledby="svc-contact-heading">
+    <div class="container">
+      <div class="cta-band">
+        <div class="cta-copy">
+          <p class="eyebrow">Get In Touch</p>
+          <h2 id="svc-contact-heading">Tell us about your program, business, goals, and needs</h2>
+          <p>Not sure which service fits? Reach out and we'll help point you in the right direction.</p>
+        </div>
+        <a class="btn btn-primary" href="/contact">Go to Contact Page</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+{FOOTER}
+"""
+
+
+def build_service_page(svc, publications_by_slug):
+    body_html = "".join(f"        <p>{esc(p)}</p>\n" for p in svc["body"])
+    included_html = render_included_list(svc.get("included"))
+    credentials_html = ""
+    if svc.get("credentials_note"):
+        credentials_html = f'        <div class="credentials-note">{esc(svc["credentials_note"])}</div>\n'
+    related_html = ""
+    related_pub = publications_by_slug.get(svc.get("related_publication"))
+    if related_pub:
+        related_html = f"""        <div class="related-link">
+          <span class="related-link-label">Related Reading</span>
+          <a href="/publications/{related_pub['slug']}">{esc(related_pub['title'])} &rarr;</a>
+        </div>
+"""
+    nav = NAV.format(pub_active="", svc_active=' class="is-active"')
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- PRE-LAUNCH: remove once live on www.globalairoperations.com -->
+<meta name="robots" content="noindex, nofollow" />
+
+<title>{esc(svc['title'])} | Global Air Operations Group</title>
+<meta name="description" content="{esc(svc.get('summary') or svc['description'])}" />
+<link rel="canonical" href="{DOMAIN}/services/{svc['slug']}" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Global Air Operations Group" />
+<meta property="og:title" content="{esc(svc['title'])} | Global Air Operations Group" />
+<meta property="og:description" content="{esc(svc.get('summary') or svc['description'])}" />
+<meta property="og:url" content="{DOMAIN}/services/{svc['slug']}" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" type="image/png" href="/assets/favicon.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&amp;display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+
+<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": {json.dumps(svc['title'])},
+  "provider": {{ "@type": "Organization", "name": "Global Air Operations Group" }},
+  "description": {json.dumps(svc.get('summary') or svc['description'])}
+}}
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+{nav}
+
+<main id="main">
+
+  <div class="page-header">
+    <div class="container">
+      <p class="eyebrow"><a href="/services" style="color:inherit;">Services</a></p>
+      <h1>{esc(svc['title'])}</h1>
+      <p>{esc(svc.get('summary') or svc['description'])}</p>
+    </div>
+    <img class="page-header-watermark" src="/assets/logo-icon.png" alt="" aria-hidden="true" />
+  </div>
+
+  <section class="section-alt">
+    <div class="container">
+      <article class="article-body">
+{body_html}{included_html}{credentials_html}{related_html}        <p class="article-signature"><a href="/team-biographies">Meet the consultants behind our work &rarr;</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="svc-cta-heading">
+    <div class="container">
+      <div class="cta-band">
+        <div class="cta-copy">
+          <h2 id="svc-cta-heading">Ready to talk about {esc(svc['title'])}?</h2>
+          <p>Tell us about your program, business, goals, and needs — we typically reply within one business day.</p>
+        </div>
+        <a class="btn btn-primary" href="/contact">Go to Contact Page</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+{FOOTER}
 """
 
 
@@ -138,6 +335,7 @@ NAV = """<header class="site-header">
     </button>
     <ul class="nav-links">
       <li><a href="/" data-path="/">Home</a></li>
+      <li><a href="/services" data-path="/services"{svc_active}>Services</a></li>
       <li><a href="/publications" data-path="/publications"{pub_active}>Publications</a></li>
       <li><a href="/team-biographies" data-path="/team-biographies">Team Biographies</a></li>
       <li class="nav-cta"><a class="btn btn-primary" href="/contact">Contact Us</a></li>
@@ -157,6 +355,7 @@ FOOTER = """<footer class="site-footer">
           <h4>Site</h4>
           <ul>
             <li><a href="/">Home</a></li>
+            <li><a href="/services">Services</a></li>
             <li><a href="/publications">Publications</a></li>
             <li><a href="/team-biographies">Team Biographies</a></li>
             <li><a href="/contact">Contact</a></li>
@@ -201,7 +400,7 @@ def render_pub_card(pub):
 def build_publications_index(publications):
     cards = "\n".join(render_pub_card(p) for p in publications) if publications else \
         '        <div class="pub-empty">More publications are on the way.</div>\n'
-    nav = NAV.format(pub_active=' class="is-active"')
+    nav = NAV.format(pub_active=' class="is-active"', svc_active="")
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -284,7 +483,7 @@ def build_publication_page(pub):
       </div>"""
 
     authors_ld = json.dumps([{"@type": "Person", "name": a} for a in pub["authors"]])
-    nav = NAV.format(pub_active=' class="is-active"')
+    nav = NAV.format(pub_active=' class="is-active"', svc_active="")
 
     return f"""<!doctype html>
 <html lang="en">
@@ -356,13 +555,15 @@ def build_publication_page(pub):
 
 
 # ---------------------------------------------------------------- sitemap
-def build_sitemap(publications):
+def build_sitemap(publications, services):
     urls = [
         ("/", "1.0"),
+        ("/services", "0.9"),
         ("/team-biographies", "0.8"),
         ("/publications", "0.8"),
         ("/contact", "0.7"),
-    ] + [(f"/publications/{p['slug']}", "0.6") for p in publications]
+    ] + [(f"/services/{s['slug']}", "0.7") for s in services] \
+      + [(f"/publications/{p['slug']}", "0.6") for p in publications]
     entries = "\n".join(
         f"  <url>\n    <loc>{DOMAIN}{path}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>{prio}</priority>\n  </url>"
         for path, prio in urls
@@ -431,10 +632,30 @@ def main():
             f.write(build_publication_page(pub))
         print(f"  publications/{pub['slug']}.html written")
 
+    # services.html (services index)
+    services_index_path = os.path.join(SITE, "services.html")
+    with open(services_index_path, "w") as f:
+        f.write(build_services_index(services))
+    print(f"services.html: {len(services)} service(s) listed")
+
+    # services/<slug>.html
+    publications_by_slug = {p["slug"]: p for p in publications}
+    svc_dir = os.path.join(SITE, "services")
+    os.makedirs(svc_dir, exist_ok=True)
+    valid_svc_files = {f"{s['slug']}.html" for s in services}
+    for fname in os.listdir(svc_dir):
+        if fname.endswith(".html") and fname not in valid_svc_files:
+            os.remove(os.path.join(svc_dir, fname))
+    for svc in services:
+        out_path = os.path.join(svc_dir, f"{svc['slug']}.html")
+        with open(out_path, "w") as f:
+            f.write(build_service_page(svc, publications_by_slug))
+        print(f"  services/{svc['slug']}.html written")
+
     # sitemap.xml
     sitemap_path = os.path.join(SITE, "sitemap.xml")
     with open(sitemap_path, "w") as f:
-        f.write(build_sitemap(publications))
+        f.write(build_sitemap(publications, services))
     print("sitemap.xml refreshed")
 
 

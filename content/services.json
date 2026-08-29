@@ -1,27 +1,97 @@
 [
   {
+    "slug": "operational-strategy-incident-support",
     "icon": "<path d=\"M2 22l6-6M13 2l9 9-4 4-9-9 4-4zM6 16l4 4-3 3-4-4 3-3z\"/>",
     "title": "Operational Strategy & Incident Support",
-    "description": "Expertise spanning aviation operations, fire chemicals, communications, and strategy & tactics."
+    "description": "Expertise spanning aviation operations, fire chemicals, communications, and strategy & tactics.",
+    "summary": "Operational strategy and incident support from consultants who have held these roles in the field, not just studied them from the outside.",
+    "body": [
+      "Wildfire and emergency incidents move fast, and the decisions made in the first hours often shape everything that follows. Our consultants bring aviation operations, fire chemical, communications, and strategy & tactics expertise built over careers in command roles — not as outside observers, but as people who have run these operations themselves.",
+      "We work with agencies and organizations before the season starts, helping shape operational plans, airspace coordination, and retardant and fire chemical programs, and we're available to support command staff during active incidents when an outside, experienced perspective is most valuable.",
+      "The goal is always the same: give decision-makers clear, field-tested options, not theory."
+    ],
+    "included": [
+      "Aviation operations planning and airspace coordination",
+      "Fire chemical and retardant program guidance",
+      "Incident communications architecture",
+      "Strategy and tactics review for complex incidents"
+    ],
+    "credentials_note": "Our consultants hold ICS aviation qualifications including Air Tactical Group Supervisor (ATGS), Air Operations Branch Director (AOBD), and Helicopter Coordinator.",
+    "related_publication": "retardant-is-not-just-for-airtankers-anymore"
   },
   {
+    "slug": "policy-program-development",
     "icon": "<path d=\"M9 12l2 2 4-4M7.8 4.2a9 9 0 1 1-3.6 3.6\"/>",
     "title": "Policy & Program Development",
-    "description": "Policy creation, review, and implementation aligned with best practices and organizational objectives."
+    "description": "Policy creation, review, and implementation aligned with best practices and organizational objectives.",
+    "summary": "Policy and program work grounded in what actually holds up in the field, built by consultants who have written and lived under the policies they're helping you develop.",
+    "body": [
+      "Good policy has to survive contact with a real incident. We help agencies and organizations draft new policy, review existing programs against current best practices, and carry that work through to implementation — not just a binder that sits on a shelf.",
+      "Our team's experience includes leading interagency policy efforts and program rewrites at the state and national level, giving us a practical sense of where policy tends to break down and how to write it so it doesn't.",
+      "Whether you're standing up a new aviation program or updating one that hasn't kept pace with your operations, we work alongside your team through drafting, review, and rollout."
+    ],
+    "included": [
+      "New policy drafting and review",
+      "Alignment with interagency and regulatory standards",
+      "Implementation support and change management",
+      "Program audits against current best practices"
+    ],
+    "credentials_note": "Team experience includes leading initiatives such as the CAL FIRE Aviation Policy Rewrite Committee and the National Interagency Aviation Committee."
   },
   {
+    "slug": "training-exercises",
     "icon": "<path d=\"M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z\"/>",
     "title": "Training & Exercises",
-    "description": "Design and delivery of Aviation ICS, field training assignments, and customized training programs."
+    "description": "Design and delivery of Aviation ICS, field training assignments, and customized training programs.",
+    "summary": "Training designed and delivered by consultants who have taught these courses and led these positions themselves.",
+    "body": [
+      "Readiness is built long before an incident starts. We design and deliver Aviation ICS training, field training assignments (FTAs), and tabletop and full-scale exercises tailored to your organization's specific operations and risk profile.",
+      "Because our consultants have served as instructors and evaluators in these same programs, training sessions are built around realistic scenarios and the judgment calls that actually come up in the field — not just a checklist of requirements.",
+      "We can build a standalone course, a full curriculum, or an ongoing exercise cycle, depending on what your team needs."
+    ],
+    "included": [
+      "Aviation ICS course design and delivery",
+      "Field training assignments (FTAs)",
+      "Tabletop and full-scale exercise design",
+      "Customized curriculum for agency-specific needs"
+    ],
+    "credentials_note": "Includes consultants with direct experience developing and instructing at programs such as the California Aerial Supervision Academy."
   },
   {
+    "slug": "aar-continuous-improvement",
     "icon": "<path d=\"M3 12a9 9 0 1 0 9-9M3 12l4-2M3 12l2 4M12 7v5l3 2\"/>",
     "title": "AAR & Continuous Improvement",
-    "description": "Facilitated after-action reviews to capture critical lessons learned and translate findings into actionable safety enhancements."
+    "description": "Facilitated after-action reviews to capture critical lessons learned and translate findings into actionable safety enhancements.",
+    "summary": "Facilitated after-action reviews that turn a difficult incident into a clear, actionable path forward — led by consultants with command-level experience running the reviews themselves.",
+    "body": [
+      "Every incident, successful or not, has lessons in it. Our facilitated after-action reviews (AARs) are built to surface those lessons honestly, without turning the process into a blame exercise, and to translate them into specific, trackable safety enhancements.",
+      "Our consultants have served in command and general staff roles — including Operations Section Chief and Type 1 Incident Commander — on significant incidents, so the reviews we facilitate come from firsthand knowledge of how decisions get made under pressure.",
+      "We don't stop at the report. We help organizations track follow-through on corrective actions so the lessons actually change how the next incident is run."
+    ],
+    "included": [
+      "Facilitated after-action reviews (AARs)",
+      "Lessons-learned documentation",
+      "Safety enhancement recommendations",
+      "Follow-through tracking on corrective actions"
+    ],
+    "credentials_note": "Includes consultants with Type 1 Incident Commander and Operations Section Chief Type 1 experience."
   },
   {
+    "slug": "business-consulting",
     "icon": "<rect x=\"3\" y=\"7\" width=\"18\" height=\"13\" rx=\"2\"/><path d=\"M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/><path d=\"M3 13h18\"/>",
     "title": "Business Consulting",
-    "description": "Considering starting a business in the fire space? We help vet your idea and get you started."
+    "description": "Considering starting a business in the fire space? We help vet your idea and get you started.",
+    "summary": "Considering starting a business in the fire and aviation space? We help vet the idea and get it off the ground.",
+    "body": [
+      "The wildfire and emergency response industry rewards people who understand it from the inside — and that's exactly the perspective our consultants bring to a new venture. Whether you're evaluating a service, product, or contracting opportunity in the fire space, we help you pressure-test the idea before you commit resources to it.",
+      "That includes a candid look at where the concept is strong, where it needs work, and what it will actually take to operate in this industry — from regulatory and certification pathways to who the real decision-makers are.",
+      "We work with individuals and small teams at the earliest stages, when an experienced, honest second opinion is worth the most."
+    ],
+    "included": [
+      "Business concept and market vetting",
+      "Regulatory and certification pathway guidance",
+      "Startup planning and positioning",
+      "Introductions within the fire and aviation industry"
+    ]
   }
 ]

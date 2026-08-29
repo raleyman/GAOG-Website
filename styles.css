@@ -287,6 +287,16 @@ section { padding: 88px 0; }
 .section-alt { background: var(--color-surface-alt); }
 .section-head { max-width: 680px; margin-bottom: 48px; }
 .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+.section-head-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-red-500);
+  text-decoration: none;
+}
+.section-head-link:hover { text-decoration: underline; }
 
 /* -------------------- Service cards -------------------- */
 .grid-services {
@@ -297,11 +307,14 @@ section { padding: 88px 0; }
 @media (max-width: 780px) { .grid-services { grid-template-columns: 1fr; } }
 
 .service-card {
+  display: block;
   background: var(--color-surface);
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
   padding: 32px;
   box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: inherit;
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 .service-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
@@ -314,6 +327,110 @@ section { padding: 88px 0; }
   margin-bottom: 18px;
 }
 .service-icon svg { width: 24px; height: 24px; }
+.service-more {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-red-500);
+}
+
+/* -------------------- Services index grid -------------------- */
+.grid-svc {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+@media (max-width: 780px) { .grid-svc { grid-template-columns: 1fr; } }
+
+.svc-card {
+  display: flex;
+  gap: 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.svc-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.svc-card-icon {
+  width: 46px; height: 46px;
+  border-radius: 10px;
+  background: var(--color-red-100);
+  color: var(--color-red-500);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.svc-card-icon svg { width: 24px; height: 24px; }
+.svc-card-body h3 { margin-bottom: 8px; }
+.svc-card-body p { color: var(--color-muted); font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0; }
+.svc-card-more {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-red-500);
+}
+
+/* -------------------- Service detail page -------------------- */
+.included-list {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.included-list li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  color: var(--color-black-800);
+}
+.included-list li svg {
+  flex-shrink: 0;
+  width: 19px; height: 19px;
+  margin-top: 2px;
+  color: var(--color-red-500);
+}
+.credentials-note {
+  margin: 28px 0 0;
+  padding: 16px 20px;
+  background: var(--color-red-100);
+  border-left: 3px solid var(--color-red-500);
+  border-radius: 8px;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  color: var(--color-black-800);
+}
+.related-link {
+  margin: 28px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-line);
+}
+.related-link-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+.related-link a {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-red-500);
+  text-decoration: none;
+}
+.related-link a:hover { text-decoration: underline; }
 .service-card h3 { margin-bottom: 0.4em; }
 .service-card p { color: var(--color-muted); margin-bottom: 0; font-family: var(--font-display); font-size: 0.95rem; }
 
