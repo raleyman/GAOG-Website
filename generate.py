@@ -432,13 +432,13 @@ def build_insights_index(insights_entries, articles_by_slug):
 <meta name="robots" content="noindex, nofollow" />
 
 <title>Insights | Global Air Operations Group</title>
-<meta name="description" content="Original analysis from Global Air Operations Group, plus a running, curated watch on the wildfire and aviation news we think is worth your attention." />
+<meta name="description" content="Original analysis from Global Air Operations Group, plus a running, curated watch on the wildfire, aviation, and business news we think is worth your attention." />
 <link rel="canonical" href="{DOMAIN}/insights" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Global Air Operations Group" />
 <meta property="og:title" content="Insights | Global Air Operations Group" />
-<meta property="og:description" content="Original analysis, plus a running, curated watch on the wildfire and aviation news we think is worth your attention." />
+<meta property="og:description" content="Original analysis, plus a running, curated watch on the wildfire, aviation, and business news we think is worth your attention." />
 <meta property="og:url" content="{DOMAIN}/insights" />
 <meta name="twitter:card" content="summary_large_image" />
 
@@ -459,8 +459,8 @@ def build_insights_index(insights_entries, articles_by_slug):
   <div class="page-header">
     <div class="container">
       <p class="eyebrow">Insights</p>
-      <h1>Wildfire Aviation Insights</h1>
-      <p>Original analysis from our consultants, plus a running, curated watch on the industry news and reports we think are worth your time.</p>
+      <h1>Wildfire, Aviation &amp; Business Insights</h1>
+      <p>Original analysis from our consultants, plus a running, curated watch on the industry news, reports, and business moves we think are worth your time.</p>
     </div>
     <img class="page-header-watermark" src="/assets/logo-icon.png" alt="" aria-hidden="true" />
   </div>
