@@ -26,6 +26,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.globalairoperations.com/privacy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://www.globalairoperations.com/services/operational-strategy-incident-support</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

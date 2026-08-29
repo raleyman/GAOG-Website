@@ -369,6 +369,7 @@ FOOTER = """<footer class="site-footer">
             <li><a href="/insights">Insights</a></li>
             <li><a href="/team-biographies">Team Biographies</a></li>
             <li><a href="/contact">Contact</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -606,6 +607,7 @@ def build_sitemap(articles, services):
         ("/team-biographies", "0.8"),
         ("/insights", "0.8"),
         ("/contact", "0.7"),
+        ("/privacy", "0.3"),
     ] + [(f"/services/{s['slug']}", "0.7") for s in services] \
       + [(f"/insights/{p['slug']}", "0.6") for p in articles]
     entries = "\n".join(
