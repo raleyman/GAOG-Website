@@ -41,6 +41,7 @@
   {
     "slug": "training-exercises",
     "icon": "<path d=\"M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z\"/>",
+    "card_bg_image": "/assets/services/training-exercises-bg.jpg",
     "title": "Training & Exercises",
     "description": "Design and delivery of Aviation ICS, field training assignments, and customized training programs.",
     "summary": "Training designed and delivered by consultants who have taught these courses and led these positions themselves.",
