@@ -8,6 +8,16 @@
   },
   {
     "type": "watch",
+    "category": "business",
+    "source": "Lockheed Martin Newsroom",
+    "url": "https://news.lockheedmartin.com/2026-01-26-Lockheed-Martin,-PG-E-Corporation,-Salesforce-and-Wells-Fargo-Launch-EMBERPOINT-TM-to-Transform-Americas-Wildfire-Prevention,-Detection-and-Response",
+    "date": "Jan 26, 2026",
+    "title": "Lockheed Martin, PG&E Corporation, Salesforce and Wells Fargo Launch EMBERPOINT to Transform America's Wildfire Prevention, Detection and Response",
+    "take": "EMBERPOINT pairs Lockheed Martin's sensing and autonomous systems, Salesforce's Agentforce and Slack for real-time coordination, PG&E's on-the-ground mitigation experience, and Wells Fargo's capital behind one venture aimed at faster wildfire detection and response. Two of our own consultants, Aaron Burrough and John Messina, serve as advisors to the effort, a genuine business powerhouse worth keeping an eye on as it moves toward public demonstrations."
+  },
+  {
+    "type": "watch",
+    "category": "article",
     "source": "FireRescue1",
     "url": "https://www.firerescue1.com/aviation-incidents-airports-and-arff/we-have-a-problem-ntsb-report-details-final-moments-before-utah-firefighting-helicopter-crash",
     "date": "Aug 7, 2026",
@@ -16,6 +26,7 @@
   },
   {
     "type": "watch",
+    "category": "article",
     "source": "Vertical Mag",
     "url": "https://verticalmag.com/news/2-killed-in-mid-air-helicopter-crash-during-fire-fight-in-greece/",
     "date": "Aug 3, 2026",
@@ -24,6 +35,7 @@
   },
   {
     "type": "watch",
+    "category": "article",
     "source": "NBC San Diego",
     "url": "https://www.nbcsandiego.com/news/local/cal-fire-reopens-its-ramona-air-base-with-new-firefighting-resources/4051041/",
     "date": "Jul 20, 2026",
@@ -32,6 +44,7 @@
   },
   {
     "type": "watch",
+    "category": "article",
     "source": "Lockheed Martin Newsroom",
     "url": "https://news.lockheedmartin.com/2026-07-14-Production-of-Europes-First-Sikorsky-FIREHAWK-R-Helicopters-Begins-in-Poland",
     "date": "Jul 14, 2026",
@@ -40,6 +53,7 @@
   },
   {
     "type": "watch",
+    "category": "article",
     "source": "Governor of California",
     "url": "https://www.gov.ca.gov/2026/06/04/governor-newsom-announces-expansion-of-the-worlds-largest-civilian-aerial-firefighting-fleet-deployment-of-fourth-c-130-h-airtanker-and-new-helitack-base/",
     "date": "Jun 4, 2026",
@@ -48,6 +62,7 @@
   },
   {
     "type": "watch",
+    "category": "article",
     "source": "AerialFire Magazine",
     "url": "https://aerialfiremag.com/2026/03/12/aviation-specialties-unlimited-recognizes-e3-early-adopters/",
     "date": "Mar 12, 2026",

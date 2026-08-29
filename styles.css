@@ -783,6 +783,18 @@ section { padding: 88px 0; }
   color: #fff;
   background: var(--color-black-800);
 }
+.watch-category {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.watch-category-article { color: var(--color-muted); background: rgba(20, 18, 14, 0.07); }
+.watch-category-blog { color: var(--color-black-800); background: rgba(20, 18, 14, 0.12); }
+.watch-category-business { color: #8a6414; background: rgba(212, 163, 23, 0.18); }
+.watch-source-name { font-size: 0.8rem; color: var(--color-muted); }
 .watch-date { font-size: 0.8rem; color: var(--color-muted); }
 .watch-item h3 { font-size: 1.12rem; margin-bottom: 8px; line-height: 1.35; }
 .watch-item h3 a {

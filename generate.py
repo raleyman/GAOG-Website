@@ -383,11 +383,18 @@ FOOTER = """<footer class="site-footer">
 </html>"""
 
 
+INSIGHT_CATEGORY_LABELS = {"article": "Article", "blog": "Blog Post", "business": "Business Highlight"}
+
+
 def render_insight_item(entry, articles_by_slug):
     """One entry in the unified Insights feed — either our own full-length
     article (type: article; links out to wherever it was actually published
     if entry['url'] is set, otherwise to its page on this site) or a curated
-    external story (type: watch, always links out to the source)."""
+    external story (type: watch, always links out to the source). Watch
+    entries carry a 'category' — article, blog, or business — shown as a
+    small badge next to the outlet name; business-highlight entries also
+    swap the "Why it matters" label for "Worth a look"."""
+    take_label = "Why it matters:"
     if entry["type"] == "article":
         article = articles_by_slug[entry["slug"]]
         title = article["title"]
@@ -403,9 +410,14 @@ def render_insight_item(entry, articles_by_slug):
     else:
         title = entry["title"]
         href = entry["url"]
-        badge = f'<span class="watch-source">{esc(entry["source"])}</span>'
+        category = entry.get("category", "article")
+        category_label = INSIGHT_CATEGORY_LABELS.get(category, "Article")
+        badge = (f'<span class="watch-category watch-category-{category}">{category_label}</span> '
+                 f'<span class="watch-source-name">{esc(entry["source"])}</span>')
         link_attrs = ' target="_blank" rel="noopener"'
         icon = ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>'
+        if category == "business":
+            take_label = "Worth a look:"
 
     return f"""        <article class="watch-item">
           <div class="watch-meta">
@@ -413,7 +425,7 @@ def render_insight_item(entry, articles_by_slug):
             <span class="watch-date">{esc(entry['date'])}</span>
           </div>
           <h3><a href="{esc(href)}"{link_attrs}>{esc(title)}{icon}</a></h3>
-          <p class="watch-take"><strong>Why it matters:</strong> {esc(entry['take'])}</p>
+          <p class="watch-take"><strong>{take_label}</strong> {esc(entry['take'])}</p>
         </article>
 """
 
