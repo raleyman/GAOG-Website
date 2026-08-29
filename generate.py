@@ -55,10 +55,7 @@ def render_service_card(svc):
     if svc.get("card_bg_image"):
         bg_html = f'<img class="service-card-bg" src="{esc(svc["card_bg_image"])}" alt="" aria-hidden="true" />\n          '
     return f"""        <a class="service-card" href="/services/{svc['slug']}">
-          {bg_html}<div class="service-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">{svc['icon']}</svg>
-          </div>
-          <h3>{esc(svc['title'])}</h3>
+          {bg_html}<h3>{esc(svc['title'])}</h3>
           <p>{esc(svc['description'])}</p>
           <span class="service-more">Learn more &rarr;</span>
         </a>
