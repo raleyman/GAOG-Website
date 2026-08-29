@@ -477,14 +477,14 @@ section { padding: 88px 0; }
 @media (max-width: 640px) { .grid-team { grid-template-columns: 1fr; } }
 
 .team-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  background: var(--card-gradient);
+  border: 1px solid rgba(20, 18, 14, 0.09);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-card);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-.team-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.team-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-4px); }
 .team-photo {
   aspect-ratio: 1 / 1;
   background: linear-gradient(150deg, var(--color-black-800), var(--color-black-600));
