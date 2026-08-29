@@ -131,7 +131,7 @@ def build_services_index(services):
     <div class="container">
       <p class="eyebrow">What We Do</p>
       <h1>Consulting Services</h1>
-      <p>Services built around aviation operations, program and business development — led by consultants who have done the work themselves.</p>
+      <p>Services built around aviation operations, program and business development, led by consultants who have done the work themselves.</p>
     </div>
   </div>
 
@@ -243,7 +243,7 @@ def build_service_page(svc, articles_by_slug):
       <div class="cta-band">
         <div class="cta-copy">
           <h2 id="svc-cta-heading">Ready to talk about {esc(svc['title'])}?</h2>
-          <p>Tell us about your program, business, goals, and needs — we typically reply within one business day.</p>
+          <p>Tell us about your program, business, goals, and needs. We typically reply within one business day.</p>
         </div>
         <a class="btn btn-primary" href="/contact">Go to Contact Page</a>
       </div>
