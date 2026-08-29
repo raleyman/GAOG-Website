@@ -20,6 +20,7 @@ START-HERE.md, styles.css) are left alone.
 import json
 import re
 import os
+from datetime import datetime
 
 SITE = os.path.dirname(os.path.abspath(__file__))
 CONTENT = os.path.join(SITE, "content")
@@ -393,6 +394,24 @@ FOOTER = """<footer class="site-footer">
 INSIGHT_CATEGORY_LABELS = {"article": "Article", "blog": "Blog Post", "business": "Business Highlight"}
 
 
+def parse_insight_date(date_str):
+    return datetime.strptime(date_str, "%b %d, %Y")
+
+
+def sort_insights_entries(entries):
+    """Featured entries always float to the top, in whatever relative order
+    they're listed in insights.json (so you control it just by reordering
+    them there, or by adding/removing "featured": true). Everything else is
+    sorted newest-first by its date, regardless of JSON order."""
+    featured = [e for e in entries if e.get("featured")]
+    rest = sorted(
+        (e for e in entries if not e.get("featured")),
+        key=lambda e: parse_insight_date(e["date"]),
+        reverse=True,
+    )
+    return featured + rest
+
+
 def render_insight_item(entry, articles_by_slug):
     """One entry in the unified Insights feed — either our own full-length
     article (type: article; links out to wherever it was actually published
@@ -440,6 +459,7 @@ def render_insight_item(entry, articles_by_slug):
 
 
 def build_insights_index(insights_entries, articles_by_slug):
+    insights_entries = sort_insights_entries(insights_entries)
     items = "\n".join(render_insight_item(e, articles_by_slug) for e in insights_entries) if insights_entries else \
         '        <div class="pub-empty">More entries are on the way.</div>\n'
     nav = NAV.format(insights_active=' class="is-active"', svc_active="")
