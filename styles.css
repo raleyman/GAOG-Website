@@ -306,10 +306,11 @@ section { padding: 88px 0; }
 /* -------------------- Service cards -------------------- */
 .grid-services {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
-@media (max-width: 780px) { .grid-services { grid-template-columns: 1fr; } }
+@media (max-width: 960px) { .grid-services { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .grid-services { grid-template-columns: 1fr; } }
 
 .service-card {
   display: block;
@@ -344,10 +345,11 @@ section { padding: 88px 0; }
 /* -------------------- Services index grid -------------------- */
 .grid-svc {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
-@media (max-width: 780px) { .grid-svc { grid-template-columns: 1fr; } }
+@media (max-width: 960px) { .grid-svc { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .grid-svc { grid-template-columns: 1fr; } }
 
 .svc-card {
   display: flex;
@@ -819,6 +821,8 @@ section { padding: 88px 0; }
 
 /* -------------------- CTA band -------------------- */
 .cta-band {
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(135deg, var(--color-black-900), var(--color-black-700));
   color: #fff;
   border-radius: 20px;
@@ -829,9 +833,19 @@ section { padding: 88px 0; }
   gap: 32px;
   flex-wrap: wrap;
 }
-.cta-band h2 { color: #fff; margin-bottom: 8px; }
+.cta-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(560px circle at 88% 12%, rgba(214, 40, 40, 0.22), transparent 60%),
+    radial-gradient(420px circle at 6% 115%, rgba(255, 255, 255, 0.06), transparent 65%);
+  pointer-events: none;
+}
+.cta-band h2 { color: #fff; margin-bottom: 8px; position: relative; }
 .cta-band p { color: rgba(255,255,255,0.78); margin-bottom: 0; font-family: var(--font-display); }
-.cta-copy { max-width: 520px; }
+.cta-copy { max-width: 520px; position: relative; }
+.cta-band > .btn { position: relative; }
 
 /* -------------------- Contact -------------------- */
 .contact-grid {
@@ -881,7 +895,14 @@ section { padding: 88px 0; }
   color: var(--color-ink);
   transition: border-color 0.15s ease, background 0.15s ease;
 }
-.form-field select { appearance: auto; cursor: pointer; }
+.form-field select {
+  appearance: auto;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-right: 34px;
+}
 .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
   outline: none;
   border-color: var(--color-red-500);
@@ -892,6 +913,29 @@ section { padding: 88px 0; }
   font-size: 0.8rem;
   color: var(--color-muted);
   margin-top: 14px;
+}
+
+/* -------------------- 404 -------------------- */
+.error-page {
+  padding: 110px 0 130px;
+  text-align: center;
+}
+.error-page .eyebrow {
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+}
+.error-page h1 { margin-bottom: 14px; }
+.error-page p {
+  max-width: 480px;
+  margin: 0 auto;
+  color: var(--color-muted);
+}
+.error-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 28px;
 }
 
 /* -------------------- Footer -------------------- */
