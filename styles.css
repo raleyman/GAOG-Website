@@ -36,6 +36,12 @@
   --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
 
   --radius: 10px;
+  /* Shared reading-measure for the Insights cards — .watch-item h3 and
+     .watch-take previously declared independent 70ch max-widths that
+     resolved to different pixel widths since they're set in different
+     font-families/sizes, leaving a ragged right edge (see design review
+     round 4, Aug 2026). */
+  --measure: 560px;
   /* Recolored from a cool blue-slate (hue ~213°) to match the warm family
      everything else in the palette sits in (--shadow-card is hue 40°) —
      alpha/blur/offset values unchanged (see stylistic review round 2, Aug 2026). */
@@ -662,23 +668,24 @@ section { padding: 88px 0; }
 }
 
 /* -------------------- Team grid -------------------- */
+/* Flex instead of grid so an incomplete last row (11 people is never an even
+   multiple of the column count, at any breakpoint) centers itself instead of
+   leaving an empty cell hanging off one edge — no item-count-specific
+   selectors needed, so this keeps working as the roster grows or shrinks
+   (see design review round 4, Aug 2026). */
 .grid-team {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 24px;
 }
+.grid-team > .team-card { flex: 1 1 calc(33.333% - 16px); max-width: calc(33.333% - 16px); }
 @media (max-width: 960px) {
-  .grid-team { grid-template-columns: repeat(2, 1fr); }
-  /* A lone odd-one-out card gets centered at half-column width instead of
-     stretching (its square photo would otherwise blow up to double width). */
-  .grid-team > :last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-    max-width: calc(50% - 12px);
-    margin: 0 auto;
-  }
+  .grid-team > .team-card { flex-basis: calc(50% - 12px); max-width: calc(50% - 12px); }
 }
-@media (max-width: 640px) { .grid-team { grid-template-columns: 1fr; } }
-@media (max-width: 640px) { .grid-team > :last-child:nth-child(odd) { max-width: none; margin: 0; } }
+@media (max-width: 640px) {
+  .grid-team > .team-card { flex-basis: 100%; max-width: none; }
+}
 
 .team-card {
   background: var(--card-gradient);
@@ -727,12 +734,16 @@ section { padding: 88px 0; }
    untouched. transform: translateY() scale() reframes within the existing
    square/circular crop (no new image files); delete a photo's rule to put
    it back exactly as shot (Aug 2026). */
+/* Brightness outliers (measured via mean luminance across all eleven bio
+   photos, ~26-point spread) eased ~60% of the way toward the group median —
+   same damped-toward-median approach as the eye-level/head-size pass above
+   (see design review round 4, Aug 2026). */
 .team-photo img[src*="jj-briggs"],
 .team-strip-photo img[src*="jj-briggs"] { transform: translateY(14.31%) scale(1.288); }
 .team-photo img[src*="john-messina"],
 .team-strip-photo img[src*="john-messina"] { transform: translateY(-2.18%) scale(1.363); }
 .team-photo img[src*="jon-tishner"],
-.team-strip-photo img[src*="jon-tishner"] { transform: translateY(-2.62%) scale(1.06); }
+.team-strip-photo img[src*="jon-tishner"] { transform: translateY(-2.62%) scale(1.06); filter: brightness(0.92) contrast(1.04); }
 .team-photo img[src*="mike-deacon"],
 .team-strip-photo img[src*="mike-deacon"] { transform: translateY(-6.77%) scale(1.14); }
 .team-photo img[src*="ray-taglio"],
@@ -740,9 +751,9 @@ section { padding: 88px 0; }
 .team-photo img[src*="shawn-raley"],
 .team-strip-photo img[src*="shawn-raley"] { transform: translateY(8.92%) scale(1.179); }
 .team-photo img[src*="shawn-walters"],
-.team-strip-photo img[src*="shawn-walters"] { transform: translateY(-2.25%) scale(1.05); }
+.team-strip-photo img[src*="shawn-walters"] { transform: translateY(-2.25%) scale(1.05); filter: brightness(0.93) contrast(1.04); }
 .team-photo img[src*="tim-perkins"],
-.team-strip-photo img[src*="tim-perkins"] { transform: translateY(-2.36%) scale(1.05); }
+.team-strip-photo img[src*="tim-perkins"] { transform: translateY(-2.36%) scale(1.05); filter: brightness(0.92) contrast(1.04); }
 .team-body { padding: 22px 24px 26px; }
 .team-body h3 { margin-bottom: 2px; font-size: 1.08rem; }
 .team-role {
@@ -1015,9 +1026,13 @@ section { padding: 88px 0; }
   border-radius: 999px;
   padding: 3px 10px;
 }
+/* Now carries the site's red badge treatment — this is the site's own byline,
+   the one label on the card readers should actually notice, so the accent
+   color belongs here instead of on curated third-party links (see design
+   review round 4, Aug 2026). */
 .watch-source-own {
-  color: #fff;
-  background: var(--color-black-800);
+  color: var(--color-red-500);
+  background: var(--color-red-100);
 }
 /* One neutral treatment for every curated-link category (article/blog/business
    highlight) — the text label still says which is which; color no longer needs
@@ -1033,6 +1048,9 @@ section { padding: 88px 0; }
   color: var(--color-muted);
   background: var(--color-surface-alt);
 }
+/* Neutralized to match .watch-category — the red flag now belongs to the
+   site's own byline above, not to curated third-party content (see design
+   review round 4, Aug 2026). */
 .watch-featured {
   font-size: 0.72rem;
   font-weight: 700;
@@ -1040,16 +1058,18 @@ section { padding: 88px 0; }
   letter-spacing: 0.06em;
   border-radius: 999px;
   padding: 3px 10px;
-  color: var(--color-red-500);
-  background: var(--color-red-100);
-  border: 1px solid rgba(200, 29, 37, 0.25);
+  color: var(--color-muted);
+  background: var(--color-surface-alt);
 }
 .watch-source-name { font-size: 0.8rem; color: var(--color-muted); }
 .watch-date { font-size: 0.8rem; color: var(--color-muted); }
 /* Constrained to the same measure as .watch-take below it — headlines were
    running the full card width (~110 characters) over 55-character body
-   copy (see stylistic review round 2, Aug 2026). */
-.watch-item h3 { font-size: 1.12rem; margin-bottom: 8px; line-height: 1.35; max-width: 70ch; }
+   copy (see stylistic review round 2, Aug 2026). Both now reference one
+   shared --measure variable instead of two independent 70ch declarations,
+   which resolved to different pixel widths across the two font-families
+   (see design review round 4, Aug 2026). */
+.watch-item h3 { font-size: 1.12rem; margin-bottom: 8px; line-height: 1.35; max-width: var(--measure); }
 .watch-item h3 a {
   color: var(--color-black-900);
   text-decoration: none;
@@ -1060,74 +1080,12 @@ section { padding: 88px 0; }
 }
 .watch-item h3 a:hover { background-size: 100% 100%; }
 .watch-item h3 a svg { width: 15px; height: 15px; margin-left: 4px; vertical-align: -2px; opacity: 0.55; }
-.watch-take { font-size: 0.95rem; color: var(--color-body); margin: 0; max-width: 70ch; }
+/* Font-size bumped to match the About section's reading copy (Source Serif 4,
+   ~16.8px) — one of three type treatments doing the same job, consolidated
+   to two (see design review round 4, Aug 2026). */
+.watch-take { font-size: 1.05rem; color: var(--color-body); margin: 0; max-width: var(--measure); }
 .watch-take strong { color: var(--color-black-900); }
 @media (max-width: 640px) { .watch-item { padding: 22px 22px; } }
-
-/* -------------------- Publications grid (thumbnail cards) -------------------- */
-.grid-pubs {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-@media (max-width: 960px) { .grid-pubs { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 640px) { .grid-pubs { grid-template-columns: 1fr; } }
-
-.pub-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  text-decoration: none;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-.pub-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.pub-card-thumb {
-  aspect-ratio: 4 / 3;
-  background: linear-gradient(150deg, var(--color-black-800), var(--color-black-600));
-  display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.85);
-  overflow: hidden;
-}
-.pub-card-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-  display: block;
-}
-.pub-card-thumb svg { width: 40px; height: 40px; }
-.pub-card-body { padding: 20px 22px 24px; }
-.pub-featured {
-  display: inline-block;
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-red-500);
-  background: var(--color-red-100);
-  border-radius: 999px;
-  padding: 3px 10px;
-  margin-bottom: 10px;
-}
-.pub-card-body h3 { margin-bottom: 4px; font-size: 1.05rem; color: var(--color-black-900); line-height: 1.3; }
-.pub-card-byline {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 0.8rem;
-  color: var(--color-muted);
-  font-weight: 600;
-}
-.pub-card-body .pub-excerpt.clamp {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
 
 /* -------------------- Long-form article -------------------- */
 .article-body {
@@ -1247,12 +1205,16 @@ section { padding: 88px 0; }
   gap: 32px;
   flex-wrap: wrap;
 }
+/* Glow recolored from a hardcoded off-palette red (hue 0°) to --color-red-500
+   at reduced opacity, so it sits in the same ~356° red family as the rest of
+   the site instead of reading as a slightly different red (see design review
+   round 4, Aug 2026). */
 .cta-band::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(560px circle at 88% 12%, rgba(214, 40, 40, 0.22), transparent 60%),
+    radial-gradient(560px circle at 88% 12%, rgba(197, 32, 42, 0.16), transparent 60%),
     radial-gradient(420px circle at 6% 115%, rgba(255, 255, 255, 0.06), transparent 65%);
   pointer-events: none;
 }
@@ -1261,6 +1223,27 @@ section { padding: 88px 0; }
 .cta-copy { max-width: 520px; position: relative; }
 .cta-band > .btn { position: relative; }
 .cta-actions { display: flex; gap: 12px; flex-wrap: wrap; position: relative; }
+
+/* Light variant — homepage-only (see design review round 4, Aug 2026): the
+   homepage previously closed with three dark blocks in a row (photo-band,
+   CTA, footer). The two interior-page CTA bands (services.html and each
+   service-detail page) keep the dark treatment above; only index.html's
+   closing CTA gets this class. */
+.cta-band-light {
+  background: var(--card-gradient);
+  border: 1px solid rgba(20, 18, 14, 0.09);
+}
+.cta-band-light::before { display: none; }
+.cta-band-light h2 { color: var(--color-ink); }
+.cta-band-light p { color: var(--color-body); }
+.cta-band-light .btn-secondary {
+  color: var(--color-ink);
+  border-color: rgba(20, 18, 14, 0.35);
+}
+.cta-band-light .btn-secondary:hover {
+  border-color: var(--color-ink);
+  background: rgba(20, 18, 14, 0.06);
+}
 
 /* -------------------- Homepage team strip -------------------- */
 /* The team never appeared on the homepage beyond a single button — a
@@ -1274,25 +1257,29 @@ section { padding: 88px 0; }
    avatar on its own row. 6 across gives an intentional-looking 6+5 for 11
    people; 3 across gives 3+3+3+2 on mobile (see stylistic review, Aug
    2026). */
+/* Flex instead of grid for the same reason as .grid-team above — 11 avatars
+   never divide evenly into 3 or 6 columns, so the last row centers itself
+   instead of leaving a gap under the final column (see design review round
+   4, Aug 2026). */
 .team-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-items: center;
-  align-items: start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
   gap: 28px 20px;
-}
-@media (min-width: 640px) {
-  .team-strip { grid-template-columns: repeat(6, 1fr); }
 }
 .team-strip-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  flex: 1 1 calc(33.333% - 14px);
   max-width: 108px;
   text-align: center;
   text-decoration: none;
   color: inherit;
+}
+@media (min-width: 640px) {
+  .team-strip-item { flex-basis: calc(16.6667% - 17px); }
 }
 .team-strip-photo {
   width: 76px;
@@ -1319,6 +1306,10 @@ section { padding: 88px 0; }
   font-weight: 700;
   color: var(--color-ink);
   line-height: 1.3;
+  /* Reserves space for two lines so a name that wraps (currently just Travis
+     Alexander) doesn't push its role label lower than everyone else's (see
+     design review round 4, Aug 2026). */
+  min-height: 2.6em;
 }
 .team-strip-role {
   font-family: var(--font-display);
@@ -1353,7 +1344,14 @@ section { padding: 88px 0; }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(6,6,7,0.75) 0%, rgba(6,6,7,0.4) 45%, rgba(6,6,7,0.45) 100%);
+  /* Second, tighter gradient stacked on top gives the caption its own dark
+     ground near the bottom regardless of what's behind it in the photo —
+     without it, a bright/white area in the frame could sit directly under
+     the text with too little scrim to hold contrast (see design review
+     round 4, Aug 2026). */
+  background:
+    linear-gradient(0deg, rgba(6,6,7,0.85) 0%, rgba(6,6,7,0.62) 30%, transparent 58%),
+    linear-gradient(0deg, rgba(6,6,7,0.75) 0%, rgba(6,6,7,0.4) 45%, rgba(6,6,7,0.45) 100%);
 }
 .photo-band-line {
   position: absolute;
@@ -1373,6 +1371,11 @@ section { padding: 88px 0; }
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: 56px;
+  /* Grid items stretch to the row height by default, which was leaving the
+     shorter info card with a large empty gap below it (the row height is
+     set by the taller form). Sizing each column to its own content reads
+     as deliberate instead (see design review round 4, Aug 2026). */
+  align-items: start;
 }
 @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
 .contact-card {
@@ -1429,17 +1432,24 @@ section { padding: 88px 0; }
   color: var(--color-ink);
   transition: border-color 0.15s ease, background 0.15s ease;
 }
+/* Custom chevron instead of the browser-default appearance, so the dropdown
+   reads as styled input like its neighbors instead of an unstyled outlier
+   (see design review round 4, Aug 2026). */
 .form-field select {
-  appearance: auto;
+  appearance: none;
   cursor: pointer;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   padding-right: 34px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2379736a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 14px;
 }
 @media (max-width: 480px) {
   .contact-card { padding: 24px 20px; }
-  .form-field select { font-size: 0.85rem; padding-right: 28px; }
+  .form-field select { font-size: 0.85rem; padding-right: 28px; background-position: right 10px center; }
 }
 .form-field input:focus, .form-field textarea:focus, .form-field select:focus {
   outline: none;
