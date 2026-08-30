@@ -440,11 +440,6 @@ FOOTER = """<footer class="site-footer">
             <li><a href="tel:+15309499868">530-949-9868</a></li>
           </ul>
         </div>
-        <div class="footer-col footer-col-cta">
-          <h4>Get Started</h4>
-          <p>Tell us about your program, business, goals, and needs.</p>
-          <a class="btn btn-primary footer-cta-btn" href="/contact">Go to Contact Page</a>
-        </div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -529,7 +524,12 @@ def render_insight_item(entry, articles_by_slug):
         if category == "business":
             take_label = "Worth a look:"
 
-    featured_html = '<span class="watch-featured">Featured</span> ' if entry.get("featured") else ""
+    # Own-analysis entries never show the Featured pill — the tier heading
+    # and the "Our Analysis" badge already say that, and stacking a third
+    # label on the only entry in that tier said nothing extra. Curated watch
+    # entries keep it since it still distinguishes one story among several
+    # (see stylistic review, Aug 2026).
+    featured_html = '<span class="watch-featured">Featured</span> ' if (entry.get("featured") and entry["type"] != "article") else ""
 
     # Byline: only our own analysis pieces carry one — the curated "watch"
     # entries already credit the outlet via the source-name badge instead

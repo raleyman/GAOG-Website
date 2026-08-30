@@ -340,6 +340,13 @@ body.has-hero .site-header.is-scrolled .nav-toggle { color: var(--color-ink); }
   margin-bottom: 2em;
 }
 .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+/* Two stacked pills of very different widths (auto-sized to their own
+   label length) read as unfinished — full-width and equal below the point
+   they stack (see stylistic review, Aug 2026). */
+@media (max-width: 640px) {
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+}
 
 .hero-stats {
   position: relative;
@@ -694,6 +701,12 @@ section { padding: 88px 0; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Grayscale unifies eleven photos shot in different light and color
+     temperature (forest green, daylight blue-white, warm indoor tones) so
+     the team page reads as one consistent set, matching the muted photo
+     language used everywhere else on the site. Remove this line to revert
+     to the original color photos (see stylistic review, Aug 2026). */
+  filter: grayscale(0.95) contrast(1.05);
   display: block;
 }
 .team-body { padding: 22px 24px 26px; }
@@ -1221,17 +1234,28 @@ section { padding: 88px 0; }
    named senior leaders) its moment. Small crops also minimize the
    background inconsistency across the underlying bio photos (see
    stylistic review round 2, Aug 2026). */
+/* A fixed column count (6 desktop, 3 mobile) instead of natural flex-wrap
+   reflow — at 108px per item, flex-wrap fit 8 across on desktop and left an
+   odd 3 dangling on the row below, and 2 across on mobile left a lone
+   avatar on its own row. 6 across gives an intentional-looking 6+5 for 11
+   people; 3 across gives 3+3+3+2 on mobile (see stylistic review, Aug
+   2026). */
 .team-strip {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  align-items: start;
   gap: 28px 20px;
+}
+@media (min-width: 640px) {
+  .team-strip { grid-template-columns: repeat(6, 1fr); }
 }
 .team-strip-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 108px;
+  width: 100%;
+  max-width: 108px;
   text-align: center;
   text-decoration: none;
   color: inherit;
@@ -1254,7 +1278,9 @@ section { padding: 88px 0; }
   transition: transform 0.2s ease;
 }
 .team-strip-item:hover .team-strip-photo { transform: translateY(-3px); }
-.team-strip-photo img { width: 100%; height: 100%; object-fit: cover; }
+/* Same grayscale treatment as the full team page — remove to revert to
+   color (see stylistic review, Aug 2026). */
+.team-strip-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.95) contrast(1.05); }
 .team-strip-name {
   font-family: var(--font-display);
   font-size: 0.82rem;
@@ -1284,27 +1310,29 @@ section { padding: 88px 0; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Tuned for the ridge-fire photo's fireline, which sits lower-center in
-     frame (see homepage photo-language fix, Aug 2026 — was 60% 30% for the
-     previous smoke-plume crop). */
-  object-position: 50% 68%;
+  object-position: 50% 50%;
+  /* Grayscale so this photo reads as texture rather than the loudest color
+     on the page (it was competing with the brand red and reading as a
+     volcano at a glance in full saturation) — remove this line to revert
+     to the color photo (see stylistic review, Aug 2026). */
+  filter: grayscale(1) contrast(1.08);
 }
 .photo-band::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(0deg, rgba(6,6,7,0.75) 0%, rgba(6,6,7,0.15) 45%, rgba(6,6,7,0.35) 100%);
+  background: linear-gradient(0deg, rgba(6,6,7,0.75) 0%, rgba(6,6,7,0.4) 45%, rgba(6,6,7,0.45) 100%);
 }
 .photo-band-line {
   position: absolute;
-  left: 0; right: 0; bottom: 28px;
+  left: 0; right: 0; bottom: 32px;
   margin: 0;
   text-align: center;
   color: #fff;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.01em;
   padding: 0 24px;
 }
 
@@ -1447,12 +1475,9 @@ section { padding: 88px 0; }
 .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .footer-col a { font-family: var(--font-display); font-size: 0.9rem; color: rgba(255,255,255,0.68); text-decoration: none; }
 .footer-col a:hover { color: #fff; }
-/* Third column fills the empty right side of the footer with a real,
-   already-used prompt instead of leaving it blank (see stylistic review
-   round 2, Aug 2026). */
-.footer-col-cta { max-width: 220px; }
-.footer-col-cta p { font-family: var(--font-display); font-size: 0.85rem; color: rgba(255,255,255,0.68); margin: 0 0 14px; line-height: 1.5; }
-.footer-cta-btn { display: inline-block; font-size: 0.85rem; padding: 9px 16px; }
+/* Third "Get Started" column (round 2) was cut — it duplicated the CTA
+   band's headline and button word-for-word, roughly 200px above it in the
+   same page flow (see stylistic review, Aug 2026). */
 .footer-bottom { font-family: var(--font-display); font-size: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
 /* -------------------- Breadcrumb / page header -------------------- */
@@ -1490,6 +1515,10 @@ section { padding: 88px 0; }
   object-fit: cover;
   object-position: center 60%;
   z-index: 0;
+  /* Grayscale to match the rest of the site's muted photo language — this
+     was the loudest saturated color on the Services pages. Remove this
+     line to revert to the color photo (see stylistic review, Aug 2026). */
+  filter: grayscale(1) contrast(1.05);
 }
 .page-header-photo::before {
   content: "";
