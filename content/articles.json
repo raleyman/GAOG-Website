@@ -38,7 +38,7 @@
         "text": "The Perception Problem"
       },
       {
-        "type": "p",
+        "type": "quote",
         "text": "The obstacle to ground application is not technical. It is cultural."
       },
       {
@@ -64,6 +64,11 @@
       {
         "type": "p",
         "text": "Research published in the Proceedings of the National Academy of Sciences by Stanford researchers (Appel et al., 2019) examined what happens when retardant is applied proactively to high-risk fuel beds rather than reactively once a fire is running. The findings were striking. Proactive treatment of a given area required roughly 20,000 gallons of retardant, compared to an estimated one million gallons needed to achieve comparable suppression effect after a fire was actively spreading. The researchers were not making an argument against aerial suppression. They were demonstrating the power of timing. Getting the right product on the ground before a fire arrives is fundamentally more efficient than waiting for the fire to force the decision, and a ground-based delivery system gives incident managers the ability to act during the hours when aircraft cannot fly."
+      },
+      {
+        "type": "stat",
+        "value": "20,000 vs. 1,000,000 gallons",
+        "detail": "Retardant needed to treat a fuel bed proactively, before a fire arrives, versus reactively once it is already spreading (Appel et al., Stanford, PNAS, 2019)."
       },
       {
         "type": "p",
@@ -126,7 +131,7 @@
         "text": "These were not isolated failures of planning or forecasting. They were failures to fully exploit every available tool to hold the line when conditions pushed fire toward the objective. Ground-applied retardant, pre-positioned on the high-risk segments of those perimeters before the fire arrived, would not have guaranteed a different outcome in every case. But it would have changed the calculus at the moment the fire tested the line. The cost of pre-treating a burn perimeter or a threatened structure complex with retardant is measured in hundreds or low thousands of dollars. The cost of the losses described above is measured in the billions."
       },
       {
-        "type": "p",
+        "type": "quote",
         "text": "How many more historic structures and lookout towers will we lose before we use the tools already available to save them?"
       },
       {

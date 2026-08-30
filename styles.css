@@ -15,11 +15,17 @@
   --color-red-100: #fbe9ea;
 
   --color-ink: #1a1a1a;
-  --color-body: #3c4954;
+  /* Darkened one step — the previous tone read as a whisper where the site's
+     credentials should speak with more confidence (see stylistic review,
+     Aug 2026). */
+  --color-body: #2d3843;
   --color-muted: #6b7885;
   --color-line: #e5e2dd;
   --color-surface: #faf9f6;
-  --color-surface-alt: #f2f0eb;
+  /* Pulled closer to the card-gradient's own darkest stop so alternating
+     sections read as a clear, intentional shift rather than a third
+     near-identical off-white (see stylistic review, Aug 2026). */
+  --color-surface-alt: #ece5d6;
 
   --font-display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
@@ -43,6 +49,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: var(--font-body);
+  font-size: 1.05rem;
   color: var(--color-body);
   background: var(--color-surface);
   line-height: 1.6;
@@ -165,7 +172,10 @@ img { max-width: 100%; display: block; }
   transition: color 0.15s ease, background 0.15s ease;
 }
 .nav-links a:hover { color: var(--color-ink); background: var(--color-surface-alt); }
-.nav-links a.is-active { color: var(--color-red-500); background: var(--color-red-100); }
+/* A pale-pink chip read as a disabled state sitting next to the solid-red
+   Contact button — a crisp underline reads as "selected" without competing
+   with that button's visual weight (see stylistic review, Aug 2026). */
+.nav-links a.is-active { color: var(--color-red-500); background: none; box-shadow: inset 0 -2px 0 var(--color-red-500); border-radius: 4px; }
 .nav-cta { margin-left: 8px; }
 .nav-cta .btn.btn-primary {
   color: #ffffff;
@@ -211,6 +221,9 @@ img { max-width: 100%; display: block; }
   padding: 96px 0 88px;
   overflow: hidden;
 }
+@media (min-width: 641px) {
+  .hero { min-height: 72vh; display: flex; align-items: center; }
+}
 .hero-photo {
   position: absolute;
   inset: 0;
@@ -241,24 +254,23 @@ img { max-width: 100%; display: block; }
 .hero-logo-large {
   position: absolute;
   top: 50%;
-  right: clamp(-40px, 4vw, 60px);
+  right: clamp(-60px, 2vw, 20px);
   transform: translateY(-50%);
   width: clamp(340px, 34vw, 560px);
   height: auto;
   z-index: 1;
-  opacity: 0.96;
-  filter: drop-shadow(0 0 60px rgba(200, 29, 37, 0.45)) drop-shadow(0 0 120px rgba(200, 29, 37, 0.25));
+  opacity: 0.08;
   pointer-events: none;
 }
-@media (max-width: 900px) { .hero-logo-large { width: clamp(220px, 46vw, 340px); opacity: 0.5; } }
 @media (max-width: 640px) { .hero-logo-large { display: none; } }
 .hero-headline {
   position: relative;
   margin: 0 0 12px;
 }
-.hero-inner { position: relative; z-index: 2; max-width: 760px; }
-.hero-text { position: relative; z-index: 2; }
+.hero-inner { position: relative; z-index: 2; }
+.hero-text { position: relative; z-index: 2; max-width: 760px; }
 .hero h1 { color: #fff; }
+.hero .eyebrow { color: #fff; }
 .hero .lede {
   font-family: var(--font-display);
   font-size: 1.15rem;
@@ -313,13 +325,10 @@ section { padding: 88px 0; }
 /* -------------------- Service cards -------------------- */
 .grid-services {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
-@media (max-width: 960px) {
-  .grid-services { grid-template-columns: repeat(2, 1fr); }
-  .grid-services > :last-child:nth-child(odd) { grid-column: 1 / -1; }
-}
+.grid-services > :last-child:nth-child(odd) { grid-column: 1 / -1; }
 @media (max-width: 640px) { .grid-services { grid-template-columns: 1fr; } }
 
 .service-card {
@@ -337,14 +346,9 @@ section { padding: 88px 0; }
 }
 .service-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-4px); }
 .service-card-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.09;
-  z-index: 0;
-  pointer-events: none;
+  /* Washed out to the point of reading as static rather than imagery — dropped
+     in favor of clean typography (see stylistic review, Aug 2026). */
+  display: none;
 }
 .service-icon {
   position: relative;
@@ -370,13 +374,10 @@ section { padding: 88px 0; }
 /* -------------------- Services index grid -------------------- */
 .grid-svc {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
-@media (max-width: 960px) {
-  .grid-svc { grid-template-columns: repeat(2, 1fr); }
-  .grid-svc > :last-child:nth-child(odd) { grid-column: 1 / -1; }
-}
+.grid-svc > :last-child:nth-child(odd) { grid-column: 1 / -1; }
 @media (max-width: 640px) { .grid-svc { grid-template-columns: 1fr; } }
 
 .svc-card {
@@ -395,14 +396,9 @@ section { padding: 88px 0; }
 }
 .svc-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-4px); }
 .svc-card-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.09;
-  z-index: 0;
-  pointer-events: none;
+  /* Washed out to the point of reading as static rather than imagery — dropped
+     in favor of clean typography (see stylistic review, Aug 2026). */
+  display: none;
 }
 .svc-card-icon {
   position: relative;
@@ -498,7 +494,10 @@ section { padding: 88px 0; }
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 48px;
-  align-items: center;
+  /* Bottom-align so the quote reads as a deliberate footer to the card
+     instead of floating in a void above where centering used to leave it
+     (see stylistic review, Aug 2026). */
+  align-items: end;
 }
 @media (max-width: 860px) {
   .about-card { padding: 36px 32px; }
@@ -522,6 +521,34 @@ section { padding: 88px 0; }
   font-size: 0.85rem;
   color: var(--color-muted);
   font-weight: 500;
+}
+/* A pull-quote dropped inline into a long article column, rather than
+   sitting in the About card's grid — needs its own vertical rhythm. */
+.article-pull-quote {
+  margin: 2em 0;
+  font-size: 1.25rem;
+}
+.article-stat-callout {
+  margin: 2em 0;
+  padding: 22px 28px;
+  background: var(--color-red-100);
+  border-left: 3px solid var(--color-red-500);
+  border-radius: 8px;
+}
+.article-stat-callout .stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-red-500);
+  margin-bottom: 6px;
+}
+.article-stat-callout .stat-detail {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  color: var(--color-black-800);
+  line-height: 1.5;
 }
 
 /* -------------------- Team grid -------------------- */
@@ -785,6 +812,19 @@ section { padding: 88px 0; }
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 .watch-item:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-4px); }
+/* Our own original analysis gets a larger, image-led treatment so it reads as
+   the flagship piece it is, distinct from the curated link roundup entries
+   below it (see stylistic review, Aug 2026). */
+.watch-item-featured { padding: 0 0 32px; overflow: hidden; }
+.watch-item-image {
+  width: 100%;
+  aspect-ratio: 2.4 / 1;
+  object-fit: cover;
+  margin-bottom: 24px;
+}
+.watch-item-featured .watch-meta,
+.watch-item-featured .watch-take { padding-left: 36px; padding-right: 36px; }
+.watch-item-featured h3 { padding-left: 36px; padding-right: 36px; font-size: 1.5rem; }
 .watch-meta {
   display: flex;
   align-items: center;
@@ -806,6 +846,10 @@ section { padding: 88px 0; }
   color: #fff;
   background: var(--color-black-800);
 }
+/* One neutral treatment for every curated-link category (article/blog/business
+   highlight) — the text label still says which is which; color no longer needs
+   to carry a third, fourth, and fifth hue on top of the "Our Analysis" accent
+   and the red "Featured" flag (see stylistic review, Aug 2026). */
 .watch-category {
   font-size: 0.72rem;
   font-weight: 700;
@@ -813,10 +857,9 @@ section { padding: 88px 0; }
   letter-spacing: 0.06em;
   border-radius: 999px;
   padding: 3px 10px;
+  color: var(--color-muted);
+  background: var(--color-surface-alt);
 }
-.watch-category-article { color: #2f4d66; background: rgba(61, 90, 115, 0.22); }
-.watch-category-blog { color: #3c5c38; background: rgba(74, 107, 69, 0.22); }
-.watch-category-business { color: #7a5610; background: rgba(212, 163, 23, 0.28); }
 .watch-featured {
   font-size: 0.72rem;
   font-weight: 700;
@@ -841,7 +884,7 @@ section { padding: 88px 0; }
 }
 .watch-item h3 a:hover { background-size: 100% 100%; }
 .watch-item h3 a svg { width: 15px; height: 15px; margin-left: 4px; vertical-align: -2px; opacity: 0.55; }
-.watch-take { font-size: 0.95rem; color: var(--color-body); margin: 0; }
+.watch-take { font-size: 0.95rem; color: var(--color-body); margin: 0; max-width: 70ch; }
 .watch-take strong { color: var(--color-black-900); }
 @media (max-width: 640px) { .watch-item { padding: 22px 22px; } }
 
@@ -921,6 +964,50 @@ section { padding: 88px 0; }
   padding: 48px clamp(24px, 5vw, 64px);
 }
 .article-body h2 { text-align: center; }
+
+/* Service detail pages: a right-hand rail so a 740px content card doesn't
+   just float alone in the middle third of a wide field (see stylistic
+   review, Aug 2026). */
+.svc-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 40px;
+  align-items: start;
+}
+.svc-detail-layout .article-body { margin: 0; }
+@media (max-width: 960px) {
+  .svc-detail-layout { grid-template-columns: 1fr; }
+  .svc-detail-layout .article-body { margin: 0 auto; }
+}
+.svc-sidebar { display: flex; flex-direction: column; gap: 20px; }
+.svc-sidebar-card {
+  background: var(--card-gradient);
+  border: 1px solid rgba(20, 18, 14, 0.09);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+}
+.svc-sidebar-card h4 { font-size: 0.95rem; margin-bottom: 8px; }
+.svc-sidebar-card p { font-family: var(--font-display); font-size: 0.88rem; color: var(--color-muted); margin-bottom: 16px; }
+.svc-sidebar-card .btn { width: 100%; justify-content: center; padding: 11px 20px; font-size: 0.88rem; }
+.svc-sidebar-link {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-red-500);
+  text-decoration: none;
+}
+.svc-sidebar-link:hover { text-decoration: underline; }
+.svc-sidebar-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.svc-sidebar-list a {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-black-800);
+  text-decoration: none;
+}
+.svc-sidebar-list a:hover { color: var(--color-red-500); }
 .article-byline {
   text-align: center;
   font-family: var(--font-display);
@@ -937,7 +1024,7 @@ section { padding: 88px 0; }
   text-transform: uppercase;
   margin-top: 1.8em;
 }
-.article-body p { font-size: 1.02rem; line-height: 1.75; }
+.article-body p { font-size: 1.08rem; line-height: 1.75; }
 .article-signature {
   margin-top: 2em;
   padding-top: 1.5em;
@@ -947,6 +1034,18 @@ section { padding: 88px 0; }
   color: var(--color-muted);
   text-align: center;
 }
+/* When this signature line is a link (service detail pages' "Meet the
+   consultants" line) rather than a plain byline, match the site's one
+   "learn more" treatment instead of adding a third — red sans, no italic,
+   no underline until hover (see stylistic review, Aug 2026). */
+.article-signature a {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-red-500);
+  text-decoration: none;
+}
+.article-signature a:hover { text-decoration: underline; }
 
 /* -------------------- CTA band -------------------- */
 .cta-band {
@@ -975,6 +1074,7 @@ section { padding: 88px 0; }
 .cta-band p { color: rgba(255,255,255,0.78); margin-bottom: 0; font-family: var(--font-display); }
 .cta-copy { max-width: 520px; position: relative; }
 .cta-band > .btn { position: relative; }
+.cta-actions { display: flex; gap: 12px; flex-wrap: wrap; position: relative; }
 
 /* -------------------- Contact -------------------- */
 .contact-grid {
@@ -984,13 +1084,23 @@ section { padding: 88px 0; }
 }
 @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
 .contact-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
+  background: var(--card-gradient);
+  border: 1px solid rgba(20, 18, 14, 0.09);
   border-radius: var(--radius);
-  padding: 32px;
+  box-shadow: var(--shadow-card);
+  padding: 36px;
 }
 .contact-row { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; }
 .contact-row:last-child { margin-bottom: 0; }
+.contact-card-note {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-line);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
 .contact-row .icon {
   width: 38px; height: 38px;
   border-radius: 9px;
@@ -1079,10 +1189,14 @@ section { padding: 88px 0; }
 }
 .footer-top {
   display: flex;
-  justify-content: space-between;
+  /* Was space-between, which stretched the brand block and the link columns
+     to opposite edges and left a wide dead gap in the middle at desktop
+     widths. Flowing left-to-right with a fixed gap keeps the footer reading
+     as one grouped block (see stylistic review, Aug 2026). */
+  justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 72px;
   padding-bottom: 32px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
   margin-bottom: 24px;

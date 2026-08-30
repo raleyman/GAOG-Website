@@ -170,7 +170,18 @@ def build_services_index(services):
 """
 
 
-def build_service_page(svc, articles_by_slug):
+# Each service detail page gets its own header photo instead of the generic
+# services-hero.jpg, so the five pages stop feeling like one templated page
+# repeated five times (see stylistic review, Aug 2026).
+SERVICE_HERO_PHOTOS = {
+    "operational-strategy-incident-support": "/assets/services/operational-strategy-bg.jpg",
+    "policy-program-development": "/assets/services/policy-program-bg.jpg",
+    "training-exercises": "/assets/services/training-exercises-bg.jpg",
+    "aar-continuous-improvement": "/assets/services/aar-continuous-improvement-bg.jpg",
+    "business-consulting": "/assets/services/business-consulting-bg.jpg",
+}
+
+def build_service_page(svc, articles_by_slug, all_services):
     body_html = "".join(f"        <p>{esc(p)}</p>\n" for p in svc["body"])
     included_html = render_included_list(svc.get("included"))
     credentials_html = ""
@@ -185,6 +196,32 @@ def build_service_page(svc, articles_by_slug):
         </div>
 """
     nav = NAV.format(insights_active="", svc_active=' class="is-active"')
+
+    # A right-hand rail so the page isn't just a narrow content card floating
+    # in a wide field — a CTA, a team link, and the other services (see
+    # stylistic review, Aug 2026).
+    other_services_html = "".join(
+        f'            <li><a href="/services/{s["slug"]}">{esc(s["title"])}</a></li>\n'
+        for s in all_services if s["slug"] != svc["slug"]
+    )
+    sidebar_html = f"""        <aside class="svc-sidebar">
+          <div class="svc-sidebar-card">
+            <h4>Ready to talk about this?</h4>
+            <p>Tell us about your program, business, goals, and needs.</p>
+            <a class="btn btn-primary" href="/contact">Go to Contact Page</a>
+          </div>
+          <div class="svc-sidebar-card">
+            <h4>Meet the Team</h4>
+            <p>Senior consultants and principals with careers built at CAL FIRE, the U.S. Forest Service, and the U.S. Coast Guard.</p>
+            <a class="svc-sidebar-link" href="/team-biographies">View Full Team Biographies &rarr;</a>
+          </div>
+          <div class="svc-sidebar-card">
+            <h4>Other Services</h4>
+            <ul class="svc-sidebar-list">
+{other_services_html}            </ul>
+          </div>
+        </aside>
+"""
 
     return f"""<!doctype html>
 <html lang="en">
@@ -232,7 +269,7 @@ def build_service_page(svc, articles_by_slug):
 <main id="main">
 
   <div class="page-header page-header-photo">
-    <img class="page-header-photo-img" src="/assets/services-hero.jpg" alt="" aria-hidden="true" />
+    <img class="page-header-photo-img" src="{SERVICE_HERO_PHOTOS.get(svc['slug'], '/assets/services-hero.jpg')}" alt="" aria-hidden="true" />
     <div class="container">
       <p class="eyebrow"><a href="/services" style="color:inherit;">Services</a></p>
       <h1>{esc(svc['title'])}</h1>
@@ -241,11 +278,11 @@ def build_service_page(svc, articles_by_slug):
   </div>
 
   <section class="section-alt">
-    <div class="container">
+    <div class="container svc-detail-layout">
       <article class="article-body">
 {body_html}{included_html}{credentials_html}{related_html}        <p class="article-signature"><a href="/team-biographies">Meet the consultants behind our work &rarr;</a></p>
       </article>
-    </div>
+{sidebar_html}    </div>
   </section>
 
   <section aria-labelledby="svc-cta-heading">
@@ -359,7 +396,7 @@ FOOTER = """<footer class="site-footer">
     <div class="footer-top">
       <div>
         <div class="footer-brand"><span class="logo-badge"><img src="/assets/logo-icon.png" alt="Global Air Operations Group logo" /></span> Global Air Operations Group</div>
-        <p class="footer-tagline">Strategic Consulting &middot; Operational Planning &middot; Incident Support</p>
+        <p class="footer-tagline">Strategic Consulting&nbsp;&middot;&nbsp;Operational Planning&nbsp;&middot;&nbsp;Incident Support</p>
       </div>
       <div class="footer-links">
         <div class="footer-col">
@@ -415,6 +452,16 @@ def sort_insights_entries(entries):
     return featured + rest
 
 
+
+# Per-article card image for the Insights feed's "featured analysis" treatment —
+# lets our own original writing read as the flagship piece it is, instead of
+# looking like a rectangle identical to nine curated link summaries
+# (see stylistic review, Aug 2026).
+ARTICLE_CARD_IMAGES = {
+    "retardant-is-not-just-for-airtankers-anymore": "/assets/publications/retardant-featured-card.jpg",
+}
+
+
 def render_insight_item(entry, articles_by_slug):
     """One entry in the unified Insights feed — either our own full-length
     article (type: article; links out to wherever it was actually published
@@ -424,10 +471,16 @@ def render_insight_item(entry, articles_by_slug):
     small badge next to the outlet name; business-highlight entries also
     swap the "Why it matters" label for "Worth a look"."""
     take_label = "Why it matters:"
+    item_class = "watch-item"
+    image_html = ""
     if entry["type"] == "article":
         article = articles_by_slug[entry["slug"]]
         title = article["title"]
         badge = '<span class="watch-source watch-source-own">Our Analysis</span>'
+        card_image = ARTICLE_CARD_IMAGES.get(entry["slug"])
+        if card_image:
+            item_class = "watch-item watch-item-featured"
+            image_html = f'          <img class="watch-item-image" src="{card_image}" alt="" aria-hidden="true" />\n'
         if entry.get("url"):
             href = entry["url"]
             link_attrs = ' target="_blank" rel="noopener"'
@@ -450,8 +503,8 @@ def render_insight_item(entry, articles_by_slug):
 
     featured_html = '<span class="watch-featured">Featured</span> ' if entry.get("featured") else ""
 
-    return f"""        <article class="watch-item">
-          <div class="watch-meta">
+    return f"""        <article class="{item_class}">
+{image_html}          <div class="watch-meta">
             {featured_html}{badge}
             <span class="watch-date">{esc(entry['date'])}</span>
           </div>
@@ -527,6 +580,15 @@ def build_insights_index(insights_entries, articles_by_slug):
 def render_body_block(block):
     if block["type"] == "h3":
         return f"        <h2>{esc(block['text'])}</h2>\n"
+    if block["type"] == "quote":
+        return f'        <blockquote class="pull-quote article-pull-quote">{esc(block["text"])}</blockquote>\n'
+    if block["type"] == "stat":
+        return (
+            f'        <div class="article-stat-callout">'
+            f'<span class="stat-value">{esc(block["value"])}</span>'
+            f'<span class="stat-detail">{esc(block["detail"])}</span>'
+            f'</div>\n'
+        )
     return f"        <p>{esc(block['text'])}</p>\n"
 
 
@@ -731,7 +793,7 @@ def main():
     for svc in services:
         out_path = os.path.join(svc_dir, f"{svc['slug']}.html")
         with open(out_path, "w") as f:
-            f.write(build_service_page(svc, articles_by_slug))
+            f.write(build_service_page(svc, articles_by_slug, services))
         print(f"  services/{svc['slug']}.html written")
 
     # sitemap.xml
