@@ -713,11 +713,36 @@ section { padding: 88px 0; }
    desaturating real faces. Delete these three rules to restore full color
    on all eleven (see stylistic review, Aug 2026). */
 .team-photo img[src*="jake-serrano"],
-.team-strip-photo img[src*="jake-serrano"] { filter: saturate(0.66); }
+.team-strip-photo img[src*="jake-serrano"] { filter: saturate(0.66); transform: translateY(5.8%) scale(1.2); }
 .team-photo img[src*="travis-alexander"],
 .team-strip-photo img[src*="travis-alexander"] { filter: saturate(0.77); }
 .team-photo img[src*="aaron-burrough"],
 .team-strip-photo img[src*="aaron-burrough"] { filter: saturate(0.86); }
+
+/* Eye-level & head-size easing across the eleven bio photos. Ran face/eye
+   detection on each source photo and nudged the outliers about 60% of the
+   way toward the group's median eye height and head size — not all the way,
+   so it reads as a natural set rather than an identikit recrop. Aaron and
+   Travis were already close to the median on both measures and are left
+   untouched. transform: translateY() scale() reframes within the existing
+   square/circular crop (no new image files); delete a photo's rule to put
+   it back exactly as shot (Aug 2026). */
+.team-photo img[src*="jj-briggs"],
+.team-strip-photo img[src*="jj-briggs"] { transform: translateY(14.31%) scale(1.288); }
+.team-photo img[src*="john-messina"],
+.team-strip-photo img[src*="john-messina"] { transform: translateY(-2.18%) scale(1.363); }
+.team-photo img[src*="jon-tishner"],
+.team-strip-photo img[src*="jon-tishner"] { transform: translateY(-2.62%) scale(1.06); }
+.team-photo img[src*="mike-deacon"],
+.team-strip-photo img[src*="mike-deacon"] { transform: translateY(-6.77%) scale(1.14); }
+.team-photo img[src*="ray-taglio"],
+.team-strip-photo img[src*="ray-taglio"] { transform: translateY(4.28%) scale(1.09); }
+.team-photo img[src*="shawn-raley"],
+.team-strip-photo img[src*="shawn-raley"] { transform: translateY(8.92%) scale(1.179); }
+.team-photo img[src*="shawn-walters"],
+.team-strip-photo img[src*="shawn-walters"] { transform: translateY(-2.25%) scale(1.05); }
+.team-photo img[src*="tim-perkins"],
+.team-strip-photo img[src*="tim-perkins"] { transform: translateY(-2.36%) scale(1.05); }
 .team-body { padding: 22px 24px 26px; }
 .team-body h3 { margin-bottom: 2px; font-size: 1.08rem; }
 .team-role {
