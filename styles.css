@@ -1462,6 +1462,28 @@ section { padding: 88px 0; }
   color: var(--color-muted);
   margin-top: 14px;
 }
+/* Inline submit feedback for the Web3Forms-backed contact form — replaces
+   the mailto: workaround, so the page needs its own success/error state
+   instead of relying on the visitor's email client (Aug 2026). */
+.form-result {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+}
+.form-result-success {
+  color: var(--color-black-900);
+  background: var(--color-surface-alt);
+  border: 1px solid rgba(20, 18, 14, 0.12);
+}
+.form-result-error {
+  color: var(--color-black-900);
+  background: var(--color-red-100);
+  border: 1px solid rgba(200, 29, 37, 0.25);
+}
+.form-result-error a { color: var(--color-red-500); font-weight: 600; }
 
 /* -------------------- 404 -------------------- */
 .error-page {

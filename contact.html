@@ -108,6 +108,14 @@
       </div>
 
       <form class="contact-card" id="contact-form">
+        <!-- Web3Forms: delivers submissions directly to info@globalairoperations.com,
+             regardless of the visitor's own email/device setup (see design review
+             follow-up, Aug 2026 — replaces the earlier mailto: workaround, which
+             silently failed for visitors with no local email client configured). -->
+        <input type="hidden" name="access_key" value="7e2dbfed-9b5a-48ae-bb15-2c994f1a15dc" />
+        <input type="hidden" name="subject" value="New Consulting Inquiry — GAOG Website" />
+        <input type="hidden" name="from_name" value="GAOG Website Contact Form" />
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" aria-hidden="true" autocomplete="off" />
         <div class="form-field">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" required autocomplete="name" />
@@ -137,7 +145,9 @@
           <textarea id="message" name="message" rows="5" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Send Message</button>
-        <p class="form-note">Submitting opens a pre-filled email to info@globalairoperations.com from your email app.</p>
+        <p class="form-note" id="form-note-default">Your message is sent directly to our team. We typically reply within one business day.</p>
+        <p class="form-result form-result-success" id="form-success" role="status" hidden>Thanks — your message has been sent. We'll be in touch soon.</p>
+        <p class="form-result form-result-error" id="form-error" role="alert" hidden>Something went wrong sending your message. Please email us directly at <a href="mailto:info@globalairoperations.com">info@globalairoperations.com</a>.</p>
       </form>
     </div>
   </section>
@@ -193,18 +203,51 @@
   document.getElementById("year").textContent = new Date().getFullYear();
   var f = document.getElementById("contact-form");
   if (f) {
+    var submitBtn = f.querySelector('button[type="submit"]');
+    var defaultNote = document.getElementById("form-note-default");
+    var successMsg = document.getElementById("form-success");
+    var errorMsg = document.getElementById("form-error");
+
     f.addEventListener("submit", function (e) {
       e.preventDefault();
-      var name = document.getElementById("name").value;
-      var email = document.getElementById("email").value;
-      var org = document.getElementById("organization").value;
+
+      successMsg.hidden = true;
+      errorMsg.hidden = true;
+
+      var formData = new FormData(f);
       var topic = document.getElementById("topic").value;
-      var message = document.getElementById("message").value;
-      var subject = encodeURIComponent("Consulting inquiry: " + topic);
-      var body = encodeURIComponent(
-        "Name: " + name + "\nEmail: " + email + "\nOrganization: " + org + "\nTopic: " + topic + "\n\n" + message
-      );
-      window.location.href = "mailto:info@globalairoperations.com?subject=" + subject + "&body=" + body;
+      formData.set("subject", "New Consulting Inquiry: " + (topic || "General") + " — GAOG Website");
+
+      var originalText = submitBtn.textContent;
+      submitBtn.textContent = "Sending…";
+      submitBtn.disabled = true;
+
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" },
+      })
+        .then(function (response) {
+          return response.json().then(function (data) {
+            return { ok: response.ok, data: data };
+          });
+        })
+        .then(function (result) {
+          if (result.ok && result.data && result.data.success) {
+            f.reset();
+            defaultNote.hidden = true;
+            successMsg.hidden = false;
+          } else {
+            errorMsg.hidden = false;
+          }
+        })
+        .catch(function () {
+          errorMsg.hidden = false;
+        })
+        .then(function () {
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        });
     });
   }
 </script>
