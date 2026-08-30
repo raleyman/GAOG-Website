@@ -526,7 +526,6 @@ def render_insight_item(entry, articles_by_slug):
                  f'<span class="watch-source-name">{esc(entry["source"])}</span>')
         link_attrs = ' target="_blank" rel="noopener"'
         icon = ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>'
-        item_class = "watch-item watch-link"
         if category == "business":
             take_label = "Worth a look:"
 
@@ -586,7 +585,7 @@ def build_insights_index(insights_entries, articles_by_slug):
           <h2>Industry Watch</h2>
           <p class="watch-tier-note">Curated news &amp; announcements worth your attention</p>
         </div>
-        <div class="watch-curated">
+        <div class="watch-list">
 {curated_items}      </div>
       </div>
 """
