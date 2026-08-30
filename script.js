@@ -15,6 +15,24 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Transparent header over the hero, solidifying once scrolled past it
+  var header = document.querySelector(".site-header");
+  var hero = document.querySelector(".hero");
+  if (header && hero) {
+    document.body.classList.add("has-hero");
+    var updateHeader = function () {
+      var threshold = Math.max(hero.offsetHeight - header.offsetHeight, 40);
+      if (window.scrollY > threshold) {
+        header.classList.add("is-scrolled");
+      } else {
+        header.classList.remove("is-scrolled");
+      }
+    };
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    window.addEventListener("resize", updateHeader);
+  }
+
   // Mark current nav link active
   var path = window.location.pathname.replace(/\/index\.html$/, "/").replace(/\.html$/, "");
   if (path === "" ) path = "/";

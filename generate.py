@@ -326,7 +326,7 @@ def render_team_card(person):
           <div class="team-body">
             <h3>{esc(person['name'])}</h3>
             <div class="team-role">{esc(person['role'])}</div>
-            <p class="team-bio">{esc(person['bio'])}</p>{readmore}
+            <p class="team-bio clamp">{esc(person['bio'])}</p>{readmore}
           </div>
         </article>
 """
@@ -334,6 +334,27 @@ def render_team_card(person):
 
 def build_team_block(team):
     return "".join(render_team_card(p) for p in team) + "\n        "
+
+
+def render_team_strip_item(person):
+    """Small circular-crop entry for the homepage team strip — links out to
+    the full bios page rather than trying to open the bio modal, since that
+    modal's templates only live on team-biographies.html (see stylistic
+    review round 2, Aug 2026)."""
+    if person.get("photo"):
+        photo_inner = f'<img src="{esc(person["photo"])}" alt="{esc(person["name"])}" loading="lazy" />'
+    else:
+        photo_inner = esc(person["initials"])
+    return f"""        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo">{photo_inner}</span>
+          <span class="team-strip-name">{esc(person['name'])}</span>
+          <span class="team-strip-role">{esc(person['role'])}</span>
+        </a>
+"""
+
+
+def build_team_strip(team):
+    return "\n" + "".join(render_team_strip_item(p) for p in team) + "        "
 
 
 def render_bio_template(person):
@@ -376,7 +397,8 @@ NAV = """<header class="site-header">
   <nav class="nav container">
     <a class="nav-brand" href="/">
       <img src="/assets/logo-icon.png" alt="Global Air Operations Group logo" class="logo-mark" />
-      Global Air Operations Group
+      <span class="nav-brand-text">Global Air Operations Group</span>
+      <span class="nav-brand-short">GAOG</span>
     </a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -395,7 +417,7 @@ FOOTER = """<footer class="site-footer">
   <div class="container">
     <div class="footer-top">
       <div>
-        <div class="footer-brand"><span class="logo-badge"><img src="/assets/logo-icon.png" alt="Global Air Operations Group logo" /></span> Global Air Operations Group</div>
+        <div class="footer-brand"><img class="footer-logo" src="/assets/logo-icon-white.png" alt="Global Air Operations Group logo" /> Global Air Operations Group</div>
         <p class="footer-tagline">Strategic Consulting&nbsp;&middot;&nbsp;Operational Planning&nbsp;&middot;&nbsp;Incident Support</p>
       </div>
       <div class="footer-links">
@@ -416,6 +438,11 @@ FOOTER = """<footer class="site-footer">
             <li><a href="mailto:info@globalairoperations.com">info@globalairoperations.com</a></li>
             <li><a href="tel:+15309499868">530-949-9868</a></li>
           </ul>
+        </div>
+        <div class="footer-col footer-col-cta">
+          <h4>Get Started</h4>
+          <p>Tell us about your program, business, goals, and needs.</p>
+          <a class="btn btn-primary footer-cta-btn" href="/contact">Go to Contact Page</a>
         </div>
       </div>
     </div>
@@ -504,12 +531,14 @@ def render_insight_item(entry, articles_by_slug):
     featured_html = '<span class="watch-featured">Featured</span> ' if entry.get("featured") else ""
 
     return f"""        <article class="{item_class}">
-{image_html}          <div class="watch-meta">
-            {featured_html}{badge}
-            <span class="watch-date">{esc(entry['date'])}</span>
+{image_html}          <div class="watch-item-content">
+            <div class="watch-meta">
+              {featured_html}{badge}
+              <span class="watch-date">{esc(entry['date'])}</span>
+            </div>
+            <h3><a href="{esc(href)}"{link_attrs}>{esc(title)}{icon}</a></h3>
+            <p class="watch-take"><strong>{take_label}</strong> {esc(entry['take'])}</p>
           </div>
-          <h3><a href="{esc(href)}"{link_attrs}>{esc(title)}{icon}</a></h3>
-          <p class="watch-take"><strong>{take_label}</strong> {esc(entry['take'])}</p>
         </article>
 """
 
@@ -661,13 +690,13 @@ def build_article_page(pub):
 
 <main id="main">
 
-  <div class="page-header">
+  <div class="page-header page-header-photo">
+    <img class="page-header-photo-img" src="/assets/publications/retardant-featured-card.jpg" alt="" aria-hidden="true" />
     <div class="container">
       <p class="eyebrow"><a href="/insights" style="color:inherit;">Insights</a></p>
       <h1>{esc(pub['title'])}</h1>
       <p>By {esc(byline)} &middot; {esc(pub['date'])}{featured_line}</p>
     </div>
-    <img class="page-header-watermark" src="/assets/logo-icon.png" alt="" aria-hidden="true" />
   </div>
 
   <section class="section-alt">
@@ -716,6 +745,10 @@ def main():
     index_html = replace_between(
         index_html, "<!-- SERVICES:START (generated from content/services.json — do not hand-edit, run generate.py) -->",
         "<!-- SERVICES:END -->", build_services_block(services)
+    )
+    index_html = replace_between(
+        index_html, "<!-- TEAM_STRIP:START (generated from content/team.json — do not hand-edit, run generate.py) -->",
+        "<!-- TEAM_STRIP:END -->", build_team_strip(team)
     )
     index_html = index_html.replace("{{TEAM_COUNT}}", str(len(team)))
     index_html = index_html.replace("{{SERVICE_COUNT}}", str(len(services)))

@@ -46,13 +46,15 @@
 </script>
 </head>
 <body>
+<script>document.body.classList.add("has-hero");</script>
 <a class="skip-link" href="#main">Skip to content</a>
 
 <header class="site-header">
   <nav class="nav container">
     <a class="nav-brand" href="/">
       <img src="/assets/logo-icon.png" alt="Global Air Operations Group logo" class="logo-mark" />
-      Global Air Operations Group
+      <span class="nav-brand-text">Global Air Operations Group</span>
+      <span class="nav-brand-short">GAOG</span>
     </a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -113,7 +115,6 @@
         <p class="eyebrow">What We Do</p>
         <h2 id="services-heading">Consulting Services</h2>
         <p>Services built around aviation operations, program and business development.</p>
-        <a class="section-head-link" href="/services">View All Services &rarr;</a>
       </div>
       <div class="grid-services">
         <!-- SERVICES:START (generated from content/services.json — do not hand-edit, run generate.py) -->
@@ -149,7 +150,87 @@
         </a>
 <!-- SERVICES:END -->
       </div>
+      <div class="section-head center section-head-after-grid">
+        <a class="section-head-link" href="/services">View All Services &rarr;</a>
+      </div>
     </div>
+  </section>
+
+  <section aria-labelledby="team-strip-heading">
+    <div class="container">
+      <div class="section-head center">
+        <p class="eyebrow">Our People</p>
+        <h2 id="team-strip-heading">The Team Behind the Work</h2>
+        <p>Senior consultants and principals who have performed the roles we support.</p>
+      </div>
+      <div class="team-strip">
+        <!-- TEAM_STRIP:START (generated from content/team.json — do not hand-edit, run generate.py) -->
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/aaron-burrough.jpg" alt="Aaron Burrough" loading="lazy" /></span>
+          <span class="team-strip-name">Aaron Burrough</span>
+          <span class="team-strip-role">Principal</span>
+        </a>
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/john-messina.jpg" alt="John Messina" loading="lazy" /></span>
+          <span class="team-strip-name">John Messina</span>
+          <span class="team-strip-role">Principal</span>
+        </a>
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/tim-perkins.jpg" alt="Tim Perkins" loading="lazy" /></span>
+          <span class="team-strip-name">Tim Perkins</span>
+          <span class="team-strip-role">Senior Consultant</span>
+        </a>
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/mike-deacon.jpg" alt="Mike Deacon" loading="lazy" /></span>
+          <span class="team-strip-name">Mike Deacon</span>
+          <span class="team-strip-role">Senior Consultant</span>
+        </a>
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/jon-tishner.jpg" alt="Jon Tishner" loading="lazy" /></span>
+          <span class="team-strip-name">Jon Tishner</span>
+          <span class="team-strip-role">Senior Consultant</span>
+        </a>
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/shawn-raley.jpg" alt="Shawn Raley" loading="lazy" /></span>
+          <span class="team-strip-name">Shawn Raley</span>
+          <span class="team-strip-role">Senior Consultant</span>
+        </a>
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/shawn-walters.jpg" alt="Shawn Walters" loading="lazy" /></span>
+          <span class="team-strip-name">Shawn Walters</span>
+          <span class="team-strip-role">Senior Consultant</span>
+        </a>
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/travis-alexander.jpg" alt="Travis Alexander" loading="lazy" /></span>
+          <span class="team-strip-name">Travis Alexander</span>
+          <span class="team-strip-role">Senior Consultant</span>
+        </a>
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/jake-serrano.jpg" alt="Jake Serrano" loading="lazy" /></span>
+          <span class="team-strip-name">Jake Serrano</span>
+          <span class="team-strip-role">Senior Consultant</span>
+        </a>
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/ray-taglio.jpg" alt="Ray Taglio" loading="lazy" /></span>
+          <span class="team-strip-name">Ray Taglio</span>
+          <span class="team-strip-role">Senior Consultant</span>
+        </a>
+        <a class="team-strip-item" href="/team-biographies">
+          <span class="team-strip-photo"><img src="/assets/team/jj-briggs.jpg" alt="JJ Briggs" loading="lazy" /></span>
+          <span class="team-strip-name">JJ Briggs</span>
+          <span class="team-strip-role">Senior Consultant</span>
+        </a>
+        <!-- TEAM_STRIP:END -->
+      </div>
+      <div class="section-head center section-head-after-grid">
+        <a class="section-head-link" href="/team-biographies">Meet the Full Team &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="photo-band" aria-label="Global Air Operations Group in the field">
+    <img class="photo-band-img" src="/assets/hero-photo.jpg" alt="" aria-hidden="true" />
+    <p class="photo-band-line">Strategic Consulting&nbsp;&middot;&nbsp;Operational Planning&nbsp;&middot;&nbsp;Incident Support</p>
   </section>
 
   <section id="contact" aria-labelledby="contact-heading">
@@ -174,7 +255,7 @@
   <div class="container">
     <div class="footer-top">
       <div>
-        <div class="footer-brand"><span class="logo-badge"><img src="/assets/logo-icon.png" alt="Global Air Operations Group logo" /></span> Global Air Operations Group</div>
+        <div class="footer-brand"><img class="footer-logo" src="/assets/logo-icon-white.png" alt="Global Air Operations Group logo" /> Global Air Operations Group</div>
         <p class="footer-tagline">Strategic Consulting&nbsp;&middot;&nbsp;Operational Planning&nbsp;&middot;&nbsp;Incident Support</p>
       </div>
       <div class="footer-links">
@@ -195,6 +276,11 @@
             <li><a href="mailto:info@globalairoperations.com">info@globalairoperations.com</a></li>
             <li><a href="tel:+15309499868">530-949-9868</a></li>
           </ul>
+        </div>
+        <div class="footer-col footer-col-cta">
+          <h4>Get Started</h4>
+          <p>Tell us about your program, business, goals, and needs.</p>
+          <a class="btn btn-primary footer-cta-btn" href="/contact">Go to Contact Page</a>
         </div>
       </div>
     </div>

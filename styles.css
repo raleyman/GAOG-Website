@@ -17,15 +17,20 @@
   --color-ink: #1a1a1a;
   /* Darkened one step — the previous tone read as a whisper where the site's
      credentials should speak with more confidence (see stylistic review,
-     Aug 2026). */
-  --color-body: #2d3843;
-  --color-muted: #6b7885;
+     Aug 2026). Warmed from a cool blue-slate to a warm neutral so body text
+     sits in the same temperature family as the warm (sand/cream) surfaces
+     instead of reading as cool ink on warm paper (see stylistic review
+     round 2, Aug 2026). */
+  --color-body: #332f29;
+  --color-muted: #79736a;
   --color-line: #e5e2dd;
   --color-surface: #faf9f6;
   /* Pulled closer to the card-gradient's own darkest stop so alternating
      sections read as a clear, intentional shift rather than a third
-     near-identical off-white (see stylistic review, Aug 2026). */
-  --color-surface-alt: #ece5d6;
+     near-identical off-white (see stylistic review, Aug 2026). Cooled
+     slightly toward warm stone — the original value skewed yellow-khaki
+     (see stylistic review round 2, Aug 2026). */
+  --color-surface-alt: #e9e6df;
 
   --font-display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
@@ -69,7 +74,9 @@ h1, h2, h3, h4 {
   font-weight: 700;
 }
 
-h1 { font-size: clamp(2.1rem, 4vw, 3.4rem); letter-spacing: -0.01em; }
+/* Raised the cap from 3.4rem — at a 72vh hero on desktop the headline had
+   more room than it was using (see stylistic review round 2, Aug 2026). */
+h1 { font-size: clamp(2.1rem, 4.4vw, 4rem); letter-spacing: -0.01em; }
 h2 { font-size: clamp(1.6rem, 2.6vw, 2.2rem); letter-spacing: -0.01em; }
 h3 { font-size: 1.25rem; }
 
@@ -135,6 +142,56 @@ img { max-width: 100%; display: block; }
   backdrop-filter: saturate(140%) blur(10px);
   border-bottom: 1px solid var(--color-line);
 }
+/* On the homepage, float transparent over the hero photo instead of sitting
+   as a solid white slab that amputates it, then solidify once the user
+   scrolls past — script.js toggles .is-scrolled (see stylistic review
+   round 2, Aug 2026). */
+body.has-hero .site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom-color: transparent;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+body.has-hero .site-header.is-scrolled {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom-color: var(--color-line);
+}
+/* The wordmark sits directly on the hero photo at every width, so it needs
+   to go white there regardless of viewport — this was scoped to desktop
+   only at first and left the mobile "GAOG" lockup unreadable (dark text on
+   the dark hero) until the fix below (see stylistic review round 2, Aug
+   2026). */
+body.has-hero .site-header .nav-brand { color: #fff; }
+body.has-hero .site-header.is-scrolled .nav-brand { color: var(--color-ink); }
+body.has-hero .site-header .nav-toggle { color: #fff; }
+body.has-hero .site-header.is-scrolled .nav-toggle { color: var(--color-ink); }
+@media (min-width: 781px) {
+  body.has-hero .site-header .nav-links a:not(.btn-primary) {
+    color: #fff;
+  }
+  body.has-hero .site-header .nav-links a.is-active {
+    color: #fff;
+    box-shadow: inset 0 -2px 0 #fff;
+  }
+  body.has-hero .site-header .nav-links a:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.14);
+  }
+  body.has-hero .site-header.is-scrolled .nav-links a:not(.btn-primary) {
+    color: var(--color-body);
+  }
+  body.has-hero .site-header.is-scrolled .nav-links a.is-active {
+    color: var(--color-red-500);
+    box-shadow: inset 0 -2px 0 var(--color-red-500);
+  }
+  body.has-hero .site-header.is-scrolled .nav-links a:hover {
+    color: var(--color-ink);
+    background: var(--color-surface-alt);
+  }
+}
 .nav {
   display: flex;
   align-items: center;
@@ -155,6 +212,14 @@ img { max-width: 100%; display: block; }
   height: 42px;
   width: auto;
   flex-shrink: 0;
+}
+/* Full wordmark wraps to two lines next to the hamburger on narrow phones —
+   swap to the short "GAOG" lockup below that width instead (see stylistic
+   review round 2, Aug 2026). */
+.nav-brand-short { display: none; }
+@media (max-width: 480px) {
+  .nav-brand-text { display: none; }
+  .nav-brand-short { display: inline; }
 }
 .nav-links {
   display: flex;
@@ -323,6 +388,10 @@ section { padding: 88px 0; }
   text-decoration: none;
 }
 .section-head-link:hover { text-decoration: underline; }
+/* Moved below the services grid so it no longer interrupts the section
+   header block (see stylistic review round 2, Aug 2026). */
+.section-head-after-grid { margin-top: 28px; }
+.section-head-after-grid .section-head-link { margin-top: 0; }
 
 /* -------------------- Service cards -------------------- */
 .grid-services {
@@ -330,7 +399,25 @@ section { padding: 88px 0; }
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
-.grid-services > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+/* Featuring the first card (Operational Strategy) rather than whichever one
+   happens to land last — with 5 services the old :last-child rule gave the
+   full-width slot to Business Consulting by accident of list order, making
+   it read as the headline offering (see stylistic review round 2, Aug
+   2026). */
+.grid-services > :first-child { grid-column: 1 / -1; }
+/* The featured slot needs its own treatment so it reads as a deliberate
+   intro banner rather than a normal card stretched wide with empty space
+   beside it (see stylistic review round 2, Aug 2026). */
+.grid-services > :first-child.service-card {
+  padding: 40px 56px;
+  text-align: center;
+}
+.grid-services > :first-child.service-card h3,
+.grid-services > :first-child.service-card p {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
 @media (max-width: 640px) { .grid-services { grid-template-columns: 1fr; } }
 
 .service-card {
@@ -356,7 +443,7 @@ section { padding: 88px 0; }
   position: relative;
   z-index: 1;
   width: 46px; height: 46px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: var(--color-red-100);
   color: var(--color-red-500);
   display: flex; align-items: center; justify-content: center;
@@ -379,7 +466,21 @@ section { padding: 88px 0; }
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
-.grid-svc > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+/* Same fix as .grid-services — feature the first card instead of whichever
+   one lands last (see stylistic review round 2, Aug 2026). */
+.grid-svc > :first-child { grid-column: 1 / -1; }
+/* Same reasoning as .grid-services — an intentional banner treatment for
+   the featured slot instead of a card stretched wide with dead space
+   beside it (see stylistic review round 2, Aug 2026). */
+.grid-svc > :first-child.svc-card {
+  padding: 40px 56px;
+  justify-content: center;
+  text-align: center;
+}
+.grid-svc > :first-child .svc-card-body {
+  max-width: 640px;
+  margin: 0 auto;
+}
 @media (max-width: 640px) { .grid-svc { grid-template-columns: 1fr; } }
 
 .svc-card {
@@ -406,7 +507,7 @@ section { padding: 88px 0; }
   position: relative;
   z-index: 1;
   width: 46px; height: 46px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: var(--color-red-100);
   color: var(--color-red-500);
   display: flex; align-items: center; justify-content: center;
@@ -452,7 +553,7 @@ section { padding: 88px 0; }
   padding: 16px 20px;
   background: var(--color-red-100);
   border-left: 3px solid var(--color-red-500);
-  border-radius: 8px;
+  border-radius: var(--radius);
   font-family: var(--font-display);
   font-size: 0.92rem;
   color: var(--color-black-800);
@@ -479,7 +580,10 @@ section { padding: 88px 0; }
   text-decoration: none;
 }
 .related-link a:hover { text-decoration: underline; }
-.service-card h3 { margin-bottom: 0.4em; }
+/* Bumped up from the base 20px — undersized inside a 560px-wide card next
+   to a 35px section H2 (see stylistic review round 2, Aug 2026). */
+.service-card h3 { margin-bottom: 0.4em; font-size: 1.4rem; }
+.svc-card h3 { font-size: 1.4rem; margin-bottom: 0.35em; }
 .service-card p { color: var(--color-muted); margin-bottom: 0; font-family: var(--font-display); font-size: 0.95rem; }
 
 /* -------------------- About / value prop -------------------- */
@@ -535,7 +639,7 @@ section { padding: 88px 0; }
   padding: 22px 28px;
   background: var(--color-red-100);
   border-left: 3px solid var(--color-red-500);
-  border-radius: 8px;
+  border-radius: var(--radius);
 }
 .article-stat-callout .stat-value {
   display: block;
@@ -779,7 +883,7 @@ section { padding: 88px 0; }
 .pub-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 .pub-icon {
   width: 48px; height: 48px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   background: var(--color-red-100);
   color: var(--color-red-500);
   display: flex; align-items: center; justify-content: center;
@@ -800,10 +904,16 @@ section { padding: 88px 0; }
 }
 
 /* -------------------- Insights feed (articles + curated industry watch) -------------------- */
+/* Narrowed from the full 1160px container — at full width the cards were
+   mostly empty space, with copy crammed into the left ~40%. 800px roughly
+   matches the article's own measure, the best-set text on the site (see
+   stylistic review round 2, Aug 2026). */
 .watch-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 .watch-item {
   background: var(--card-gradient);
@@ -817,16 +927,36 @@ section { padding: 88px 0; }
 /* Our own original analysis gets a larger, image-led treatment so it reads as
    the flagship piece it is, distinct from the curated link roundup entries
    below it (see stylistic review, Aug 2026). */
-.watch-item-featured { padding: 0 0 32px; overflow: hidden; }
+.watch-item-featured { padding: 0; overflow: hidden; }
 .watch-item-image {
   width: 100%;
   aspect-ratio: 2.4 / 1;
   object-fit: cover;
   margin-bottom: 24px;
 }
-.watch-item-featured .watch-meta,
-.watch-item-featured .watch-take { padding-left: 36px; padding-right: 36px; }
-.watch-item-featured h3 { padding-left: 36px; padding-right: 36px; font-size: 1.5rem; }
+.watch-item-featured .watch-item-content { padding: 4px 36px 32px; }
+.watch-item-featured h3 { font-size: 1.5rem; }
+/* Side-by-side on wider viewports — a full-width image stacked over a
+   narrow left-aligned text block left roughly 60% of the card empty (see
+   stylistic review round 2, Aug 2026). */
+@media (min-width: 700px) {
+  .watch-item-featured {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    align-items: stretch;
+  }
+  .watch-item-featured .watch-item-image {
+    height: 100%;
+    aspect-ratio: auto;
+    margin-bottom: 0;
+  }
+  .watch-item-featured .watch-item-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 32px 36px;
+  }
+}
 .watch-meta {
   display: flex;
   align-items: center;
@@ -875,7 +1005,10 @@ section { padding: 88px 0; }
 }
 .watch-source-name { font-size: 0.8rem; color: var(--color-muted); }
 .watch-date { font-size: 0.8rem; color: var(--color-muted); }
-.watch-item h3 { font-size: 1.12rem; margin-bottom: 8px; line-height: 1.35; }
+/* Constrained to the same measure as .watch-take below it — headlines were
+   running the full card width (~110 characters) over 55-character body
+   copy (see stylistic review round 2, Aug 2026). */
+.watch-item h3 { font-size: 1.12rem; margin-bottom: 8px; line-height: 1.35; max-width: 70ch; }
 .watch-item h3 a {
   color: var(--color-black-900);
   text-decoration: none;
@@ -965,7 +1098,10 @@ section { padding: 88px 0; }
   box-shadow: var(--shadow-card);
   padding: 48px clamp(24px, 5vw, 64px);
 }
-.article-body h2 { text-align: center; }
+/* Left-aligned to match the body copy below it instead of centered, small,
+   red, all-caps labels that read as tags rather than chapter breaks (see
+   stylistic review round 2, Aug 2026). */
+.article-body h2 { text-align: left; }
 
 /* Service detail pages: a right-hand rail so a 740px content card doesn't
    just float alone in the middle third of a wide field (see stylistic
@@ -1002,14 +1138,16 @@ section { padding: 88px 0; }
 }
 .svc-sidebar-link:hover { text-decoration: underline; }
 .svc-sidebar-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+/* Red to match every other link on the site — plain dark text here didn't
+   read as clickable (see stylistic review round 2, Aug 2026). */
 .svc-sidebar-list a {
   font-family: var(--font-display);
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--color-black-800);
+  color: var(--color-red-500);
   text-decoration: none;
 }
-.svc-sidebar-list a:hover { color: var(--color-red-500); }
+.svc-sidebar-list a:hover { text-decoration: underline; }
 .article-byline {
   text-align: center;
   font-family: var(--font-display);
@@ -1020,11 +1158,14 @@ section { padding: 88px 0; }
   border-bottom: 1px solid var(--color-line);
 }
 .article-body h2 {
-  color: var(--color-red-500);
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  margin-top: 1.8em;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.55rem;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  margin-top: 2.2em;
+  margin-bottom: 0.6em;
 }
 .article-body p { font-size: 1.08rem; line-height: 1.75; }
 .article-signature {
@@ -1055,7 +1196,9 @@ section { padding: 88px 0; }
   overflow: hidden;
   background: linear-gradient(135deg, var(--color-black-900), var(--color-black-700));
   color: #fff;
-  border-radius: 20px;
+  /* Matched to the card radius — 20px stood out as noticeably rounder than
+     everything else on the site (see stylistic review round 2, Aug 2026). */
+  border-radius: var(--radius);
   padding: 56px;
   display: flex;
   align-items: center;
@@ -1077,6 +1220,96 @@ section { padding: 88px 0; }
 .cta-copy { max-width: 520px; position: relative; }
 .cta-band > .btn { position: relative; }
 .cta-actions { display: flex; gap: 12px; flex-wrap: wrap; position: relative; }
+
+/* -------------------- Homepage team strip -------------------- */
+/* The team never appeared on the homepage beyond a single button — a
+   compact row of small circular crops gives the site's biggest asset (11
+   named senior leaders) its moment. Small crops also minimize the
+   background inconsistency across the underlying bio photos (see
+   stylistic review round 2, Aug 2026). */
+.team-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px 20px;
+}
+.team-strip-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 108px;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}
+.team-strip-photo {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(150deg, var(--color-black-800), var(--color-black-600));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.85);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease;
+}
+.team-strip-item:hover .team-strip-photo { transform: translateY(-3px); }
+.team-strip-photo img { width: 100%; height: 100%; object-fit: cover; }
+.team-strip-name {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  line-height: 1.3;
+}
+.team-strip-role {
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+/* -------------------- Homepage full-bleed photo band -------------------- */
+/* One edge-to-edge photographic moment between the card-and-panel sections
+   so the page has a second visual beat instead of card, card, panel (see
+   stylistic review round 2, Aug 2026). */
+.photo-band {
+  position: relative;
+  height: clamp(220px, 34vw, 380px);
+  overflow: hidden;
+}
+.photo-band-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 30%;
+}
+.photo-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(6,6,7,0.75) 0%, rgba(6,6,7,0.15) 45%, rgba(6,6,7,0.35) 100%);
+}
+.photo-band-line {
+  position: absolute;
+  left: 0; right: 0; bottom: 28px;
+  margin: 0;
+  text-align: center;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  padding: 0 24px;
+}
 
 /* -------------------- Contact -------------------- */
 .contact-grid {
@@ -1105,7 +1338,7 @@ section { padding: 88px 0; }
 }
 .contact-row .icon {
   width: 38px; height: 38px;
-  border-radius: 9px;
+  border-radius: var(--radius);
   background: var(--color-red-100);
   color: var(--color-red-500);
   display: flex; align-items: center; justify-content: center;
@@ -1131,8 +1364,11 @@ section { padding: 88px 0; }
   font-size: 0.98rem;
   padding: 12px 14px;
   border: 1.5px solid var(--color-line);
-  border-radius: 8px;
-  background: var(--color-surface-alt);
+  border-radius: var(--radius);
+  /* White instead of the tan surface-alt — tan-on-cream washed the fields
+     out and dropped label contrast (see stylistic review round 2, Aug
+     2026). */
+  background: #ffffff;
   color: var(--color-ink);
   transition: border-color 0.15s ease, background 0.15s ease;
 }
@@ -1204,21 +1440,22 @@ section { padding: 88px 0; }
   margin-bottom: 24px;
 }
 .footer-brand { display: flex; align-items: center; gap: 12px; color: #fff; font-family: var(--font-display); font-weight: 800; }
-.footer-brand .logo-badge {
-  background: #fff;
-  border-radius: 8px;
-  padding: 5px 8px;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.footer-brand .logo-badge img { height: 26px; width: auto; }
+/* A knockout white version of the mark sitting directly on the dark
+   footer, instead of the previous white rounded tile that read as a
+   sticker (see stylistic review round 2, Aug 2026). */
+.footer-brand .footer-logo { height: 32px; width: auto; flex-shrink: 0; }
 .footer-tagline { font-family: var(--font-display); font-size: 0.85rem; color: rgba(255,255,255,0.55); margin-top: 8px; max-width: 320px; }
 .footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
 .footer-col h4 { color: #fff; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
 .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .footer-col a { font-family: var(--font-display); font-size: 0.9rem; color: rgba(255,255,255,0.68); text-decoration: none; }
 .footer-col a:hover { color: #fff; }
+/* Third column fills the empty right side of the footer with a real,
+   already-used prompt instead of leaving it blank (see stylistic review
+   round 2, Aug 2026). */
+.footer-col-cta { max-width: 220px; }
+.footer-col-cta p { font-family: var(--font-display); font-size: 0.85rem; color: rgba(255,255,255,0.68); margin: 0 0 14px; line-height: 1.5; }
+.footer-cta-btn { display: inline-block; font-size: 0.85rem; padding: 9px 16px; }
 .footer-bottom { font-family: var(--font-display); font-size: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
 /* -------------------- Breadcrumb / page header -------------------- */
