@@ -606,18 +606,24 @@ section { padding: 88px 0; }
 }
 .about-card .eyebrow { margin-bottom: 10px; }
 
+/* Stacked and centered instead of a two-column grid — the old layout put
+   the shorter quote in a narrow right column, bottom-anchored against a
+   ~350px void above it. Running the header and quote full-width and
+   centered removes the void entirely; body paragraphs stay left-aligned
+   within the centered column since centering multiple lines of reading
+   copy makes it harder to track from line to line (see homepage About
+   card revision, Aug 2026). */
 .about-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 48px;
-  /* Bottom-align so the quote reads as a deliberate footer to the card
-     instead of floating in a void above where centering used to leave it
-     (see stylistic review, Aug 2026). */
-  align-items: end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto;
 }
+.about-grid p:not(.eyebrow) { text-align: left; }
 @media (max-width: 860px) {
   .about-card { padding: 36px 32px; }
-  .about-grid { grid-template-columns: 1fr; gap: 28px; }
 }
 
 .pull-quote {
@@ -626,9 +632,21 @@ section { padding: 88px 0; }
   font-weight: 600;
   color: var(--color-black-900);
   line-height: 1.45;
-  border-left: 3px solid var(--color-red-500);
-  padding-left: 20px;
-  margin: 0;
+  margin: 32px 0 0;
+  padding-top: 28px;
+  max-width: 700px;
+  text-align: center;
+  position: relative;
+}
+.pull-quote::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 3px;
+  background: var(--color-red-500);
 }
 .pull-quote cite {
   display: block;
@@ -637,6 +655,7 @@ section { padding: 88px 0; }
   font-size: 0.85rem;
   color: var(--color-muted);
   font-weight: 500;
+  text-align: center;
 }
 /* A pull-quote dropped inline into a long article column, rather than
    sitting in the About card's grid — needs its own vertical rhythm. */
