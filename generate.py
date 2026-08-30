@@ -396,7 +396,8 @@ def build_team_ld(team):
 NAV = """<header class="site-header">
   <nav class="nav container">
     <a class="nav-brand" href="/">
-      <img src="/assets/logo-icon.png" alt="Global Air Operations Group logo" class="logo-mark" />
+      <img src="/assets/logo-icon.png" alt="Global Air Operations Group logo" class="logo-mark logo-mark-dark" />
+      <img src="/assets/logo-icon-reverse.png" alt="" aria-hidden="true" class="logo-mark logo-mark-light" />
       <span class="nav-brand-text">Global Air Operations Group</span>
       <span class="nav-brand-short">GAOG</span>
     </a>
@@ -417,7 +418,7 @@ FOOTER = """<footer class="site-footer">
   <div class="container">
     <div class="footer-top">
       <div>
-        <div class="footer-brand"><img class="footer-logo" src="/assets/logo-icon-white.png" alt="Global Air Operations Group logo" /> Global Air Operations Group</div>
+        <div class="footer-brand"><img class="footer-logo" src="/assets/logo-icon-reverse.png" alt="Global Air Operations Group logo" /> Global Air Operations Group</div>
         <p class="footer-tagline">Strategic Consulting&nbsp;&middot;&nbsp;Operational Planning&nbsp;&middot;&nbsp;Incident Support</p>
       </div>
       <div class="footer-links">
@@ -525,10 +526,29 @@ def render_insight_item(entry, articles_by_slug):
                  f'<span class="watch-source-name">{esc(entry["source"])}</span>')
         link_attrs = ' target="_blank" rel="noopener"'
         icon = ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>'
+        item_class = "watch-item watch-link"
         if category == "business":
             take_label = "Worth a look:"
 
     featured_html = '<span class="watch-featured">Featured</span> ' if entry.get("featured") else ""
+
+    # Byline: only our own analysis pieces carry one — the curated "watch"
+    # entries already credit the outlet via the source-name badge instead
+    # (see two-tier Insights restructuring, Aug 2026).
+    byline_html = ""
+    if entry["type"] == "article":
+        authors = article.get("authors") or []
+        if authors:
+            if len(authors) == 1:
+                names = authors[0]
+            elif len(authors) == 2:
+                names = f"{authors[0]} & {authors[1]}"
+            else:
+                names = ", ".join(authors[:-1]) + f", & {authors[-1]}"
+            byline = f"By {names}"
+            if article.get("featured_in"):
+                byline += f", as featured in {article['featured_in']}"
+            byline_html = f'\n            <p class="watch-byline">{esc(byline)}</p>'
 
     return f"""        <article class="{item_class}">
 {image_html}          <div class="watch-item-content">
@@ -537,16 +557,40 @@ def render_insight_item(entry, articles_by_slug):
               <span class="watch-date">{esc(entry['date'])}</span>
             </div>
             <h3><a href="{esc(href)}"{link_attrs}>{esc(title)}{icon}</a></h3>
-            <p class="watch-take"><strong>{take_label}</strong> {esc(entry['take'])}</p>
+            <p class="watch-take"><strong>{take_label}</strong> {esc(entry['take'])}</p>{byline_html}
           </div>
         </article>
 """
 
 
 def build_insights_index(insights_entries, articles_by_slug):
-    insights_entries = sort_insights_entries(insights_entries)
-    items = "\n".join(render_insight_item(e, articles_by_slug) for e in insights_entries) if insights_entries else \
+    analysis_entries = sort_insights_entries([e for e in insights_entries if e["type"] == "article"])
+    curated_entries = sort_insights_entries([e for e in insights_entries if e["type"] == "watch"])
+
+    analysis_items = "\n".join(render_insight_item(e, articles_by_slug) for e in analysis_entries) if analysis_entries else \
+        '        <div class="pub-empty">More original analysis is on the way.</div>\n'
+    curated_items = "\n".join(render_insight_item(e, articles_by_slug) for e in curated_entries) if curated_entries else \
         '        <div class="pub-empty">More entries are on the way.</div>\n'
+
+    tiers_html = f"""      <div class="watch-tier watch-tier-analysis">
+        <div class="watch-tier-head">
+          <h2>Original Analysis</h2>
+          <p class="watch-tier-note">Written by our own consultants</p>
+        </div>
+        <div class="watch-list">
+{analysis_items}      </div>
+      </div>
+
+      <div class="watch-tier watch-tier-curated">
+        <div class="watch-tier-head">
+          <h2>Industry Watch</h2>
+          <p class="watch-tier-note">Curated news &amp; announcements worth your attention</p>
+        </div>
+        <div class="watch-curated">
+{curated_items}      </div>
+      </div>
+"""
+
     nav = NAV.format(insights_active=' class="is-active"', svc_active="")
     return f"""<!doctype html>
 <html lang="en">
@@ -589,15 +633,13 @@ def build_insights_index(insights_entries, articles_by_slug):
       <h1>Wildfire, Aviation &amp; Business Insights</h1>
       <p>Original analysis from our consultants, plus a running, curated watch on the industry news, reports, and business moves we think are worth your time.</p>
     </div>
-    <img class="page-header-watermark" src="/assets/logo-icon.png" alt="" aria-hidden="true" />
+    <img class="page-header-watermark" src="/assets/logo-icon-reverse.png" alt="" aria-hidden="true" />
   </div>
 
   <section aria-labelledby="watch-list-heading">
     <div class="container">
       <h2 id="watch-list-heading" class="visually-hidden">Latest Insights</h2>
-      <div class="watch-list">
-{items}      </div>
-    </div>
+{tiers_html}    </div>
   </section>
 
 </main>

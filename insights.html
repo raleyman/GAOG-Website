@@ -35,7 +35,8 @@
 <header class="site-header">
   <nav class="nav container">
     <a class="nav-brand" href="/">
-      <img src="/assets/logo-icon.png" alt="Global Air Operations Group logo" class="logo-mark" />
+      <img src="/assets/logo-icon.png" alt="Global Air Operations Group logo" class="logo-mark logo-mark-dark" />
+      <img src="/assets/logo-icon-reverse.png" alt="" aria-hidden="true" class="logo-mark logo-mark-light" />
       <span class="nav-brand-text">Global Air Operations Group</span>
       <span class="nav-brand-short">GAOG</span>
     </a>
@@ -60,13 +61,18 @@
       <h1>Wildfire, Aviation &amp; Business Insights</h1>
       <p>Original analysis from our consultants, plus a running, curated watch on the industry news, reports, and business moves we think are worth your time.</p>
     </div>
-    <img class="page-header-watermark" src="/assets/logo-icon.png" alt="" aria-hidden="true" />
+    <img class="page-header-watermark" src="/assets/logo-icon-reverse.png" alt="" aria-hidden="true" />
   </div>
 
   <section aria-labelledby="watch-list-heading">
     <div class="container">
       <h2 id="watch-list-heading" class="visually-hidden">Latest Insights</h2>
-      <div class="watch-list">
+      <div class="watch-tier watch-tier-analysis">
+        <div class="watch-tier-head">
+          <h2>Original Analysis</h2>
+          <p class="watch-tier-note">Written by our own consultants</p>
+        </div>
+        <div class="watch-list">
         <article class="watch-item watch-item-featured">
           <img class="watch-item-image" src="/assets/publications/retardant-featured-card.jpg" alt="" aria-hidden="true" />
           <div class="watch-item-content">
@@ -76,10 +82,19 @@
             </div>
             <h3><a href="https://aerialfiremag.com/2026/07/01/retardant-is-not-just-for-airtankers-anymore/" target="_blank" rel="noopener">Retardant Is Not Just for Airtankers Anymore <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg></a></h3>
             <p class="watch-take"><strong>Why it matters:</strong> Our team dug into why ground-applied retardant is so underutilized despite being incredibly effective, and why it deserves a permanent place in initial attack, contingency planning, and prescribed fire doctrine, not just aerial delivery.</p>
+            <p class="watch-byline">By Shawn Raley &amp; Aaron Burrough, as featured in AerialFire Magazine</p>
           </div>
         </article>
+      </div>
+      </div>
 
-        <article class="watch-item">
+      <div class="watch-tier watch-tier-curated">
+        <div class="watch-tier-head">
+          <h2>Industry Watch</h2>
+          <p class="watch-tier-note">Curated news &amp; announcements worth your attention</p>
+        </div>
+        <div class="watch-curated">
+        <article class="watch-item watch-link">
           <div class="watch-item-content">
             <div class="watch-meta">
               <span class="watch-featured">Featured</span> <span class="watch-category watch-category-business">Business Highlight</span> <span class="watch-source-name">Lockheed Martin Newsroom</span>
@@ -90,7 +105,7 @@
           </div>
         </article>
 
-        <article class="watch-item">
+        <article class="watch-item watch-link">
           <div class="watch-item-content">
             <div class="watch-meta">
               <span class="watch-category watch-category-blog">Blog Post</span> <span class="watch-source-name">The Hotshot Wake Up</span>
@@ -101,7 +116,7 @@
           </div>
         </article>
 
-        <article class="watch-item">
+        <article class="watch-item watch-link">
           <div class="watch-item-content">
             <div class="watch-meta">
               <span class="watch-category watch-category-article">Article</span> <span class="watch-source-name">FireRescue1</span>
@@ -112,7 +127,7 @@
           </div>
         </article>
 
-        <article class="watch-item">
+        <article class="watch-item watch-link">
           <div class="watch-item-content">
             <div class="watch-meta">
               <span class="watch-category watch-category-article">Article</span> <span class="watch-source-name">Vertical Mag</span>
@@ -123,7 +138,7 @@
           </div>
         </article>
 
-        <article class="watch-item">
+        <article class="watch-item watch-link">
           <div class="watch-item-content">
             <div class="watch-meta">
               <span class="watch-category watch-category-article">Article</span> <span class="watch-source-name">NBC San Diego</span>
@@ -134,7 +149,7 @@
           </div>
         </article>
 
-        <article class="watch-item">
+        <article class="watch-item watch-link">
           <div class="watch-item-content">
             <div class="watch-meta">
               <span class="watch-category watch-category-article">Article</span> <span class="watch-source-name">Lockheed Martin Newsroom</span>
@@ -145,7 +160,7 @@
           </div>
         </article>
 
-        <article class="watch-item">
+        <article class="watch-item watch-link">
           <div class="watch-item-content">
             <div class="watch-meta">
               <span class="watch-category watch-category-article">Article</span> <span class="watch-source-name">Governor of California</span>
@@ -156,7 +171,7 @@
           </div>
         </article>
 
-        <article class="watch-item">
+        <article class="watch-item watch-link">
           <div class="watch-item-content">
             <div class="watch-meta">
               <span class="watch-category watch-category-article">Article</span> <span class="watch-source-name">AerialFire Magazine</span>
@@ -167,6 +182,7 @@
           </div>
         </article>
       </div>
+      </div>
     </div>
   </section>
 
@@ -176,7 +192,7 @@
   <div class="container">
     <div class="footer-top">
       <div>
-        <div class="footer-brand"><img class="footer-logo" src="/assets/logo-icon-white.png" alt="Global Air Operations Group logo" /> Global Air Operations Group</div>
+        <div class="footer-brand"><img class="footer-logo" src="/assets/logo-icon-reverse.png" alt="Global Air Operations Group logo" /> Global Air Operations Group</div>
         <p class="footer-tagline">Strategic Consulting&nbsp;&middot;&nbsp;Operational Planning&nbsp;&middot;&nbsp;Incident Support</p>
       </div>
       <div class="footer-links">

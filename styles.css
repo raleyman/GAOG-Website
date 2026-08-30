@@ -297,7 +297,13 @@ body.has-hero .site-header.is-scrolled .nav-toggle { color: var(--color-ink); }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 60% 45%;
+  /* Shifted down from 45% so the aircraft wing/engine in the frame's lower
+     right — the detail that actually earns this photo its aviation-led
+     story — survives the crop instead of falling below it (see stylistic
+     review, Aug 2026). Filter lifts overall exposure slightly so the photo
+     reads through the gradient instead of going murky. */
+  object-position: 62% 62%;
+  filter: brightness(1.16) contrast(1.02);
   z-index: 0;
 }
 .hero::before {
@@ -305,8 +311,8 @@ body.has-hero .site-header.is-scrolled .nav-toggle { color: var(--color-ink); }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(100deg, rgba(6,6,7,0.94) 0%, rgba(8,8,9,0.86) 30%, rgba(10,10,11,0.55) 58%, rgba(10,10,11,0.4) 100%),
-    linear-gradient(0deg, rgba(4,4,5,0.55), transparent 45%);
+    linear-gradient(100deg, rgba(6,6,7,0.94) 0%, rgba(8,8,9,0.86) 30%, rgba(10,10,11,0.5) 58%, rgba(10,10,11,0.32) 100%),
+    linear-gradient(0deg, rgba(4,4,5,0.42), transparent 45%);
   z-index: 1;
   pointer-events: none;
 }
@@ -314,7 +320,7 @@ body.has-hero .site-header.is-scrolled .nav-toggle { color: var(--color-ink); }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.35));
+  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.22));
   z-index: 1;
   pointer-events: none;
 }
@@ -1517,3 +1523,167 @@ section { padding: 88px 0; }
   font-family: var(--font-display); font-weight: 700; text-decoration: none;
 }
 .skip-link:focus { left: 0; }
+
+/* ============================================================
+   GAOG — stylistic update pack
+   1. Reverse (white + red) logo on dark backgrounds
+   2. Two-tier Insights: original analysis vs curated industry watch
+   Appended per reviewed implementation guide, Aug 2026.
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. REVERSE LOGO ON DARK BACKGROUNDS
+   The primary mark is black + red. On the transparent header over
+   the hero photo, the black strokes disappear into the photo and
+   only the red arc survives. logo-icon-reverse.png keeps the red
+   and turns the black to white, so the full mark reads.
+   ------------------------------------------------------------ */
+
+/* Both marks occupy the same slot; only one is ever visible. */
+.nav-brand img.logo-mark { height: 42px; width: auto; flex-shrink: 0; }
+.nav-brand .logo-mark-light { display: none; }
+
+/* Transparent header state (homepage, above the fold) → reverse mark. */
+body.has-hero .site-header:not(.is-scrolled) .logo-mark-dark { display: none; }
+body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; }
+
+/* Footer: reverse mark instead of the all-white file, so the red returns. */
+.footer-brand .footer-logo { height: 32px; width: auto; flex-shrink: 0; }
+
+/* Interior page-header watermark: the dark mark at 8% on a #121212 panel is
+   nearly black-on-black. The reverse mark reads as a clean emboss. */
+.page-header-watermark { opacity: 0.09; }
+
+
+/* ------------------------------------------------------------
+   2. TWO-TIER INSIGHTS
+   Original analysis = image-led featured card(s).
+   Curated links     = one compact list card, no images.
+   The photo then reads as "this one is ours" rather than as an
+   arbitrary exception among nine identical cards.
+   ------------------------------------------------------------ */
+
+/* Tier labels */
+.watch-tier { max-width: 800px; margin: 0 auto; }
+.watch-tier + .watch-tier { margin-top: 56px; }
+
+.watch-tier-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-line);
+}
+.watch-tier-head h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin: 0;
+}
+.watch-tier-note {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin: 0;
+  text-align: right;
+}
+
+/* ---- Tier 1: our own analysis ---- */
+.watch-list { display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto; }
+
+/* 45/55 instead of 55/45 — at 55% image the text column dropped to ~280px
+   and the headline, the "Our Analysis" pill and the date all wrapped. */
+.watch-item-featured { grid-template-columns: 45% 55%; }
+.watch-item-featured .watch-item-content { padding: 28px 32px; }
+.watch-item-featured h3 { font-size: 1.35rem; max-width: none; }
+.watch-byline {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin: 10px 0 0;
+}
+
+/* ---- Tier 2: curated industry watch ---- */
+/* One card containing a divided list, rather than nine competing cards.
+   Keeps the card shading, but the shape says "roundup". */
+.watch-curated {
+  background: var(--card-gradient);
+  border: 1px solid rgba(20, 18, 14, 0.09);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 6px 32px;
+}
+
+/* Rows keep the .watch-item class so the base link, heading and arrow-icon
+   styling still applies; this strips only the card chrome off them. */
+.watch-item.watch-link {
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  border-radius: 6px;
+  box-shadow: none;
+  padding: 22px 12px;
+  margin: 0 -12px;
+  transform: none;
+}
+.watch-item.watch-link:hover {
+  box-shadow: none;
+  transform: none;
+  background: rgba(20, 18, 14, 0.028);
+}
+.watch-curated .watch-link:first-child { border-top: 0; }
+
+.watch-link .watch-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 6px;
+}
+.watch-link .watch-source-name {
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-red-500);
+}
+.watch-link .watch-date { font-size: 0.76rem; color: var(--color-muted); }
+
+.watch-link h3 {
+  font-size: 1.02rem;
+  line-height: 1.4;
+  margin: 0 0 6px;
+  max-width: 68ch;
+}
+.watch-link h3 a { color: var(--color-black-900); }
+.watch-link .watch-take {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--color-body);
+  max-width: 68ch;
+}
+
+/* Category pill is not needed once the source name carries the attribution
+   and the tier heading says these are curated links. */
+.watch-link .watch-category,
+.watch-link .watch-featured { display: none; }
+
+/* ---- Responsive ---- */
+@media (max-width: 720px) {
+  /* A late .watch-item padding rule in the existing mobile media query
+     re-introduces padding around the featured image; reset it. */
+  .watch-item-featured { grid-template-columns: 1fr; padding: 0; }
+  .watch-item-featured .watch-item-image { aspect-ratio: 16 / 9; height: auto; }
+  .watch-item-featured .watch-item-content { padding: 22px 22px 26px; }
+  .watch-item-featured h3 { font-size: 1.2rem; }
+  .watch-curated { padding: 4px 18px; }
+  .watch-item.watch-link { padding: 20px 8px; margin: 0 -8px; }
+  .watch-tier-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .watch-tier-note { text-align: left; }
+  .watch-tier + .watch-tier { margin-top: 40px; }
+}
