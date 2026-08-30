@@ -502,8 +502,11 @@ def render_insight_item(entry, articles_by_slug):
     external story (type: watch, always links out to the source). Watch
     entries carry a 'category' — article, blog, or business — shown as a
     small badge next to the outlet name; business-highlight entries also
-    swap the "Why it matters" label for "Worth a look"."""
-    take_label = "Why it matters:"
+    swap the "Why we think it matters" label for "Why we think it's worth
+    a look" (see stylistic follow-up, Aug 2026 — personalized both labels
+    so they read as the team's own commentary rather than a generic,
+    Axios-style subhead)."""
+    take_label = "Why we think it matters:"
     item_class = "watch-item"
     image_html = ""
     if entry["type"] == "article":
@@ -532,7 +535,7 @@ def render_insight_item(entry, articles_by_slug):
         link_attrs = ' target="_blank" rel="noopener"'
         icon = ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>'
         if category == "business":
-            take_label = "Worth a look:"
+            take_label = "Why we think it's worth a look:"
 
     # Own-analysis entries never show the Featured pill — the tier heading
     # and the "Our Analysis" badge already say that, and stacking a third
