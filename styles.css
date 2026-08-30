@@ -1198,6 +1198,12 @@ section { padding: 88px 0; }
   /* Matched to the card radius — 20px stood out as noticeably rounder than
      everything else on the site (see stylistic review round 2, Aug 2026). */
   border-radius: var(--radius);
+  /* Every other card on the site (about-card, service cards, team cards,
+     contact-card, watch-item) uses this same raised-card shadow — the CTA
+     band had been left out, so it read as a flat panel next to cards that
+     all look lifted off the page. Static like about-card/contact-card, no
+     hover bump, since this isn't an interactive card (Aug 2026). */
+  box-shadow: var(--shadow-card);
   padding: 56px;
   display: flex;
   align-items: center;
