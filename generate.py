@@ -212,7 +212,7 @@ def build_service_page(svc, articles_by_slug, all_services):
           </div>
           <div class="svc-sidebar-card">
             <h4>Meet the Team</h4>
-            <p>Senior consultants and principals with careers built at CAL FIRE, the U.S. Forest Service, and the U.S. Coast Guard.</p>
+            <p>Senior consultants and principals with careers built at CAL FIRE, the U.S. Forest Service, Orange County Fire Authority, and the U.S. Coast Guard.</p>
             <a class="svc-sidebar-link" href="/team-biographies">View Full Team Biographies &rarr;</a>
           </div>
           <div class="svc-sidebar-card">
