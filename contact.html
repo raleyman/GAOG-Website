@@ -107,11 +107,17 @@
           <div class="contact-card-note">Prefer to reach a specific consultant? Mention them in your message and we'll route it directly.</div>
       </div>
 
-      <form class="contact-card" id="contact-form">
+      <form class="contact-card" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
         <!-- Web3Forms: delivers submissions directly to info@globalairoperations.com,
              regardless of the visitor's own email/device setup (see design review
              follow-up, Aug 2026 — replaces the earlier mailto: workaround, which
-             silently failed for visitors with no local email client configured). -->
+             silently failed for visitors with no local email client configured).
+             action/method declared explicitly: without them, a submit that reaches
+             the browser's default behavior (JS blocked or throwing) would GET to
+             this page's own URL with the visitor's name, email, and message
+             appended to the query string — silently lost and logged in plaintext
+             along the way (see design review round 5, Aug 2026). The script below
+             still intercepts the submit and POSTs via fetch when JS runs. -->
         <input type="hidden" name="access_key" value="7e2dbfed-9b5a-48ae-bb15-2c994f1a15dc" />
         <input type="hidden" name="subject" value="New Consulting Inquiry — GAOG Website" />
         <input type="hidden" name="from_name" value="GAOG Website Contact Form" />

@@ -524,12 +524,22 @@ section { padding: 88px 0; }
   flex-shrink: 0;
 }
 .svc-card-icon svg { width: 24px; height: 24px; }
-.svc-card-body { position: relative; z-index: 1; }
+/* display:flex + flex-direction:column so margin-top:auto below can push
+   .svc-card-more to the bottom of the card. .svc-card-body already
+   stretched to the card's full height via .svc-card's default
+   align-items:stretch, but as a plain block it had no way to use that
+   leftover space — cards with shorter copy left "Learn more" up to 24px
+   higher than cards with longer copy, at 5 different heights across the
+   row (see design review round 5, Aug 2026). */
+.svc-card-body { position: relative; z-index: 1; display: flex; flex-direction: column; }
 .svc-card-body h3 { margin-bottom: 8px; }
-.svc-card-body p { color: var(--color-muted); font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0; }
+/* --color-body instead of --color-muted — same WCAG AA contrast failure
+   as the homepage's service-card p (see design review round 5, Aug 2026). */
+.svc-card-body p { color: var(--color-body); font-family: var(--font-display); font-size: 0.95rem; margin-bottom: 0; }
 .svc-card-more {
   display: inline-block;
-  margin-top: 12px;
+  margin-top: auto;
+  padding-top: 12px;
   font-family: var(--font-display);
   font-size: 0.85rem;
   font-weight: 700;
@@ -594,7 +604,10 @@ section { padding: 88px 0; }
    to a 35px section H2 (see stylistic review round 2, Aug 2026). */
 .service-card h3 { margin-bottom: 0.4em; font-size: 1.4rem; }
 .svc-card h3 { font-size: 1.4rem; margin-bottom: 0.35em; }
-.service-card p { color: var(--color-muted); margin-bottom: 0; font-family: var(--font-display); font-size: 0.95rem; }
+/* --color-body instead of --color-muted — muted read 4.13-4.46:1 against
+   this card's gradient background, failing WCAG AA for text this size
+   (see design review round 5, Aug 2026). */
+.service-card p { color: var(--color-body); margin-bottom: 0; font-family: var(--font-display); font-size: 0.95rem; }
 
 /* -------------------- About / value prop -------------------- */
 .about-card {
@@ -621,7 +634,12 @@ section { padding: 88px 0; }
   max-width: 780px;
   margin: 0 auto;
 }
-.about-grid p:not(.eyebrow) { text-align: left; }
+/* Capped at the site's shared reading measure — at the full 780px card
+   width this ran 91 characters per line, the longest continuous read and
+   widest measure on the site, right after Insights was standardized to
+   560px/78ch (see design review round 5, Aug 2026). The flex container's
+   align-items:center still centers the narrower block within the card. */
+.about-grid p:not(.eyebrow) { text-align: left; max-width: var(--measure); }
 @media (max-width: 860px) {
   .about-card { padding: 36px 32px; }
 }
@@ -756,19 +774,28 @@ section { padding: 88px 0; }
 /* Brightness outliers (measured via mean luminance across all eleven bio
    photos, ~26-point spread) eased ~60% of the way toward the group median —
    same damped-toward-median approach as the eye-level/head-size pass above
-   (see design review round 4, Aug 2026). */
+   (see design review round 4, Aug 2026).
+   Round 4's targeting missed: Jon Tishner started mid-pack and was pushed
+   below the group median, while Mike Deacon and Shawn Raley — the two
+   actual brightest photos on the page — received no filter at all. Retested
+   by measuring linear-light luminance on the delivered files with the
+   shipped filters applied. Jon Tishner's filter is removed; Mike Deacon and
+   Shawn Raley now get the brightness pull instead; Ray Taglio (darkest, also
+   unfiltered) is lifted slightly the other direction. This closes the
+   post-filter spread from ~24 points to ~17 (see design review round 5,
+   Aug 2026). */
 .team-photo img[src*="jj-briggs"],
 .team-strip-photo img[src*="jj-briggs"] { transform: translateY(14.31%) scale(1.288); }
 .team-photo img[src*="john-messina"],
 .team-strip-photo img[src*="john-messina"] { transform: translateY(-2.18%) scale(1.363); }
 .team-photo img[src*="jon-tishner"],
-.team-strip-photo img[src*="jon-tishner"] { transform: translateY(-2.62%) scale(1.06); filter: brightness(0.92) contrast(1.04); }
+.team-strip-photo img[src*="jon-tishner"] { transform: translateY(-2.62%) scale(1.06); }
 .team-photo img[src*="mike-deacon"],
-.team-strip-photo img[src*="mike-deacon"] { transform: translateY(-6.77%) scale(1.14); }
+.team-strip-photo img[src*="mike-deacon"] { transform: translateY(-6.77%) scale(1.14); filter: brightness(0.94) contrast(1.03); }
 .team-photo img[src*="ray-taglio"],
-.team-strip-photo img[src*="ray-taglio"] { transform: translateY(4.28%) scale(1.09); }
+.team-strip-photo img[src*="ray-taglio"] { transform: translateY(4.28%) scale(1.09); filter: brightness(1.21); }
 .team-photo img[src*="shawn-raley"],
-.team-strip-photo img[src*="shawn-raley"] { transform: translateY(8.92%) scale(1.179); }
+.team-strip-photo img[src*="shawn-raley"] { transform: translateY(8.92%) scale(1.179); filter: brightness(0.95) contrast(1.03); }
 .team-photo img[src*="shawn-walters"],
 .team-strip-photo img[src*="shawn-walters"] { transform: translateY(-2.25%) scale(1.05); filter: brightness(0.93) contrast(1.04); }
 .team-photo img[src*="tim-perkins"],
@@ -986,6 +1013,15 @@ section { padding: 88px 0; }
   max-width: 800px;
   margin: 0 auto;
 }
+/* The curated tier's cards have no image, so their text runs the full
+   800px width while h3/.watch-take are capped at the shared 560px
+   --measure (28px padding + 36px = 632px of usable width vs. 560px of
+   text), leaving ~167px of empty card down the right side. Scoped to the
+   curated tier specifically — narrowing .watch-list itself would also
+   shrink the featured item above it, which uses the full 800px for its
+   image + text split and doesn't have this problem (see design review
+   round 5, Aug 2026). */
+.watch-tier-curated .watch-list { max-width: 640px; }
 .watch-item {
   background: var(--card-gradient);
   border: 1px solid rgba(20, 18, 14, 0.09);
@@ -1067,18 +1103,21 @@ section { padding: 88px 0; }
   color: var(--color-muted);
   background: var(--color-surface-alt);
 }
-/* Neutralized to match .watch-category — the red flag now belongs to the
-   site's own byline above, not to curated third-party content (see design
-   review round 4, Aug 2026). */
+/* Neutralized to match .watch-category in Round 4, which went a step too
+   far — the two pills became indistinguishable outside their text. Given
+   an outline instead of a fill so "Featured" still reads as its own thing
+   without bringing red back into curated third-party content (see design
+   review round 5, Aug 2026). */
 .watch-featured {
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   border-radius: 999px;
-  padding: 3px 10px;
+  padding: 2px 9px;
   color: var(--color-muted);
-  background: var(--color-surface-alt);
+  background: transparent;
+  border: 1px solid currentColor;
 }
 .watch-source-name { font-size: 0.8rem; color: var(--color-muted); }
 .watch-date { font-size: 0.8rem; color: var(--color-muted); }
@@ -1261,6 +1300,11 @@ section { padding: 88px 0; }
 .cta-band-light::before { display: none; }
 .cta-band-light h2 { color: var(--color-ink); }
 .cta-band-light p { color: var(--color-body); }
+/* .cta-band-light p above is more specific than .eyebrow's own color rule
+   (one class+element beats one class), so it was silently overriding the
+   eyebrow to --color-body instead of the brand red (see design review
+   round 5, Aug 2026). */
+.cta-band-light .eyebrow { color: var(--color-red-500); }
 .cta-band-light .btn-secondary {
   color: var(--color-ink);
   border-color: rgba(20, 18, 14, 0.35);
@@ -1304,7 +1348,11 @@ section { padding: 88px 0; }
   color: inherit;
 }
 @media (min-width: 640px) {
-  .team-strip-item { flex-basis: calc(16.6667% - 17px); }
+  /* max-width:108px (set above for the 3-up mobile layout) was clamping
+     this flex-basis before the browser could decide how many items fit
+     per row, so 8 landed per row with 3 orphaned below instead of the
+     intended 6+5 (see design review round 5, Aug 2026). */
+  .team-strip-item { flex-basis: calc(16.6667% - 17px); max-width: none; }
 }
 .team-strip-photo {
   width: 76px;
@@ -1331,10 +1379,16 @@ section { padding: 88px 0; }
   font-weight: 700;
   color: var(--color-ink);
   line-height: 1.3;
-  /* Reserves space for two lines so a name that wraps (currently just Travis
-     Alexander) doesn't push its role label lower than everyone else's (see
-     design review round 4, Aug 2026). */
-  min-height: 2.6em;
+}
+/* The fixed 2.6em min-height reserved a second line every name never used
+   at the widened 6-up desktop size — items are wide enough now that no
+   name wraps there. But at the narrower 3-up mobile width, two names
+   ("Aaron Burrough" and "Travis Alexander", checked directly) do still
+   wrap to two lines, so the reservation still earns its keep on mobile
+   only (see design review round 5, Aug 2026, and its own caution to
+   re-check wrapping before removing this). */
+@media (max-width: 639px) {
+  .team-strip-name { min-height: 2.6em; }
 }
 .team-strip-role {
   font-family: var(--font-display);
@@ -1349,12 +1403,23 @@ section { padding: 88px 0; }
    stylistic review round 2, Aug 2026). */
 .photo-band {
   position: relative;
+  /* Establishes a local stacking context (see design review round 5, Aug
+     2026) so the image and its scrim can be ordered with z-index without
+     that index competing against anything elsewhere on the page. */
+  z-index: 0;
   height: clamp(220px, 34vw, 380px);
   overflow: hidden;
 }
 .photo-band-img {
   position: absolute;
   inset: 0;
+  /* Both this element and ::before below were position:absolute with no
+     z-index, so they fell back to DOM order for paint order — and because
+     this element comes after ::before in the markup, it painted on top and
+     hid the scrim gradient completely for two review rounds (see design
+     review round 5, Aug 2026). z-index:0 keeps it in its original visual
+     position while letting the gradient paint above it. */
+  z-index: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1369,17 +1434,18 @@ section { padding: 88px 0; }
   content: "";
   position: absolute;
   inset: 0;
-  /* Second, tighter gradient stacked on top gives the caption its own dark
-     ground near the bottom regardless of what's behind it in the photo —
-     without it, a bright/white area in the frame could sit directly under
-     the text with too little scrim to hold contrast (see design review
-     round 4, Aug 2026). */
-  background:
-    linear-gradient(0deg, rgba(6,6,7,0.85) 0%, rgba(6,6,7,0.62) 30%, transparent 58%),
-    linear-gradient(0deg, rgba(6,6,7,0.75) 0%, rgba(6,6,7,0.4) 45%, rgba(6,6,7,0.45) 100%);
+  /* Paints above .photo-band-img now (see z-index note above). Softened
+     from the original two-layer gradient once it was confirmed to actually
+     render — that version was tuned blind while invisible and read as a
+     near-black frame once it was placed above the photo instead of under
+     it (see design review round 5, Aug 2026). This keeps the top of the
+     photo clear and concentrates the scrim behind the caption. */
+  z-index: 1;
+  background: linear-gradient(0deg, rgba(6,6,7,0.72) 0%, rgba(6,6,7,0.34) 32%, rgba(6,6,7,0.08) 60%, transparent 78%);
 }
 .photo-band-line {
   position: absolute;
+  z-index: 2;
   left: 0; right: 0; bottom: 32px;
   margin: 0;
   text-align: center;
@@ -1443,9 +1509,13 @@ section { padding: 88px 0; }
   color: var(--color-black-900);
   margin-bottom: 6px;
 }
+/* var(--font-display) instead of var(--font-body) — labels are already
+   Inter, and .form-result below them is Inter too, so the serif inputs
+   were the only place on the site mixing both type families inside one
+   component (see design review round 5, Aug 2026). */
 .form-field input, .form-field textarea, .form-field select {
   width: 100%;
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: 0.98rem;
   padding: 12px 14px;
   border: 1.5px solid var(--color-line);
