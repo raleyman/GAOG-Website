@@ -345,6 +345,16 @@ section { padding: 88px 0; }
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 .service-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-4px); }
+/* Stronger shadow than the shared --shadow-card, scoped to the homepage
+   service-card grid only, so these cards read as clearly lifted off the
+   page (approved Aug 2026; candidate to extend site-wide if it holds up). */
+.grid-services .service-card {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 3px 6px rgba(20, 18, 14, 0.12), 0 14px 28px rgba(20, 18, 14, 0.17), 0 38px 70px rgba(20, 18, 14, 0.28);
+}
+.grid-services .service-card:hover {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 5px 10px rgba(20, 18, 14, 0.15), 0 18px 34px rgba(20, 18, 14, 0.19), 0 46px 80px rgba(20, 18, 14, 0.32);
+  transform: translateY(-6px);
+}
 .service-card-bg {
   /* Washed out to the point of reading as static rather than imagery — dropped
      in favor of clean typography (see stylistic review, Aug 2026). */
