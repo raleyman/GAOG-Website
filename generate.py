@@ -103,6 +103,7 @@ def build_services_index(services):
     return f"""<!doctype html>
 <html lang="en">
 <head>
+<script>document.documentElement.classList.add('js');</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -146,7 +147,7 @@ def build_services_index(services):
 
   <section>
     <div class="container">
-      <div class="grid-svc">
+      <div class="grid-svc reveal-group">
 {cards}      </div>
     </div>
   </section>
@@ -166,6 +167,7 @@ def build_services_index(services):
 
 </main>
 
+<script src="/scroll-reveal.js" defer></script>
 {FOOTER}
 """
 
@@ -589,7 +591,7 @@ def build_insights_index(insights_entries, articles_by_slug):
           <h2>Original Analysis</h2>
           <p class="watch-tier-note">Written by our own consultants</p>
         </div>
-        <div class="watch-list">
+        <div class="watch-list reveal-group">
 {analysis_items}      </div>
       </div>
 
@@ -598,7 +600,7 @@ def build_insights_index(insights_entries, articles_by_slug):
           <h2>Industry Watch</h2>
           <p class="watch-tier-note">Curated news &amp; announcements worth your attention</p>
         </div>
-        <div class="watch-list">
+        <div class="watch-list reveal-group">
 {curated_items}      </div>
       </div>
 """
@@ -607,6 +609,7 @@ def build_insights_index(insights_entries, articles_by_slug):
     return f"""<!doctype html>
 <html lang="en">
 <head>
+<script>document.documentElement.classList.add('js');</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -656,6 +659,7 @@ def build_insights_index(insights_entries, articles_by_slug):
 
 </main>
 
+<script src="/scroll-reveal.js" defer></script>
 {FOOTER}
 """
 

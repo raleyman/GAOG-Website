@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>document.documentElement.classList.add('js');</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -116,7 +117,7 @@
         <h2 id="services-heading">Consulting Services</h2>
         <p>Services built around aviation operations, program and business development.</p>
       </div>
-      <div class="grid-services">
+      <div class="grid-services reveal-group">
         <!-- SERVICES:START (generated from content/services.json — do not hand-edit, run generate.py) -->
         <a class="service-card" href="/services/operational-strategy-incident-support">
           <img class="service-card-bg" src="/assets/services/operational-strategy-bg.jpg" alt="" aria-hidden="true" />
@@ -163,7 +164,7 @@
         <h2 id="team-strip-heading">The Team Behind the Work</h2>
         <p>Senior consultants and principals who have performed the roles we support.</p>
       </div>
-      <div class="team-strip">
+      <div class="team-strip reveal-group">
         <!-- TEAM_STRIP:START (generated from content/team.json — do not hand-edit, run generate.py) -->
         <a class="team-strip-item" href="/team-biographies">
           <span class="team-strip-photo"><img src="/assets/team/aaron-burrough.jpg" alt="Aaron Burrough" loading="lazy" /></span>
@@ -296,6 +297,7 @@
 </footer>
 
 <script src="/script.js"></script>
+<script src="/scroll-reveal.js" defer></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>

@@ -1804,3 +1804,47 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
   .watch-tier-note { text-align: left; }
   .watch-tier + .watch-tier { margin-top: 40px; }
 }
+
+/* ============================================================
+   Scroll-reveal entrance motion (Firewerx-inspired study, Sept 2026)
+   Pair with /scroll-reveal.js. Mark any container with class="reveal-group";
+   its direct children animate in as they scroll into view. Scoped
+   deliberately to repeating grids (Services, Team, Insights) — not to
+   hero content, forms, or long-form body copy, where it would just add
+   friction rather than polish.
+
+   Every rule below is gated behind .js, added on the page only by the one
+   inline script that must be the first thing inside <head>:
+
+     <script>document.documentElement.classList.add('js');</script>
+
+   If scripting is blocked, throws, or is off, that class never lands, so
+   this entire block never applies and every .reveal element renders
+   exactly as it does with no JavaScript at all: fully visible, no
+   transform. Content is never conditional on a script; only the
+   animation is.
+   ============================================================ */
+.js .reveal {
+  opacity: 0;
+  /* translate (not the transform shorthand) so the entrance never fights
+     .svc-card / .watch-item / .team-strip-photo's own hover transform —
+     the two apply independently and can even run at once. */
+  translate: 0 18px;
+  /* All four properties named explicitly — transition is a shorthand, and
+     naming only opacity/translate here would silently replace the 0.2s
+     box-shadow + transform transition those hovers already declare. */
+  transition: opacity 0.6s ease, translate 0.6s ease,
+              box-shadow 0.2s ease, transform 0.2s ease;
+  transition-delay: calc(var(--reveal-i, 0) * 70ms), calc(var(--reveal-i, 0) * 70ms), 0s, 0s;
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  translate: none;
+}
+/* Belt and suspenders: this turns the transform off outright, and
+   scroll-reveal.js also skips the observer entirely and reveals
+   everything immediately, so a reduced-motion visitor never sees so
+   much as a delayed fade either way. */
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal { opacity: 1; translate: none; transition: none; }
+}

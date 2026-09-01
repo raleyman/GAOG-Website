@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<script>document.documentElement.classList.add('js');</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -181,7 +182,7 @@
 
   <section>
     <div class="container">
-      <div class="grid-team">
+      <div class="grid-team reveal-group">
         <!-- TEAM:START (generated from content/team.json — do not hand-edit, run generate.py) -->
         <article class="team-card">
           <div class="team-photo" data-bio-open="bio-aaron-burrough" role="button" tabindex="0" aria-label="Read full biography for Aaron Burrough"><img src="/assets/team/aaron-burrough.jpg" alt="Aaron Burrough" loading="lazy" /></div>
@@ -387,6 +388,7 @@
 </footer>
 
 <script src="/script.js"></script>
+<script src="/scroll-reveal.js" defer></script>
 <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 </body>
 </html>
