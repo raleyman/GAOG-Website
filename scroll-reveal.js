@@ -54,15 +54,21 @@
     return;
   }
 
-  // Trigger while the card is still arriving, not after it's already
-  // settled in view. The original -40px bottom margin meant a card had to
-  // scroll 40px past the visible edge before it counted as "intersecting"
-  // — combined with a short, quick animation, it had usually already
-  // finished by the time a scrolling reader's eye got there, reading as an
-  // instant pop instead of a reveal. Flipping to +80px starts the
-  // animation while the card is still below the fold, so the motion plays
-  // out during the natural moment of scrolling it into view (Sept 2026,
-  // second pass).
+  // Trigger while the card is still well below the fold, not right as it
+  // crosses the edge. A flat +80px lead (the second pass) sounds like a
+  // reasonable head start, but it isn't against real scroll speed — a
+  // normal scroll or trackpad flick covers 80px in well under a tenth of
+  // a second, so the reveal was still starting and mostly finishing
+  // before the card was actually on screen. A viewer only ever saw the
+  // last flicker of it, which reads as "nothing happened."
+  //
+  // rootMargin accepts percentages, resolved against the viewport, so
+  // "30%" scales the lead with window size instead of committing to one
+  // pixel count that's right for one screen and wrong for every other —
+  // roughly 270px on a typical 900px-tall window. That's real scroll
+  // distance: the animation is still very much in progress as the card
+  // actually enters view, instead of having already finished off-screen
+  // (Sept 2026, third pass).
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
@@ -70,7 +76,7 @@
         io.unobserve(entry.target); // reveal once — re-triggering on every scroll up/down reads as busy, not polished
       }
     });
-  }, { threshold: 0.01, rootMargin: '0px 0px 80px 0px' });
+  }, { threshold: 0.01, rootMargin: '0px 0px 30% 0px' });
 
   document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 })();

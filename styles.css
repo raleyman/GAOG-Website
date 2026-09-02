@@ -1830,18 +1830,29 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
      .svc-card / .watch-item / .team-strip-photo's own hover transform —
      the two apply independently and can even run at once.
 
-     18px/0.6s (the original values) turned out too quick and too short a
-     travel to actually register as movement — by the time a scrolling
-     visitor's eye reached the card it had usually already finished, so it
-     read as an instant pop rather than a reveal. Widened to 34px/0.85s,
-     paired with an earlier IntersectionObserver trigger in scroll-reveal.js
-     so the motion plays out while the card is still arriving on screen,
-     not after it's already sitting there (Sept 2026, second pass). */
-  translate: 0 34px;
+     Round 1 (18px/0.6s) was too quick and too short a travel. Round 2
+     (34px/0.85s, -40px trigger margin flipped to +80px) still read as
+     near-instant. The real problem wasn't the animation's own numbers —
+     it's that a fixed 80px trigger lead is nothing against actual scroll
+     speed. A normal scroll or trackpad flick covers 80px in well under
+     100ms, so the reveal was starting and mostly finishing before the
+     card was even on screen; a viewer only ever caught the tail end.
+     Fixed by making the trigger lead scale with viewport height instead
+     of a flat pixel count (see scroll-reveal.js — now 30% of viewport,
+     ~270px on a typical 900px window, enough real distance that the
+     motion is still very much in progress as the card crosses into
+     view), paired with more travel (52px) and a snappier ease-out curve
+     so what IS visible reads as a deliberate glide, not a flicker
+     (Sept 2026, third pass). */
+  translate: 0 52px;
   /* All four properties named explicitly — transition is a shorthand, and
      naming only opacity/translate here would silently replace the 0.2s
-     box-shadow + transform transition those hovers already declare. */
-  transition: opacity 0.85s ease, translate 0.85s ease,
+     box-shadow + transform transition those hovers already declare.
+     cubic-bezier here (not ease) front-loads the motion — most of the
+     travel happens early, then it settles — which reads as more alive
+     than the even pace of the default ease curve. */
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              translate 0.7s cubic-bezier(0.22, 1, 0.36, 1),
               box-shadow 0.2s ease, transform 0.2s ease;
   transition-delay: calc(var(--reveal-i, 0) * 90ms), calc(var(--reveal-i, 0) * 90ms), 0s, 0s;
 }
