@@ -298,7 +298,21 @@ body.has-hero .site-header.is-scrolled .nav-toggle { color: var(--color-ink); }
   overflow: hidden;
 }
 @media (min-width: 641px) {
-  .hero { min-height: 72vh; display: flex; align-items: center; }
+  /* Full viewport, not a fraction of it (was 72vh — see stylistic review,
+     Sept 2026). At 72vh the About card cleared the fold on every laptop
+     size we checked, showing 150-270px of the next section on load before
+     any scroll: it undercut the hero as a full arrival moment and made it
+     read closer in scale to the 396px interior page-header bars than a
+     true hero. 100vh reads as a deliberate full-bleed opener and leaves
+     zero next-section bleed at any tested size (1280x720 up through a
+     2560-wide display) without the photo or text block ever feeling
+     stretched thin — verified against the real webfont, not a fallback.
+     Scoped to ≥641px to match the pre-existing breakpoint: below that,
+     the hero already sized itself to its content instead of the viewport,
+     and phones do not get the vh treatment (mobile viewport height shifts
+     as the browser chrome collapses, which would make a vh-locked hero
+     jump around while scrolling). */
+  .hero { min-height: 100vh; display: flex; align-items: center; }
 }
 .hero-photo {
   position: absolute;
@@ -332,6 +346,48 @@ body.has-hero .site-header.is-scrolled .nav-toggle { color: var(--color-ink); }
   background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.22));
   z-index: 1;
   pointer-events: none;
+}
+/* Scroll cue — a quiet wayfinding nudge for the full-viewport hero above.
+   Without it, a 100vh section with no visible next-section edge can read
+   as the whole page rather than an opener; this answers that without
+   resorting to a visible sliver of the About card (the thing we just
+   removed). Sits in the hero's own bottom vignette (.hero::after already
+   darkens this area), same stroke weight/style as the nav's menu icon so
+   it reads as part of the site's mark language rather than a bolted-on
+   icon. Desktop/tablet only — matches the min-height breakpoint above,
+   since below it the hero is content-sized and there is no fold to point
+   past. One slow, small, single-direction bob; disabled entirely under
+   prefers-reduced-motion rather than just paused, per this site's existing
+   motion rules in scroll-reveal.js. Sept 2026. */
+.hero-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  z-index: 2;
+  display: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.6);
+  transform: translateX(-50%);
+  transition: color 0.2s ease;
+}
+.hero-scroll-cue:hover,
+.hero-scroll-cue:focus-visible { color: #fff; }
+.hero-scroll-cue svg { width: 20px; height: 20px; }
+@media (min-width: 641px) {
+  .hero-scroll-cue {
+    display: flex;
+    animation: hero-scroll-bob 2.6s ease-in-out infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-cue { animation: none; }
+}
+@keyframes hero-scroll-bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(7px); }
 }
 .hero-headline {
   position: relative;
