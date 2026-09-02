@@ -3,7 +3,7 @@
     "initials": "AB",
     "name": "Aaron Burrough",
     "role": "Principal",
-    "bio": "As CAL FIRE's Staff Chief of Aviation, Aaron led one of the largest firefighting aviation fleets in the world, including the department's transition to the Black Hawk helicopter.",
+    "bio": "As CAL FIRE's Staff Chief of Aviation, Aaron led one of the world's largest firefighting aviation fleets and its shift to the Black Hawk helicopter.",
     "quals": [
       "ATGS",
       "Air Tactical Supervisor",
@@ -24,7 +24,7 @@
     "initials": "JM",
     "name": "John Messina",
     "role": "Principal",
-    "bio": "John rose from Unit Chief, serving as fire chief for Butte County and the Town of Paradise, to Assistant Region Chief overseeing all of CAL FIRE's Northern Region.",
+    "bio": "John rose from Unit Chief, serving as fire chief for Butte County and Paradise, to Assistant Region Chief over CAL FIRE's Northern Region.",
     "quals": [
       "Air Tactical Group Supervisor",
       "Helicopter Coordinator",
@@ -44,7 +44,7 @@
     "initials": "TP",
     "name": "Tim Perkins",
     "role": "Senior Consultant",
-    "bio": "Tim led Orange County Fire Authority's UAS program and Firehawk helicopter acquisition as Assistant Chief of Operations, among the largest municipal aviation buildouts in the state.",
+    "bio": "Tim led Orange County Fire Authority's UAS program and Firehawk helicopter acquisition as Assistant Chief of Operations.",
     "quals": [
       "UAS Programs",
       "Incident Management Team"
@@ -61,7 +61,7 @@
     "initials": "MD",
     "name": "Mike Deacon",
     "role": "Senior Consultant",
-    "bio": "Mike serves as an Airborne Mission Commander for FIRIS, delivering real-time infrared and LiDAR intelligence to incident commanders on major California wildfires.",
+    "bio": "Mike serves as an Airborne Mission Commander for FIRIS, delivering real-time infrared and LiDAR intelligence to incident commanders statewide.",
     "quals": [
       "ATGS",
       "AOBD",
@@ -102,7 +102,7 @@
     "initials": "SR",
     "name": "Shawn Raley",
     "role": "Senior Consultant",
-    "bio": "Shawn was a long-tenured Operations Section Chief Type 1 and Type 1 Incident Commander, holding command roles on some of the largest, most complex fires in California's history.",
+    "bio": "Shawn was a long-tenured Operations Section Chief Type 1 and Type 1 Incident Commander on some of California's largest, most complex fires.",
     "quals": [
       "Type 1 Incident Commander",
       "Operations Section Chief Type 1"
@@ -123,7 +123,7 @@
     "initials": "SW",
     "name": "Shawn Walters",
     "role": "Senior Consultant",
-    "bio": "Since 2014, Shawn has commanded the Pacific Southwest Region's Fire Watch Cobra and Night Watch aviation intelligence platforms, capping over two decades in aerial supervision.",
+    "bio": "Since 2014, Shawn has commanded the Pacific Southwest Region's Fire Watch Cobra and Night Watch platforms, after two decades in aerial supervision.",
     "quals": [
       "HLCO",
       "ATGS",
@@ -162,7 +162,7 @@
     "initials": "JS",
     "name": "Jake Serrano",
     "role": "Senior Consultant",
-    "bio": "Jake led Air Attack and Helitack operations as Battalion Chief at the Sonoma Air Attack Base, managing CAL FIRE's Type I exclusive-use helicopter programs.",
+    "bio": "Jake led Air Attack and Helitack operations as Battalion Chief at Sonoma Air Attack Base, managing CAL FIRE's Type I helicopter programs.",
     "quals": [
       "ATGS",
       "HLCO (Day/Night)",
@@ -182,7 +182,7 @@
     "initials": "RT",
     "name": "Ray Taglio",
     "role": "Senior Consultant",
-    "bio": "Ray retired as Battalion Chief and Air Attack Base Manager at Ukiah, after building CAL FIRE's training and certification programs for the Mendocino Unit.",
+    "bio": "Ray retired as Battalion Chief and Air Attack Base Manager at Ukiah, after building the Mendocino Unit's training and certification programs.",
     "quals": [
       "ATGS",
       "Division/Group Supervisor",

@@ -822,9 +822,21 @@ section { padding: 88px 0; }
   margin-bottom: 12px;
 }
 .team-bio { font-size: 0.94rem; color: var(--color-body); margin-bottom: 0; }
+/* Clamped to 6 lines, not 4 (Sept 2026). The card grid is 3-up above 960px,
+   2-up down to 640px, 1-up below that, so the same bio text rewraps at a
+   different width at every breakpoint — and right at the top of each
+   breakpoint's range (961px, 641px) and on the narrowest phones (~320px)
+   the card column gets tight enough that even a short, two-sentence bio
+   needs a 5th or 6th line. Checked against the actual Source Serif 4
+   webfont (the body copy font), not a fallback serif — Source Serif 4 runs
+   noticeably wider per character, so a bio that fit in 4 lines under a
+   fallback font still ran over under the real one. 4 lines cut every one
+   of the 11 short bios off mid-sentence; 6 lines is the smallest clamp
+   that keeps all of them intact across the full 320px-to-desktop range
+   without needing the wording re-tuned every time a card is edited. */
 .team-bio.clamp {
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
