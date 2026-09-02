@@ -33,6 +33,15 @@ OG_IMAGE_TAGS = (
     f'<meta name="twitter:image" content="{OG_IMAGE}" />'
 )
 
+# Same diagonal arrow used everywhere else on the site to mark a link that
+# leaves the domain (curated Insights entries, etc.) — reused wherever a
+# link to an external publication needs the same honest external-link cue
+# (design review round 6, Sept 2026). Sized by the shared .external-icon
+# rule in styles.css rather than a fixed px size, since this gets dropped
+# into text at several different font sizes (byline, watch item h3,
+# closing-block link).
+EXTERNAL_ICON = ' <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>'
+
 
 def slugify(name):
     return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
@@ -571,7 +580,7 @@ def render_insight_item(entry, articles_by_slug):
                     # Linked, verifiable credit — not just a claim (design
                     # review round 6, Sept 2026).
                     byline = (f"{esc(byline)} &middot; Originally published in "
-                              f'<a href="{esc(entry["url"])}" target="_blank" rel="noopener">{esc(article["featured_in"])}</a>')
+                              f'<a href="{esc(entry["url"])}" target="_blank" rel="noopener">{esc(article["featured_in"])}{EXTERNAL_ICON}</a>')
                 else:
                     byline = esc(byline + f", as featured in {article['featured_in']}")
             else:
@@ -700,11 +709,24 @@ def build_article_page(pub):
     # an unlinked "as featured in X" is a claim; a linked one is a citation.
     if pub.get("featured_in"):
         if pub.get("featured_in_url"):
-            featured_line = f' &middot; Featured in <a href="{esc(pub["featured_in_url"])}" target="_blank" rel="noopener">{esc(pub["featured_in"])}</a>'
+            featured_line = f' &middot; Featured in <a href="{esc(pub["featured_in_url"])}" target="_blank" rel="noopener">{esc(pub["featured_in"])}{EXTERNAL_ICON}</a>'
         else:
             featured_line = f' &middot; Featured in {esc(pub["featured_in"])}'
     else:
         featured_line = ""
+    # Same citation as the top byline, repeated at the point a reader has
+    # just finished the piece and is most receptive to "these people are
+    # credible" — one unlinked mention at the top isn't enough for a
+    # credential a reader might actually want to verify (design review
+    # round 6, Sept 2026).
+    citation_html = ""
+    if pub.get("featured_in") and pub.get("featured_in_url"):
+        citation_html = f"""
+        <div class="related-link">
+          <span class="related-link-label">Originally Published</span>
+          <a href="{esc(pub['featured_in_url'])}" target="_blank" rel="noopener">Read in {esc(pub['featured_in'])}{EXTERNAL_ICON}</a>
+        </div>"""
+
     pdf_card = ""
     if pub.get("pdf"):
         pdf_card = f"""
@@ -782,7 +804,7 @@ def build_article_page(pub):
   <section class="section-alt">
     <div class="container">{pdf_card}
       <article class="article-body" id="full-article">
-{body_html}        <p class="article-signature">Written by {esc(byline)}<br>Global Air Operations Group</p>
+{body_html}        <p class="article-signature">Written by {esc(byline)}<br>Global Air Operations Group</p>{citation_html}
         <div class="related-link">
           <span class="related-link-label">Continue Reading</span>
           <a href="/insights">More from Insights &rarr;</a>

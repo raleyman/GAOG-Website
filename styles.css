@@ -1799,6 +1799,28 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
   color: var(--color-muted);
   margin: 10px 0 0;
 }
+/* The "Originally published in X" credit — a real, clickable citation
+   instead of a bare claim (design review round 6, Sept 2026). Styled like
+   any other in-text link, not the bold red "learn more" treatment, since
+   this is a citation, not a call to action. */
+.watch-byline a {
+  color: var(--color-red-500);
+  text-decoration: none;
+}
+.watch-byline a:hover { text-decoration: underline; }
+
+/* Shared external-link cue, reused anywhere a link leaves the domain to an
+   original publication (Insights byline, article byline, article closing
+   block) — sized in em so it scales with whatever text size it lands in,
+   rather than a fixed px size tuned for one context (design review
+   round 6, Sept 2026). */
+.external-icon {
+  width: 0.8em;
+  height: 0.8em;
+  margin-left: 3px;
+  vertical-align: -0.05em;
+  opacity: 0.6;
+}
 
 /* ---- Tier 2: curated industry watch ---- */
 /* Reverted to individual shaded cards per feedback — the merged "one card,
