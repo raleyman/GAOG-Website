@@ -4,6 +4,7 @@
     "icon": "<path d=\"M2 22l6-6M13 2l9 9-4 4-9-9 4-4zM6 16l4 4-3 3-4-4 3-3z\"/>",
     "card_bg_image": "/assets/services/operational-strategy-bg.jpg",
     "title": "Operational Strategy & Incident Support",
+    "seo_title": "Strategy & Incident Support",
     "description": "Expertise spanning aviation operations, fire chemicals, communications, and strategy & tactics.",
     "summary": "Operational strategy and incident support from consultants who have held these roles in the field, not just studied them from the outside.",
     "body": [
@@ -27,6 +28,7 @@
     "title": "Policy & Program Development",
     "description": "Policy creation, review, and implementation aligned with best practices and organizational objectives.",
     "summary": "Policy and program work grounded in what actually holds up in the field, built by consultants who have written and lived under the policies they're helping you develop.",
+    "seo_description": "Policy and program work grounded in the field, built by consultants who have written and lived under the policies they help you develop.",
     "body": [
       "Good policy has to survive contact with a real incident. We help agencies and organizations draft new policy, review existing programs against current best practices, and carry that work through to implementation, not just a binder that sits on a shelf.",
       "Our team's experience includes leading interagency policy efforts and program rewrites at the state and national level, giving us a practical sense of where policy tends to break down and how to write it so it doesn't.",
@@ -67,6 +69,7 @@
     "title": "AAR & Continuous Improvement",
     "description": "Facilitated after-action reviews to capture critical lessons learned and translate findings into actionable safety enhancements.",
     "summary": "Facilitated after-action reviews that turn a difficult incident into a clear, actionable path forward, led by consultants with command-level experience running the reviews themselves.",
+    "seo_description": "Facilitated after-action reviews that turn a difficult incident into a clear path forward, led by consultants with command-level experience.",
     "body": [
       "Every incident, successful or not, has lessons in it. Our facilitated after-action reviews (AARs) are built to surface those lessons honestly, without turning the process into a blame exercise, and to translate them into specific, trackable safety enhancements.",
       "Our consultants have served in command and general staff roles, including Operations Section Chief and Type 1 Incident Commander, on significant incidents, so the reviews we facilitate come from firsthand knowledge of how decisions get made under pressure.",

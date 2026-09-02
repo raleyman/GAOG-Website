@@ -22,7 +22,12 @@
      instead of reading as cool ink on warm paper (see stylistic review
      round 2, Aug 2026). */
   --color-body: #332f29;
-  --color-muted: #79736a;
+  /* Darkened one more step (Round 7, F2): #79736a failed WCAG AA on two
+     components that use it (.watch-byline on the cream surface, and the
+     bold 12.5px .related-link-label on the alternating-section tint) —
+     4.46:1 and 3.77:1 against the 4.5:1 minimum. #6c665d clears both
+     (5.40:1 / 4.56:1) and reads as visually near-identical. */
+  --color-muted: #6c665d;
   --color-line: #e5e2dd;
   --color-surface: #faf9f6;
   /* Pulled closer to the card-gradient's own darkest stop so alternating
@@ -799,6 +804,10 @@ section { padding: 88px 0; }
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 .team-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-4px); }
+/* Round 7, F5: the 11 team-card names were h3, skipping straight from the
+   page's single h1 with nothing at h2 — promoted to h2 in generate.py.
+   Pinned back to the old h3 size (1.25rem) so nothing changes visually. */
+.team-card h2 { font-size: 1.25rem; }
 .team-photo {
   aspect-ratio: 1 / 1;
   background: linear-gradient(150deg, var(--color-black-800), var(--color-black-600));
@@ -971,31 +980,40 @@ section { padding: 88px 0; }
   max-width: 680px;
   width: 100%;
   max-height: min(84vh, 820px);
-  overflow-y: auto;
+  overflow: hidden;                 /* modal itself no longer scrolls */
+  display: flex;
+  flex-direction: column;
   padding: 40px 36px 36px;
   box-shadow: var(--shadow-md);
 }
+/* Fix (Round 7, F1): the close button used to scroll away with a long
+   bio because .bio-modal was itself the scroll container. Making the
+   modal a non-scrolling flex column and moving overflow onto
+   .bio-modal-body keeps the header/close button and the education
+   block pinned in view at all scroll positions. Also bumped the close
+   button to 44x44 to meet the WCAG 2.5.5 tap-target minimum. */
 .bio-modal-close {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 34px;
-  height: 34px;
+  top: 14px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid var(--color-line);
   background: var(--color-surface-alt);
   color: var(--color-black-700);
-  font-size: 1.2rem;
+  font-size: 1.35rem;
   line-height: 1;
   cursor: pointer;
 }
 .bio-modal-close:hover { background: var(--color-red-100); color: var(--color-red-500); }
 .bio-modal-header {
+  flex: none;
   display: flex;
   align-items: center;
   gap: 18px;
   margin-bottom: 20px;
-  padding-right: 30px;
+  padding-right: 46px;
 }
 .bio-modal-avatar {
   flex: none;
@@ -1027,6 +1045,12 @@ section { padding: 88px 0; }
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
+.bio-modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;                 /* the only scrolling region now */
+  min-height: 0;                    /* required or flex refuses to shrink */
+  padding-right: 8px;
+}
 .bio-modal-body p {
   font-size: 0.96rem;
   color: var(--color-body);
@@ -1034,6 +1058,7 @@ section { padding: 88px 0; }
 }
 .bio-modal-body p:last-child { margin-bottom: 0; }
 .bio-modal-edu {
+  flex: none;
   margin-top: 18px;
   padding-top: 16px;
   border-top: 1px solid var(--color-line);
@@ -1122,6 +1147,11 @@ section { padding: 88px 0; }
   aspect-ratio: 2.4 / 1;
   object-fit: cover;
   margin-bottom: 24px;
+  /* Round 7, F4: retardant-featured-card.jpg ran in full colour here but
+     grayscale(1) contrast(1.05) one click later on the article header
+     (.page-header-photo-img). Matching treatments so the same photo
+     doesn't visibly change tone between the two views. */
+  filter: grayscale(1) contrast(1.05);
 }
 .watch-item-featured .watch-item-content { padding: 4px 36px 32px; }
 .watch-item-featured h3 { font-size: 1.5rem; }
@@ -1578,7 +1608,9 @@ section { padding: 88px 0; }
   flex-shrink: 0;
 }
 .contact-row .icon svg { width: 19px; height: 19px; }
-.contact-row h4 { margin-bottom: 2px; font-size: 0.95rem; }
+/* Round 7, F5: was h4 (h1 -> h4 skip, nothing at h2/h3). Promoted to h2 in
+   contact.html; selector updated to match, size unchanged. */
+.contact-row h2 { margin-bottom: 2px; font-size: 0.95rem; }
 .contact-row a, .contact-row span { font-family: var(--font-display); font-size: 0.92rem; color: var(--color-muted); text-decoration: none; }
 .contact-row a:hover { color: var(--color-black-800); }
 
@@ -1712,7 +1744,10 @@ section { padding: 88px 0; }
 .footer-brand .footer-logo { height: 32px; width: auto; flex-shrink: 0; }
 .footer-tagline { font-family: var(--font-display); font-size: 0.85rem; color: rgba(255,255,255,0.55); margin-top: 8px; max-width: 320px; }
 .footer-links { display: flex; gap: 32px; flex-wrap: wrap; }
-.footer-col h4 { color: #fff; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
+/* Round 7, F5: was h4 with no h2/h3 above it anywhere on the page.
+   Promoted to h2 (site-wide footer, all pages); selector updated to
+   match, size/style unchanged. */
+.footer-col h2 { color: #fff; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
 .footer-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .footer-col a { font-family: var(--font-display); font-size: 0.9rem; color: rgba(255,255,255,0.68); text-decoration: none; }
 .footer-col a:hover { color: #fff; }
@@ -1801,6 +1836,14 @@ section { padding: 88px 0; }
    otherwise cut across the headline on phones. */
 .page-header-photo-img--insights { object-position: center 18%; }
 .page-header-photo-img--team { object-position: center 42%; }
+/* Round 7, F3: policy-program-bg.jpg is a 4:3 photo cropped into this
+   3.64:1 band, so most of its height is cut regardless of anchor. The
+   shared default (center 60%) kept only the tablecloth and signing
+   hands and lost every face in the shot — both seated signers and the
+   row of officials seated behind them. Re-anchored and verified with
+   real renders at 1440px: center 35% keeps both signers' heads/faces
+   in frame while still showing the table they're signing at. */
+.page-header-photo-img--policy-program-development { object-position: center 35%; }
 @media (max-width: 640px) {
   .page-header-photo-img--insights { object-position: 30% 18%; }
 }

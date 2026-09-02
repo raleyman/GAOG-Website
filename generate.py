@@ -120,7 +120,7 @@ def build_services_index(services):
 <meta name="robots" content="noindex, nofollow" />
 
 <title>Services | Global Air Operations Group</title>
-<meta name="description" content="Consulting services from Global Air Operations Group: operational strategy and incident support, policy and program development, training and exercises, after-action review, and business consulting." />
+<meta name="description" content="Consulting from Global Air Operations Group: operational strategy, policy and program development, training, after-action review, and business consulting." />
 <link rel="canonical" href="{DOMAIN}/services" />
 
 <meta property="og:type" content="website" />
@@ -137,6 +137,27 @@ def build_services_index(services):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&amp;display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/styles.css" />
+
+<script type="application/ld+json">
+{json.dumps({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": i + 1,
+            "item": {
+                "@type": "Service",
+                "name": s["title"],
+                "url": f"{DOMAIN}/services/{s['slug']}",
+                "provider": {"@type": "Organization", "name": "Global Air Operations Group"},
+                "description": s.get("summary") or s["description"],
+            },
+        }
+        for i, s in enumerate(services)
+    ],
+}, indent=2)}
+</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -154,8 +175,9 @@ def build_services_index(services):
     </div>
   </div>
 
-  <section>
+  <section aria-labelledby="svc-list-heading">
     <div class="container">
+      <h2 id="svc-list-heading" class="visually-hidden">Our Services</h2>
       <div class="grid-svc reveal-group">
 {cards}      </div>
     </div>
@@ -243,14 +265,14 @@ def build_service_page(svc, articles_by_slug, all_services):
 <!-- PRE-LAUNCH: remove once live on www.globalairoperations.com -->
 <meta name="robots" content="noindex, nofollow" />
 
-<title>{esc(svc['title'])} | Global Air Operations Group</title>
-<meta name="description" content="{esc(svc.get('summary') or svc['description'])}" />
+<title>{esc(svc.get('seo_title') or svc['title'])} | Global Air Operations Group</title>
+<meta name="description" content="{esc(svc.get('seo_description') or svc.get('summary') or svc['description'])}" />
 <link rel="canonical" href="{DOMAIN}/services/{svc['slug']}" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Global Air Operations Group" />
-<meta property="og:title" content="{esc(svc['title'])} | Global Air Operations Group" />
-<meta property="og:description" content="{esc(svc.get('summary') or svc['description'])}" />
+<meta property="og:title" content="{esc(svc.get('seo_title') or svc['title'])} | Global Air Operations Group" />
+<meta property="og:description" content="{esc(svc.get('seo_description') or svc.get('summary') or svc['description'])}" />
 <meta property="og:url" content="{DOMAIN}/services/{svc['slug']}" />
 {OG_IMAGE_TAGS}
 <meta name="twitter:card" content="summary_large_image" />
@@ -280,7 +302,7 @@ def build_service_page(svc, articles_by_slug, all_services):
 <main id="main">
 
   <div class="page-header page-header-photo">
-    <img class="page-header-photo-img" src="{SERVICE_HERO_PHOTOS.get(svc['slug'], '/assets/services-hero.jpg')}" alt="" aria-hidden="true" />
+    <img class="page-header-photo-img page-header-photo-img--{svc['slug']}" src="{SERVICE_HERO_PHOTOS.get(svc['slug'], '/assets/services-hero.jpg')}" alt="" aria-hidden="true" />
     <div class="container">
       <p class="eyebrow"><a href="/services" style="color:inherit;">Services</a></p>
       <h1>{esc(svc['title'])}</h1>
@@ -335,7 +357,7 @@ def render_team_card(person):
         <article class="team-card">
           <div class="team-photo"{photo_attrs}>{photo_inner}</div>
           <div class="team-body">
-            <h3>{esc(person['name'])}</h3>
+            <h2>{esc(person['name'])}</h2>
             <div class="team-role">{esc(person['role'])}</div>
             <p class="team-bio clamp">{esc(person['bio'])}</p>{readmore}
           </div>
@@ -434,7 +456,7 @@ FOOTER = """<footer class="site-footer">
       </div>
       <div class="footer-links">
         <div class="footer-col">
-          <h4>Site</h4>
+          <h2>Site</h2>
           <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/services">Services</a></li>
@@ -445,14 +467,14 @@ FOOTER = """<footer class="site-footer">
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Contact</h4>
+          <h2>Contact</h2>
           <ul>
             <li><a href="mailto:info@globalairoperations.com">info@globalairoperations.com</a></li>
             <li><a href="tel:+15309499868">530-949-9868</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Services</h4>
+          <h2>Services</h2>
           <ul>
             <li><a href="/services/operational-strategy-incident-support">Operational Strategy &amp; Incident Support</a></li>
             <li><a href="/services/policy-program-development">Policy &amp; Program Development</a></li>
@@ -640,7 +662,7 @@ def build_insights_index(insights_entries, articles_by_slug):
 <meta name="robots" content="noindex, nofollow" />
 
 <title>Insights | Global Air Operations Group</title>
-<meta name="description" content="Original analysis from Global Air Operations Group, plus a running, curated watch on the wildfire, aviation, and business news we think is worth your attention." />
+<meta name="description" content="Original analysis from Global Air Operations Group, plus a curated watch on wildfire, aviation, and business news worth your attention." />
 <link rel="canonical" href="{DOMAIN}/insights" />
 
 <meta property="og:type" content="website" />
@@ -657,6 +679,32 @@ def build_insights_index(insights_entries, articles_by_slug):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&amp;display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/styles.css" />
+
+<script type="application/ld+json">
+{json.dumps({
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Insights",
+    "url": f"{DOMAIN}/insights",
+    "isPartOf": {"@type": "WebSite", "name": "Global Air Operations Group", "url": DOMAIN},
+    "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": i + 1,
+                "item": {
+                    "@type": "Article",
+                    "headline": a["title"],
+                    "url": f"{DOMAIN}/insights/{a['slug']}",
+                    "description": a["description"],
+                },
+            }
+            for i, a in enumerate(articles_by_slug.values())
+        ],
+    },
+}, indent=2)}
+</script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -743,6 +791,17 @@ def build_article_page(pub):
       </div>"""
 
     authors_ld = json.dumps([{"@type": "Person", "name": a} for a in pub["authors"]])
+    # Round 7, F8: this piece was written for and first published by
+    # AerialFire Magazine (see featured_in / featured_in_url above), so the
+    # Article schema's publisher should credit them, not us, with
+    # isBasedOn pointing at the original. Falls back to GAOG as publisher
+    # for any future piece that isn't a reprint of someone else's outlet.
+    if pub.get("featured_in") and pub.get("featured_in_url"):
+        publisher_ld = json.dumps({"@type": "Organization", "name": pub["featured_in"]})
+        is_based_on_line = f'\n  "isBasedOn": {json.dumps(pub["featured_in_url"])},'
+    else:
+        publisher_ld = json.dumps({"@type": "Organization", "name": "Global Air Operations Group"})
+        is_based_on_line = ""
     nav = NAV.format(insights_active=' class="is-active"', svc_active="")
 
     return f"""<!doctype html>
@@ -754,13 +813,13 @@ def build_article_page(pub):
 <!-- PRE-LAUNCH: remove once live on www.globalairoperations.com -->
 <meta name="robots" content="noindex, nofollow" />
 
-<title>{esc(pub['title'])} | Global Air Operations Group</title>
+<title>{esc(pub.get('seo_title') or pub['title'])} | Global Air Operations Group</title>
 <meta name="description" content="{esc(pub['description'])}" />
 <link rel="canonical" href="{DOMAIN}/insights/{pub['slug']}" />
 
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Global Air Operations Group" />
-<meta property="og:title" content="{esc(pub['title'])}" />
+<meta property="og:title" content="{esc(pub.get('seo_title') or pub['title'])}" />
 <meta property="og:description" content="{esc(pub['description'])}" />
 <meta property="og:url" content="{DOMAIN}/insights/{pub['slug']}" />
 {OG_IMAGE_TAGS}
@@ -779,7 +838,7 @@ def build_article_page(pub):
   "@type": "Article",
   "headline": {json.dumps(pub['title'])},
   "author": {authors_ld},
-  "publisher": {{ "@type": "Organization", "name": "Global Air Operations Group" }},
+  "publisher": {publisher_ld},{is_based_on_line}
   "mainEntityOfPage": "{DOMAIN}/insights/{pub['slug']}",
   "description": {json.dumps(pub['description'])}
 }}
