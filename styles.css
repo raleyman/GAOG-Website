@@ -875,22 +875,44 @@ section { padding: 88px 0; }
 .team-strip-photo img[src*="shawn-walters"] { transform: translateY(-2.25%) scale(1.05); filter: brightness(0.93) contrast(1.04); }
 .team-photo img[src*="tim-perkins"],
 .team-strip-photo img[src*="tim-perkins"] { transform: translateY(-2.36%) scale(1.05); filter: brightness(0.92) contrast(1.04); }
-/* Josh Mathiesen, added Sept 2026: same linear-light-luminance / mean-HSL-
-   saturation measurement as the Aug 2026 review above, run against the
-   twelve delivered photos (the eleven above with their shipped filters
-   applied, plus Josh's raw file). His source photo (vivid blue-sky hangar
-   backdrop) measured 39.2 luminance / 62.8% saturation — brighter than any
-   other photo on the page (group delivered range 19.9-36.6, median 30.5)
-   and more than double the most saturated one (group range 15.6-30.8,
-   median 26.8). No other bio photo needed correction on both axes at once,
-   so unlike the single-axis rules above this one chains saturate() before
-   brightness()/contrast(). saturate(0.46) brings saturation to ~25%, in
-   line with the group; brightness(0.945)/contrast(1.03) on top of that
-   eases luminance ~60% of the way to the group median (33.8), the same
-   damping ratio used for the brightness outliers above rather than
-   snapping fully to it. Delete this rule to restore the photo as shot. */
+/* Josh Mathiesen, added Sept 2026: same measurement methodology as the
+   Aug 2026 review above (linear-light luminance, mean HSL saturation, and
+   MediaPipe Face Mesh for eye-level/head-size — the original eleven were
+   done with an unspecified face/eye detector; re-run here with MediaPipe
+   against the delivered crop of all twelve, i.e. each photo's source file
+   with its shipped transform/filter applied), run first when his photo was
+   added and then re-run after two rounds of feedback below.
+
+   Color (first pass): his source photo (vivid blue-sky hangar backdrop)
+   measured 39.2 luminance / 62.8% saturation — brighter than any other
+   photo on the page (group delivered range 19.9-36.6, median 30.5) and
+   more than double the most saturated one (group range 15.6-30.8, median
+   26.8). Initial correction (saturate(0.46) brightness(0.945)
+   contrast(1.03)) pulled saturation to ~25% and eased luminance 60% of the
+   way to the group median — same damping ratio as the brightness outliers
+   above. Read as overcorrected/washed out on review, so eased back to a
+   lighter touch: saturate(0.58) lands saturation at ~31% (top of the
+   group's range, next to Ray Taglio's 30.8, rather than pulled below the
+   median) and brightness(0.97)/contrast(1.03) eases luminance only ~35% of
+   the way to median (~36.5, next to Jon Tishner's 36.6 as the group's
+   brightest rather than mid-pack). No other bio photo needed correction on
+   both axes at once, so unlike the single-axis rules above this one chains
+   saturate() before brightness()/contrast().
+
+   Eye level: the crop that fixed his "head looks huge" framing (baked into
+   the file itself, not a CSS transform, since the fix required extending
+   the background — see the photo asset) left his eyes sitting low in the
+   frame: 49.2% down, group range 28.8-41.7% (median 33.3). Added
+   transform: translateY(-9%) scale(1.15) — the first transform rule to
+   land on top of an already-cropped file rather than an as-shot one — to
+   ease his eye line 60% of the way to the group median, the same damping
+   ratio used for the brightness corrections and for the Aug 2026 eye-
+   level/head-size pass. Lands at 40.0%, chin at 74.1% (group max 76.5%,
+   Jon Tishner), comfortably inside the frame. Delete this rule to restore
+   the photo as delivered (still re-cropped for head size, uncorrected for
+   color or eye level). */
 .team-photo img[src*="josh-mathiesen"],
-.team-strip-photo img[src*="josh-mathiesen"] { filter: saturate(0.46) brightness(0.945) contrast(1.03); }
+.team-strip-photo img[src*="josh-mathiesen"] { transform: translateY(-9%) scale(1.15); filter: saturate(0.58) brightness(0.97) contrast(1.03); }
 .team-body { padding: 22px 24px 26px; }
 .team-body h3 { margin-bottom: 2px; font-size: 1.08rem; }
 .team-role {
