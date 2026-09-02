@@ -54,21 +54,26 @@
     return;
   }
 
-  // Trigger while the card is still well below the fold, not right as it
-  // crosses the edge. A flat +80px lead (the second pass) sounds like a
-  // reasonable head start, but it isn't against real scroll speed — a
-  // normal scroll or trackpad flick covers 80px in well under a tenth of
-  // a second, so the reveal was still starting and mostly finishing
-  // before the card was actually on screen. A viewer only ever saw the
-  // last flicker of it, which reads as "nothing happened."
+  // Trigger right as the card starts crossing into the real viewport — no
+  // advance lead. Round 3 gave it a 30%-of-viewport head start on the
+  // theory that a fast flick would otherwise skip past a small margin
+  // before the animation had time to play. Measured against actual scroll
+  // speed, that assumption only held for a hard flick: at a normal,
+  // deliberate scroll (the pace someone reviewing their own site
+  // actually uses) the card was already ~93% revealed by the time it was
+  // genuinely on screen, and ~60% done even at a moderate scroll — the
+  // 30% lead gave the animation so much of a head start that it finished
+  // before most visitors ever saw it move. Only a hard flick benefited,
+  // and that's the least common case, not the one to optimize for.
   //
-  // rootMargin accepts percentages, resolved against the viewport, so
-  // "30%" scales the lead with window size instead of committing to one
-  // pixel count that's right for one screen and wrong for every other —
-  // roughly 270px on a typical 900px-tall window. That's real scroll
-  // distance: the animation is still very much in progress as the card
-  // actually enters view, instead of having already finished off-screen
-  // (Sept 2026, third pass).
+  // rootMargin 0 / a small threshold means the reveal starts the instant
+  // the card is genuinely entering the viewport, so the motion plays out
+  // ON SCREEN at any normal scroll pace. The one tradeoff: an extremely
+  // fast flick can still outrun it and land with the card already
+  // mostly revealed — acceptable, since that's true of any on-scroll
+  // animation and it's a rare way to scroll anyway (Sept 2026, fourth
+  // pass — measured across slow/moderate/fast scroll speeds before
+  // shipping this time, not just reasoned about).
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
@@ -76,7 +81,7 @@
         io.unobserve(entry.target); // reveal once — re-triggering on every scroll up/down reads as busy, not polished
       }
     });
-  }, { threshold: 0.01, rootMargin: '0px 0px 30% 0px' });
+  }, { threshold: 0.01, rootMargin: '0px' });
 
   document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 })();
