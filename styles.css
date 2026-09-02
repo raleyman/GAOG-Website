@@ -1667,15 +1667,22 @@ section { padding: 88px 0; }
 
 /* -------------------- Breadcrumb / page header -------------------- */
 /* Fixed min-height, not a set height (Sept 2026). This bar is shared across
-   Insights, Team Biographies, Contact, and Privacy, but it used to size
-   itself purely to whatever copy each page happened to have — no min or
-   fixed height at all. Measured: 257px on Privacy (eyebrow + h1, no
-   paragraph) up to 376px on Team Biographies (longest h1 + a 4-clause
-   paragraph), a 92px swing. The watermark logo is centered on this box via
-   top:50% / translateY(-50%), so its position rode along with that same
-   92px swing — both the bar and the logo visibly jumped when moving
-   between pages. 380px is Team Biographies' natural height rounded up;
-   min-height (not height) so a page with even more copy than that in the
+   Insights, Team Biographies, Services, Contact, and Privacy, but it used
+   to size itself purely to whatever copy each page happened to have — no
+   min or fixed height at all, so it (and the watermark logo, centered on
+   this box via top:50% / translateY(-50%)) visibly resized when moving
+   between pages.
+   First pass here used a fallback serif font to measure the "fits"
+   height and landed on 380px — too low, because the actual production
+   font (Source Serif 4, loaded from Google Fonts) runs wider than that
+   fallback, so Team Biographies' longer intro paragraph still wrapped an
+   extra line and pushed past 380px in the real browser even though every
+   local check said it fit. Re-measured against the real webfont: 396px is
+   the smallest height that holds all five pages level from a 360px phone
+   up through desktop. Team Biographies' intro paragraph was also trimmed
+   to roughly match its siblings' length, since no fixed height fixes a
+   paragraph that's simply longer than the others.
+   min-height (not height) so a page with more copy than that in the
    future still grows the box instead of clipping against overflow:hidden.
    display:flex + align-items:center centers the eyebrow/h1/p block in that
    fixed space on the shorter pages instead of leaving it flush at the top
@@ -1684,7 +1691,7 @@ section { padding: 88px 0; }
   background: var(--color-black-950);
   color: #fff;
   padding: 64px 0 56px;
-  min-height: 380px;
+  min-height: 396px;
   display: flex;
   align-items: center;
   position: relative;
