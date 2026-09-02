@@ -1911,3 +1911,142 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
 @media (prefers-reduced-motion: reduce) {
   .photo-band-video { display: none; }
 }
+
+/* ============================================================
+   Reusable section rule (Sept 2026 — FireWERX-inspired revision).
+   FireWERX marks most of its section headers with a short red rule;
+   theirs is added by hand per header. Every section header on this
+   site already follows one consistent pattern — an .eyebrow directly
+   above the h1/h2 — with zero exceptions found across every page and
+   generate.py template, so the rule can hang off .eyebrow itself and
+   apply everywhere automatically, with no markup changes anywhere.
+   Excluded: .hero .eyebrow, which sits in white text over a full-bleed
+   photo rather than a conventional content section, and .cta-band
+   .eyebrow variants for the same reason (dark/photo backgrounds get
+   their own treatment, not this one).
+   ============================================================ */
+.eyebrow::after {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 3px;
+  margin: 0.6em auto 0;
+  background: var(--color-red-500);
+}
+.hero .eyebrow::after {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* ============================================================
+   Numbered engagement process (Sept 2026 — FireWERX-inspired revision).
+   Reuses the exact card language already established by .service-card —
+   same --card-gradient, border, and --shadow-card — so this doesn't
+   introduce a new visual material to the page. The only new elements
+   are the numbered badge and the connecting rule behind it, matching
+   the report's own guidance to borrow structure, not add new styling.
+   ============================================================ */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  counter-reset: process;
+  position: relative;
+}
+@media (max-width: 860px) {
+  .process-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .process-grid { grid-template-columns: 1fr; }
+}
+/* Thin rule threading through the badges, left to right — sits behind
+   the cards (z-index 0) so it never overlaps their text. Hidden once
+   the grid drops to a single column, where "in sequence" no longer
+   reads as a left-to-right line. */
+.process-grid::before {
+  content: "";
+  position: absolute;
+  top: 22px;
+  left: 44px;
+  right: 44px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(20,18,14,0.16), rgba(20,18,14,0.16) 100%);
+  z-index: 0;
+}
+@media (max-width: 560px) {
+  .process-grid::before { display: none; }
+}
+.process-step {
+  position: relative;
+  z-index: 1;
+  background: var(--card-gradient);
+  border: 1px solid rgba(20, 18, 14, 0.09);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 36px 24px 28px;
+  text-align: center;
+}
+.process-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--color-red-500);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(197, 32, 42, 0.35);
+}
+.process-step h3 { font-size: 1.1rem; margin-bottom: 0.4em; }
+.process-step p {
+  color: var(--color-body);
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  margin-bottom: 0;
+}
+
+/* ============================================================
+   Quote band (Sept 2026 — FireWERX-inspired revision).
+   Previously this quote sat inline inside the About card; giving it
+   its own full-width dark band (same --color-black-950 as the hero)
+   makes it read as a deliberate pause/statement between About and
+   Services instead of a fourth paragraph in a card. Rule language
+   reuses .pull-quote::before's centered-rule pattern.
+   ============================================================ */
+.quote-band {
+  background: var(--color-black-950);
+  color: #fff;
+  padding: 72px 0;
+}
+.quote-band-text {
+  margin: 0 auto;
+  max-width: 760px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  font-weight: 600;
+  line-height: 1.45;
+  padding-top: 32px;
+  position: relative;
+}
+.quote-band-text::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 3px;
+  background: var(--color-red-500);
+}
+.quote-band-text cite {
+  display: block;
+  margin-top: 18px;
+  font-style: normal;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.62);
+}
