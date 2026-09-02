@@ -875,6 +875,22 @@ section { padding: 88px 0; }
 .team-strip-photo img[src*="shawn-walters"] { transform: translateY(-2.25%) scale(1.05); filter: brightness(0.93) contrast(1.04); }
 .team-photo img[src*="tim-perkins"],
 .team-strip-photo img[src*="tim-perkins"] { transform: translateY(-2.36%) scale(1.05); filter: brightness(0.92) contrast(1.04); }
+/* Josh Mathiesen, added Sept 2026: same linear-light-luminance / mean-HSL-
+   saturation measurement as the Aug 2026 review above, run against the
+   twelve delivered photos (the eleven above with their shipped filters
+   applied, plus Josh's raw file). His source photo (vivid blue-sky hangar
+   backdrop) measured 39.2 luminance / 62.8% saturation — brighter than any
+   other photo on the page (group delivered range 19.9-36.6, median 30.5)
+   and more than double the most saturated one (group range 15.6-30.8,
+   median 26.8). No other bio photo needed correction on both axes at once,
+   so unlike the single-axis rules above this one chains saturate() before
+   brightness()/contrast(). saturate(0.46) brings saturation to ~25%, in
+   line with the group; brightness(0.945)/contrast(1.03) on top of that
+   eases luminance ~60% of the way to the group median (33.8), the same
+   damping ratio used for the brightness outliers above rather than
+   snapping fully to it. Delete this rule to restore the photo as shot. */
+.team-photo img[src*="josh-mathiesen"],
+.team-strip-photo img[src*="josh-mathiesen"] { filter: saturate(0.46) brightness(0.945) contrast(1.03); }
 .team-body { padding: 22px 24px 26px; }
 .team-body h3 { margin-bottom: 2px; font-size: 1.08rem; }
 .team-role {
