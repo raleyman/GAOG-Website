@@ -116,8 +116,6 @@ def build_services_index(services):
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<!-- PRE-LAUNCH: remove once live on www.globalairoperations.com -->
-<meta name="robots" content="noindex, nofollow" />
 
 <title>Services | Global Air Operations Group</title>
 <meta name="description" content="Consulting from Global Air Operations Group: operational strategy, policy and program development, training, after-action review, and business consulting." />
@@ -262,8 +260,6 @@ def build_service_page(svc, articles_by_slug, all_services):
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<!-- PRE-LAUNCH: remove once live on www.globalairoperations.com -->
-<meta name="robots" content="noindex, nofollow" />
 
 <title>{esc(svc.get('seo_title') or svc['title'])} | Global Air Operations Group</title>
 <meta name="description" content="{esc(svc.get('seo_description') or svc.get('summary') or svc['description'])}" />
@@ -658,8 +654,6 @@ def build_insights_index(insights_entries, articles_by_slug):
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<!-- PRE-LAUNCH: remove once live on www.globalairoperations.com -->
-<meta name="robots" content="noindex, nofollow" />
 
 <title>Insights | Global Air Operations Group</title>
 <meta name="description" content="Original analysis from Global Air Operations Group, plus a curated watch on wildfire, aviation, and business news worth your attention." />
@@ -810,8 +804,6 @@ def build_article_page(pub):
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<!-- PRE-LAUNCH: remove once live on www.globalairoperations.com -->
-<meta name="robots" content="noindex, nofollow" />
 
 <title>{esc(pub.get('seo_title') or pub['title'])} | Global Air Operations Group</title>
 <meta name="description" content="{esc(pub['description'])}" />
