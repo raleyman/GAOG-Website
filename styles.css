@@ -1848,3 +1848,22 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
 @media (prefers-reduced-motion: reduce) {
   .js .reveal { opacity: 1; translate: none; transition: none; }
 }
+
+/* ============================================================
+   Animated photo band (ridge-fire cinemagraph, Sept 2026).
+   The <video> stacks on top of the existing <img> and shares every
+   .photo-band-img rule — position, object-fit, and the
+   grayscale(1) contrast(1.08) filter — so the band's geometry and
+   grade are unchanged. The <img> stays underneath as the base
+   layer: if the video is blocked, still buffering, fails to
+   decode, or the browser refuses to autoplay it, the original
+   photo is already painted and the band never goes blank.
+   ============================================================ */
+.photo-band-video { z-index: 0; }
+
+/* Same rule as the scroll-reveal work: motion is the only thing
+   that can ever be missing, never the content. Hiding the video
+   reveals the untouched still photo beneath it. */
+@media (prefers-reduced-motion: reduce) {
+  .photo-band-video { display: none; }
+}
