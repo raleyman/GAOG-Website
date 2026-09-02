@@ -1729,6 +1729,25 @@ section { padding: 88px 0; }
      line to revert to the color photo (see stylistic review, Aug 2026). */
   filter: grayscale(1) contrast(1.05);
 }
+/* Per-photo vertical anchor. object-position's default (center 60%) was
+   tuned for services-hero.jpg; the Insights and Team Biographies photos
+   frame their subject at a different height in the source frame, so each
+   gets its own anchor rather than fighting the shared default. Sept 2026.
+
+   insights-hero.jpg was also pre-padded on its left edge (see the source
+   file / _candidates notes) so the S-2T airtanker sits clear of the
+   headline: at wide viewports object-fit:cover is always width-driven for
+   this image (no horizontal crop headroom), so object-position-x has no
+   effect there and the padding is what pushes the plane right. Below
+   ~640px the text stack runs edge-to-edge and there IS horizontal crop
+   headroom, so the mobile override below swings the crop back toward the
+   soft smoke/water trail instead of the hard aircraft silhouette, which
+   otherwise cut across the headline on phones. */
+.page-header-photo-img--insights { object-position: center 18%; }
+.page-header-photo-img--team { object-position: center 42%; }
+@media (max-width: 640px) {
+  .page-header-photo-img--insights { object-position: 30% 18%; }
+}
 .page-header-photo::before {
   content: "";
   position: absolute;
