@@ -201,6 +201,29 @@
     "photo": "/assets/team/ray-taglio.jpg"
   },
   {
+    "initials": "JM",
+    "name": "Josh Mathiesen",
+    "role": "Senior Consultant",
+    "bio": "Josh rose from Smokejumper to Regional Aviation Officer for the U.S. Forest Service's Pacific Southwest Region, spanning the full depth of the aviation program, from the ground up.",
+    "quals": [
+      "Division/Group Supervisor",
+      "IC Type 3",
+      "ATGS",
+      "AITS",
+      "Smokejumper Spotter"
+    ],
+    "education": null,
+    "full_bio": [
+      "Josh is a retired senior aviation executive with 35 years of leadership in the U.S. Forest Service. He held progressively responsible roles including Smokejumper Base Manager, Forest Fire Chief, and Regional Aviation Officer for the Pacific Southwest Region (Region 5), home to the agency's most complex aviation program.",
+      "As Regional Aviation Officer, Josh provided oversight of the full aviation enterprise, including fixed-wing, rotary-wing, and Unmanned Aircraft Systems (UAS); air tanker bases and agency pilots; aviation safety inspectors; and the federal excess property program.",
+      "Earlier, as Redding Smokejumper Base Manager, he led multi-base collaboration across all seven U.S. Forest Service smokejumper programs and worked on initiatives such as the conversion from round to ram-air parachutes, an organization-wide change-management effort requiring alignment of operations, training, safety, and logistics.",
+      "Josh holds ground and air qualifications including Division/Group Supervisor, Incident Commander Type 3, Air Tactical Group Supervisor (ATGS), Air Tactical Supervisor (AITS), and Smokejumper Spotter, combining operator-level experience with senior program management.",
+      "He specializes in working with diverse stakeholders to design, evaluate, and field complex aviation solutions, including training and program development. His work includes assessing autonomous aircraft for use inside the Fire Traffic Area and developing contract structures that expanded day- and night-flying capability for fire operations nationwide. He has also worked to improve aviation curriculum, build cadres of subject matter experts, and deliver high-quality training.",
+      "He brings both the operator's perspective and the executive's view of how large, risk-sensitive organizations adopt new aviation capability."
+    ],
+    "photo": "/assets/team/josh-mathiesen.jpg"
+  },
+  {
     "initials": "JB",
     "name": "JJ Briggs",
     "role": "Senior Consultant",
