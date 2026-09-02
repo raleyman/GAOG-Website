@@ -1828,14 +1828,22 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
   opacity: 0;
   /* translate (not the transform shorthand) so the entrance never fights
      .svc-card / .watch-item / .team-strip-photo's own hover transform —
-     the two apply independently and can even run at once. */
-  translate: 0 18px;
+     the two apply independently and can even run at once.
+
+     18px/0.6s (the original values) turned out too quick and too short a
+     travel to actually register as movement — by the time a scrolling
+     visitor's eye reached the card it had usually already finished, so it
+     read as an instant pop rather than a reveal. Widened to 34px/0.85s,
+     paired with an earlier IntersectionObserver trigger in scroll-reveal.js
+     so the motion plays out while the card is still arriving on screen,
+     not after it's already sitting there (Sept 2026, second pass). */
+  translate: 0 34px;
   /* All four properties named explicitly — transition is a shorthand, and
      naming only opacity/translate here would silently replace the 0.2s
      box-shadow + transform transition those hovers already declare. */
-  transition: opacity 0.6s ease, translate 0.6s ease,
+  transition: opacity 0.85s ease, translate 0.85s ease,
               box-shadow 0.2s ease, transform 0.2s ease;
-  transition-delay: calc(var(--reveal-i, 0) * 70ms), calc(var(--reveal-i, 0) * 70ms), 0s, 0s;
+  transition-delay: calc(var(--reveal-i, 0) * 90ms), calc(var(--reveal-i, 0) * 90ms), 0s, 0s;
 }
 .js .reveal.is-visible {
   opacity: 1;

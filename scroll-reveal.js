@@ -54,6 +54,15 @@
     return;
   }
 
+  // Trigger while the card is still arriving, not after it's already
+  // settled in view. The original -40px bottom margin meant a card had to
+  // scroll 40px past the visible edge before it counted as "intersecting"
+  // — combined with a short, quick animation, it had usually already
+  // finished by the time a scrolling reader's eye got there, reading as an
+  // instant pop instead of a reveal. Flipping to +80px starts the
+  // animation while the card is still below the fold, so the motion plays
+  // out during the natural moment of scrolling it into view (Sept 2026,
+  // second pass).
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
@@ -61,7 +70,7 @@
         io.unobserve(entry.target); // reveal once — re-triggering on every scroll up/down reads as busy, not polished
       }
     });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.01, rootMargin: '0px 0px 80px 0px' });
 
   document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 })();
