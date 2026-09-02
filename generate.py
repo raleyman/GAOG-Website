@@ -499,15 +499,26 @@ ARTICLE_CARD_IMAGES = {
 
 def render_insight_item(entry, articles_by_slug):
     """One entry in the unified Insights feed — either our own full-length
-    article (type: article; links out to wherever it was actually published
-    if entry['url'] is set, otherwise to its page on this site) or a curated
+    article (type: article; always links to its own page on this site —
+    that page is the whole reason the article was built out on-site instead
+    of only living at wherever it was originally published) or a curated
     external story (type: watch, always links out to the source). Watch
     entries carry a 'category' — article, blog, or business — shown as a
     small badge next to the outlet name; business-highlight entries also
     swap the "Why we think it matters" label for "Why we think it's worth
     a look" (see stylistic follow-up, Aug 2026 — personalized both labels
     so they read as the team's own commentary rather than a generic,
-    Axios-style subhead)."""
+    Axios-style subhead).
+
+    Correction (design review round 6, Sept 2026): this used to send the
+    reader to entry['url'] (the original outside publication) whenever it
+    was set, which meant the one article actually hosted on this site was
+    never linked to from its own Insights feed — the site's strongest
+    credibility asset was reachable from exactly one place (a service
+    detail page) and nowhere a reader would naturally look for it. The
+    external url, when present, is now surfaced as a credit in the byline
+    instead (see byline_html below) rather than replacing the primary
+    link."""
     take_label = "Why we think it matters:"
     item_class = "watch-item"
     image_html = ""
@@ -519,14 +530,9 @@ def render_insight_item(entry, articles_by_slug):
         if card_image:
             item_class = "watch-item watch-item-featured"
             image_html = f'          <img class="watch-item-image" src="{card_image}" alt="" aria-hidden="true" />\n'
-        if entry.get("url"):
-            href = entry["url"]
-            link_attrs = ' target="_blank" rel="noopener"'
-            icon = ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>'
-        else:
-            href = f"/insights/{entry['slug']}"
-            link_attrs = ""
-            icon = ""
+        href = f"/insights/{entry['slug']}"
+        link_attrs = ""
+        icon = ""
     else:
         title = entry["title"]
         href = entry["url"]
@@ -561,8 +567,16 @@ def render_insight_item(entry, articles_by_slug):
                 names = ", ".join(authors[:-1]) + f", & {authors[-1]}"
             byline = f"By {names}"
             if article.get("featured_in"):
-                byline += f", as featured in {article['featured_in']}"
-            byline_html = f'\n            <p class="watch-byline">{esc(byline)}</p>'
+                if entry.get("url"):
+                    # Linked, verifiable credit — not just a claim (design
+                    # review round 6, Sept 2026).
+                    byline = (f"{esc(byline)} &middot; Originally published in "
+                              f'<a href="{esc(entry["url"])}" target="_blank" rel="noopener">{esc(article["featured_in"])}</a>')
+                else:
+                    byline = esc(byline + f", as featured in {article['featured_in']}")
+            else:
+                byline = esc(byline)
+            byline_html = f'\n            <p class="watch-byline">{byline}</p>'
 
     return f"""        <article class="{item_class}">
 {image_html}          <div class="watch-item-content">
@@ -682,7 +696,15 @@ def render_body_block(block):
 def build_article_page(pub):
     byline = " and ".join(pub["authors"])
     body_html = "".join(render_body_block(b) for b in pub["body"])
-    featured_line = f' &middot; Featured in {esc(pub["featured_in"])}' if pub.get("featured_in") else ""
+    # Linked when we have somewhere to send it (see round 6, Sept 2026) —
+    # an unlinked "as featured in X" is a claim; a linked one is a citation.
+    if pub.get("featured_in"):
+        if pub.get("featured_in_url"):
+            featured_line = f' &middot; Featured in <a href="{esc(pub["featured_in_url"])}" target="_blank" rel="noopener">{esc(pub["featured_in"])}</a>'
+        else:
+            featured_line = f' &middot; Featured in {esc(pub["featured_in"])}'
+    else:
+        featured_line = ""
     pdf_card = ""
     if pub.get("pdf"):
         pdf_card = f"""
@@ -692,7 +714,7 @@ def build_article_page(pub):
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></svg>
           </span>
           <div class="pub-meta">
-            <h2>Download as PDF</h2>
+            <p class="pub-title">Download as PDF</p>
             <span>Formatted with letterhead &middot; {esc(pub['date'])}</span>
           </div>
         </a>
@@ -761,6 +783,14 @@ def build_article_page(pub):
     <div class="container">{pdf_card}
       <article class="article-body" id="full-article">
 {body_html}        <p class="article-signature">Written by {esc(byline)}<br>Global Air Operations Group</p>
+        <div class="related-link">
+          <span class="related-link-label">Continue Reading</span>
+          <a href="/insights">More from Insights &rarr;</a>
+        </div>
+        <div class="related-link">
+          <span class="related-link-label">Have a Program or Project in Mind?</span>
+          <a href="/contact">Talk to Our Consultants &rarr;</a>
+        </div>
       </article>
     </div>
   </section>

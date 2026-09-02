@@ -637,9 +637,19 @@ section { padding: 88px 0; }
 /* Capped at the site's shared reading measure — at the full 780px card
    width this ran 91 characters per line, the longest continuous read and
    widest measure on the site, right after Insights was standardized to
-   560px/78ch (see design review round 5, Aug 2026). The flex container's
-   align-items:center still centers the narrower block within the card. */
-.about-grid p:not(.eyebrow) { text-align: left; max-width: var(--measure); }
+   560px/78ch (see design review round 5, Aug 2026).
+
+   Correction (design review round 6, Sept 2026): the comment this replaced
+   claimed the flex container's align-items:center still centered this
+   narrower block within the card. It doesn't — these paragraphs aren't
+   direct flex items of .about-grid, they're grandchildren through an
+   unclassed wrapper div, and that wrapper stretches to the full 780px
+   (the h2 above has no max-width, so it forces the wrapper wide). Centering
+   only ever applied to the wrapper, not to these already-narrower
+   paragraphs sitting flush-left inside it — measured as a 220px gap on the
+   right and 0px on the left. margin-left/right: auto centers the
+   paragraphs themselves within that wrapper instead. */
+.about-grid p:not(.eyebrow) { text-align: left; max-width: var(--measure); margin-left: auto; margin-right: auto; }
 @media (max-width: 860px) {
   .about-card { padding: 36px 32px; }
 }
@@ -988,7 +998,11 @@ section { padding: 88px 0; }
   flex-shrink: 0;
 }
 .pub-icon svg { width: 24px; height: 24px; }
-.pub-meta h2 { margin-bottom: 2px; font-size: 1.05rem; color: var(--color-black-900); }
+/* .pub-title, not h2 — this is a button label ("Download as PDF"), not a
+   document heading, and was showing up in the article's own heading
+   outline as a peer of "What the Chemistry Does" (design review round 6,
+   Sept 2026). */
+.pub-meta .pub-title { margin: 0 0 2px; font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--color-black-900); }
 .pub-meta span { font-family: var(--font-display); font-size: 0.82rem; color: var(--color-red-500); font-weight: 600; }
 .pub-excerpt { font-size: 0.92rem; color: var(--color-muted); margin: 8px 0 0; }
 .pub-empty {
@@ -1837,13 +1851,17 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
      speed. A normal scroll or trackpad flick covers 80px in well under
      100ms, so the reveal was starting and mostly finishing before the
      card was even on screen; a viewer only ever caught the tail end.
-     Fixed by making the trigger lead scale with viewport height instead
-     of a flat pixel count (see scroll-reveal.js — now 30% of viewport,
-     ~270px on a typical 900px window, enough real distance that the
-     motion is still very much in progress as the card crosses into
-     view), paired with more travel (52px) and a snappier ease-out curve
-     so what IS visible reads as a deliberate glide, not a flicker
-     (Sept 2026, third pass). */
+     Round 3 tried a lead that scaled with viewport height instead (30%,
+     ~270px on a typical 900px window) — measured across slow/moderate/
+     fast scroll speeds, that gave the animation so much of a head start
+     that it finished before most visitors ever saw it move (93% done by
+     first true visibility at a slow scroll). scroll-reveal.js now uses
+     no lead at all (rootMargin: '0px') so the motion plays out on screen
+     at any normal pace; only a hard flick can outrun it. This block's
+     numbers — 52px travel, snappier ease-out curve — are unchanged since
+     they were never the problem, only the trigger timing was
+     (Sept 2026, fourth pass — see scroll-reveal.js for the timing fix
+     and its own measurement notes). */
   translate: 0 52px;
   /* All four properties named explicitly — transition is a shorthand, and
      naming only opacity/translate here would silently replace the 0.2s
@@ -1925,13 +1943,32 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
    .eyebrow variants for the same reason (dark/photo backgrounds get
    their own treatment, not this one).
    ============================================================ */
+/* Corrected (design review round 6, Sept 2026): margin: auto centers this
+   rule within the eyebrow's OWN box width, which is only right when the
+   eyebrow's text is itself centered (the .section-head.center and
+   .about-card contexts below). Everywhere else — the hero, both CTA-band
+   variants, every page-header-photo label, every service breadcrumb — the
+   eyebrow sits flush left against a left-aligned h1/h2/paragraph stack
+   beneath it, and a centered-under-its-own-width rule floats detached in
+   the middle of the text instead of anchoring to the same left edge as
+   everything below it (measured 249px in from the left in the hero, on a
+   497px-wide label). Default to flush-left; re-center only where the
+   label itself is centered. */
 .eyebrow::after {
   content: "";
   display: block;
   width: 36px;
   height: 3px;
-  margin: 0.6em auto 0;
+  margin-top: 0.6em;
+  margin-left: 0;
+  margin-right: auto;
   background: var(--color-red-500);
+}
+.section-head.center .eyebrow::after,
+.about-card .eyebrow::after,
+.error-page .eyebrow::after {
+  margin-left: auto;
+  margin-right: auto;
 }
 .hero .eyebrow::after {
   background: rgba(255, 255, 255, 0.55);
@@ -1961,11 +1998,15 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
 /* Thin rule threading through the badges, left to right — sits behind
    the cards (z-index 0) so it never overlaps their text. Hidden once
    the grid drops to a single column, where "in sequence" no longer
-   reads as a left-to-right line. */
+   reads as a left-to-right line.
+   top: 59px is the badge's true center — 1px card border + 36px card
+   padding-top + 22px (half the 44px badge) — not the 22px this shipped
+   with, which drew the line 37px above the badges instead of through
+   them (design review round 6, Sept 2026). */
 .process-grid::before {
   content: "";
   position: absolute;
-  top: 22px;
+  top: 59px;
   left: 44px;
   right: 44px;
   height: 1px;
@@ -2001,11 +2042,17 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
   box-shadow: 0 4px 12px rgba(197, 32, 42, 0.35);
 }
 .process-step h3 { font-size: 1.1rem; margin-bottom: 0.4em; }
+/* Badge and h3 stay centered; the body copy runs 4-5 lines on two of the
+   four cards, and centered text past two or three lines makes the eye
+   hunt for each new line's start. Every other card on the site (service,
+   insight, team) sets its body copy flush left — matches that (design
+   review round 6, Sept 2026). */
 .process-step p {
   color: var(--color-body);
   font-family: var(--font-display);
   font-size: 0.92rem;
   margin-bottom: 0;
+  text-align: left;
 }
 
 /* ============================================================
