@@ -1869,6 +1869,31 @@ body.has-hero .site-header:not(.is-scrolled) .logo-mark-light { display: block; 
 }
 
 /* ============================================================
+   Scroll-reveal print fix (Sept 2026).
+   The reveal starts every card at opacity 0 and only shows it once
+   IntersectionObserver sees it scroll into view. Printing never
+   scrolls, so anything below the fold at the moment of printing was
+   still sitting at opacity 0 — verified before this fix: 8 of 11 team
+   bios, 5 of 5 homepage service cards (plus the team strip), 8 of 9
+   Industry Watch items, 2 of 5 services-page cards all printed as
+   blank space. Print has no viewport and no scroll, so entrance
+   motion has no meaning there — show everything, unconditionally.
+   ============================================================ */
+@media print {
+  .js .reveal {
+    opacity: 1;
+    translate: none;
+    transition: none;
+    animation: none;
+  }
+  /* Same reasoning for the photo band: a <video> has no defined print
+     rendering, so hide it and let the sharp static <img> underneath
+     print instead of a blank box or whatever frame happened to be
+     current. */
+  .photo-band-video { display: none; }
+}
+
+/* ============================================================
    Animated photo band (ridge-fire cinemagraph, Sept 2026).
    The <video> stacks on top of the existing <img> and shares every
    .photo-band-img rule — position, object-fit, and the
