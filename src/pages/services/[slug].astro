@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import services from '../../../content/services.json';
+import articles from '../../../content/articles.json';
+import { DOMAIN, getServiceHeroImage } from '../../lib/content.js';
+
+export function getStaticPaths() {
+  return services.map((svc) => ({ params: { slug: svc.slug }, props: { svc } }));
+}
+
+const { svc } = Astro.props;
+const articlesBySlug = Object.fromEntries(articles.map((a) => [a.slug, a]));
+const relatedPub = svc.related_publication
+  ? articlesBySlug[svc.related_publication]
+  : null;
+const otherServices = services.filter((s) => s.slug !== svc.slug);
+const heroImage = getServiceHeroImage(svc);
+
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: svc.title,
+  provider: { '@type': 'Organization', name: 'Global Air Operations Group' },
+  description: svc.summary || svc.description,
+};
+---
+
+<BaseLayout
+  title={`${svc.seo_title || svc.title} | Global Air Operations Group`}
+  description={svc.seo_description || svc.summary || svc.description}
+  canonical={`${DOMAIN}/services/${svc.slug}`}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(serviceLd)} />
+
+  <main id="main">
+    <div class="page-header page-header-photo">
+      <img
+        class={`page-header-photo-img page-header-photo-img--${svc.slug}`}
+        src={heroImage}
+        alt=""
+        aria-hidden="true"
+      />
+      <div class="container">
+        <p class="eyebrow"><a href="/services" style="color:inherit;">Services</a></p>
+        <h1>{svc.title}</h1>
+        <p>{svc.summary || svc.description}</p>
+      </div>
+    </div>
+
+    <section class="section-alt">
+      <div class="container svc-detail-layout">
+        <article class="article-body">
+          {svc.body.map((p) => <p>{p}</p>)}
+          {svc.included?.length > 0 && (
+            <>
+              <h3>What's Included</h3>
+              <ul class="included-list">
+                {svc.included.map((item) => (
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {svc.credentials_note && (
+            <div class="credentials-note">{svc.credentials_note}</div>
+          )}
+          {relatedPub && (
+            <div class="related-link">
+              <span class="related-link-label">Related Reading</span>
+              <a href={`/insights/${relatedPub.slug}`}>{relatedPub.title} &rarr;</a>
+            </div>
+          )}
+          <p class="article-signature"><a href="/team-biographies">Meet the consultants behind our work &rarr;</a></p>
+        </article>
+
+        <aside class="svc-sidebar">
+          <div class="svc-sidebar-card">
+            <h4>Ready to talk about this?</h4>
+            <p>Tell us about your program, business, goals, and needs.</p>
+            <a class="btn btn-primary" href="/contact">Go to Contact Page</a>
+          </div>
+          <div class="svc-sidebar-card">
+            <h4>Meet the Team</h4>
+            <p>Senior consultants and principals with careers built at CAL FIRE, the U.S. Forest Service, Orange County Fire Authority, and the U.S. Coast Guard.</p>
+            <a class="svc-sidebar-link" href="/team-biographies">View Full Team Biographies &rarr;</a>
+          </div>
+          <div class="svc-sidebar-card">
+            <h4>Other Services</h4>
+            <ul class="svc-sidebar-list">
+              {otherServices.map((s) => (
+                <li><a href={`/services/${s.slug}`}>{s.title}</a></li>
+              ))}
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section aria-labelledby="svc-cta-heading">
+      <div class="container">
+        <div class="cta-band">
+          <div class="cta-copy">
+            <h2 id="svc-cta-heading">Ready to talk about {svc.title}?</h2>
+            <p>Tell us about your program, business, goals, and needs. We typically reply within one business day.</p>
+          </div>
+          <a class="btn btn-primary" href="/contact">Go to Contact Page</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

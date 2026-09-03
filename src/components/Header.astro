@@ -1,0 +1,29 @@
+---
+const path = Astro.url.pathname.replace(/\/index\.html$/, '/').replace(/\.html$/, '') || '/';
+
+function isActive(href: string) {
+  if (href === '/') return path === '/';
+  return path === href || path.startsWith(`${href}/`);
+}
+---
+
+<header class="site-header">
+  <nav class="nav container">
+    <a class="nav-brand" href="/">
+      <img src="/assets/logo-icon.png" alt="Global Air Operations Group logo" class="logo-mark logo-mark-dark" />
+      <img src="/assets/logo-icon-reverse.png" alt="" aria-hidden="true" class="logo-mark logo-mark-light" />
+      <span class="nav-brand-text">Global Air Operations Group</span>
+      <span class="nav-brand-short">GAOG</span>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <ul class="nav-links">
+      <li><a href="/" class:list={{ 'is-active': isActive('/') }}>Home</a></li>
+      <li><a href="/services" class:list={{ 'is-active': isActive('/services') }}>Services</a></li>
+      <li><a href="/insights" class:list={{ 'is-active': isActive('/insights') }}>Insights</a></li>
+      <li><a href="/team-biographies" class:list={{ 'is-active': isActive('/team-biographies') }}>Team Biographies</a></li>
+      <li class="nav-cta"><a class="btn btn-primary" href="/contact">Contact Us</a></li>
+    </ul>
+  </nav>
+</header>

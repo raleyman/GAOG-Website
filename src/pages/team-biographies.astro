@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TeamCard from '../components/TeamCard.astro';
+import BioTemplate from '../components/BioTemplate.astro';
+import team from '../../content/team.json';
+import { buildTeamLd } from '../lib/content.js';
+
+const teamLd = buildTeamLd(team);
+---
+
+<BaseLayout
+  title="Team Biographies | Global Air Operations Group"
+  description="Meet the senior consultants of Global Air Operations Group, veteran leaders from CAL FIRE, the U.S. Forest Service, and the U.S. Coast Guard."
+  canonical="https://www.globalairoperations.com/team-biographies"
+  scrollReveal={true}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(teamLd)} />
+
+  <main id="main">
+    <div class="page-header page-header-photo">
+      <img class="page-header-photo-img page-header-photo-img--team" src="/assets/team-hero.jpg" alt="" aria-hidden="true" />
+      <div class="container">
+        <p class="eyebrow">Our Team</p>
+        <h1>Fireline Experience. Executive-Level Leadership.</h1>
+        <p>Our consultants each bring decades of frontline wildfire and aviation experience.</p>
+      </div>
+    </div>
+
+    <section>
+      <div class="container">
+        <div class="grid-team reveal-group">
+          {team.map((person) => (
+            <TeamCard
+              name={person.name}
+              role={person.role}
+              bio={person.bio}
+              photo={person.photo}
+              initials={person.initials}
+              fullBio={person.full_bio}
+            />
+          ))}
+        </div>
+        <p class="team-network-note">In addition to our core leadership, Global Air Operations Group maintains a robust network of industry professionals to ensure the right expertise is on every project.</p>
+      </div>
+    </section>
+
+    <section class="section-alt">
+      <div class="container">
+        <div class="cta-band">
+          <div class="cta-copy">
+            <h2>Want this team supporting your program?</h2>
+            <p>Reach out to talk through your operational, training, or aviation program needs.</p>
+          </div>
+          <a class="btn btn-primary" href="/contact">Consult With Our Experts</a>
+        </div>
+      </div>
+    </section>
+
+    {team.map((person) => (
+      <BioTemplate
+        name={person.name}
+        role={person.role}
+        initials={person.initials}
+        photo={person.photo}
+        education={person.education}
+        fullBio={person.full_bio}
+        bio={person.bio}
+      />
+    ))}
+  </main>
+
+  <div class="bio-modal-overlay" id="bioModalOverlay" hidden>
+    <div class="bio-modal" role="dialog" aria-modal="true" aria-labelledby="bioModalName">
+      <button type="button" class="bio-modal-close" id="bioModalClose" aria-label="Close biography">&times;</button>
+      <div class="bio-modal-header">
+        <div class="bio-modal-avatar" id="bioModalAvatar"></div>
+        <div>
+          <h3 id="bioModalName"></h3>
+          <div class="bio-modal-role" id="bioModalRole"></div>
+        </div>
+      </div>
+      <div class="bio-modal-body" id="bioModalBody"></div>
+      <div class="bio-modal-edu" id="bioModalEdu"></div>
+    </div>
+  </div>
+</BaseLayout>

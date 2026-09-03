@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import TeamStripItem from '../components/TeamStripItem.astro';
+import services from '../../content/services.json';
+import team from '../../content/team.json';
+
+const homeLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Global Air Operations Group',
+  url: 'https://www.globalairoperations.com/',
+  description:
+    'Global Air Operations Group provides expert consulting, operational planning, and strategic support for wildfire and emergency response, with CAL FIRE, U.S. Forest Service, Orange County Fire Authority, and U.S. Coast Guard leadership serving clients nationally and globally.',
+  email: 'info@globalairoperations.com',
+  knowsAbout: [
+    'Wildfire aviation operations',
+    'Incident command system training',
+    'Aviation policy development',
+    'After-action review facilitation',
+  ],
+};
+---
+
+<BaseLayout
+  title="Global Air Operations Group | Wildfire Aviation Consulting"
+  description="Global Air Operations Group: wildfire and emergency response consulting led by veteran CAL FIRE, U.S. Forest Service, and Coast Guard aviation leaders."
+  canonical="https://www.globalairoperations.com/"
+  hasHero={true}
+  scrollReveal={true}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(homeLd)} />
+
+  <main id="main">
+    <section class="hero">
+      <img class="hero-photo" src="/assets/hero-photo.jpg" alt="" aria-hidden="true" />
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <div class="hero-headline">
+            <p class="eyebrow">Aviation-Led Wildfire &amp; Emergency Response Consulting</p>
+            <h1>From the Frontline to Program Leadership</h1>
+          </div>
+          <p class="lede">Global Air Operations Group provides expert consulting, operational planning, and strategic support for those in the wildfire and emergency response space.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="/contact">Consult With Our Experts</a>
+            <a class="btn btn-secondary" href="/team-biographies">Meet Our Team</a>
+          </div>
+        </div>
+      </div>
+      <a class="hero-scroll-cue" href="#about-heading" aria-label="Scroll to learn more">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </a>
+    </section>
+
+    <section aria-labelledby="about-heading">
+      <div class="container">
+        <div class="about-card">
+          <div class="about-grid">
+            <div>
+              <p class="eyebrow">About Us</p>
+              <h2 id="about-heading">Built by professionals who have performed the roles we support</h2>
+              <p>Our team is built of professionals who have performed in the roles we support, delivering practical, mission-focused solutions grounded in real-world experience. Our consultants each bring decades of experience from frontline wildfire operations to executive-level leadership, with backgrounds spanning CAL FIRE, the U.S. Forest Service, Orange County Fire Authority, and the U.S. Coast Guard. That experience includes leading complex incidents, managing large-scale programs, and coordinating across multiple agencies in high-risk environments.</p>
+              <p>We work alongside agencies and organizations nationally and globally to strengthen operational readiness, modernize policy and training, and turn hard-won field experience into lasting institutional knowledge.</p>
+              <p>Our clients range from large publicly traded companies and government agencies to small businesses and individuals.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-band" aria-label="Global Air Operations Group in their own words">
+      <div class="container">
+        <blockquote class="quote-band-text">
+          “Our team carries over 300 years of combined high-level experience, from the fireline to the executive suite.”
+          <cite>Global Air Operations Group</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="section-alt" aria-labelledby="services-heading">
+      <div class="container">
+        <div class="section-head center">
+          <p class="eyebrow">What We Do</p>
+          <h2 id="services-heading">Consulting Services</h2>
+          <p>Services built around aviation operations, program and business development.</p>
+        </div>
+        <div class="grid-services reveal-group">
+          {services.map((svc) => (
+            <ServiceCard
+              slug={svc.slug}
+              title={svc.title}
+              description={svc.description}
+              cardBgImage={svc.card_bg_image}
+            />
+          ))}
+        </div>
+        <div class="section-head center section-head-after-grid">
+          <a class="section-head-link" href="/services">View All Services &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="process-section" aria-labelledby="process-heading">
+      <div class="container">
+        <div class="section-head center">
+          <p class="eyebrow">Our Process</p>
+          <h2 id="process-heading">Built Around Your Need, Start to Finish</h2>
+          <p>Every engagement runs the same four stages.</p>
+        </div>
+        <div class="process-grid reveal-group">
+          <div class="process-step">
+            <span class="process-num">01</span>
+            <h3>Evaluate</h3>
+            <p>You bring us the need. We get clear on exactly what solving it will take.</p>
+          </div>
+          <div class="process-step">
+            <span class="process-num">02</span>
+            <h3>Build</h3>
+            <p>We assemble the right team, matching senior consultants whose fireline and program-level experience fits the work ahead.</p>
+          </div>
+          <div class="process-step">
+            <span class="process-num">03</span>
+            <h3>Partner</h3>
+            <p>We work directly with you at every step, staying aligned to your goals until they're met.</p>
+          </div>
+          <div class="process-step">
+            <span class="process-num">04</span>
+            <h3>Deliver</h3>
+            <p>We deliver a finished product built specifically around what you needed from the start.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="team-strip-heading">
+      <div class="container">
+        <div class="section-head center">
+          <p class="eyebrow">Our People</p>
+          <h2 id="team-strip-heading">The Team Behind the Work</h2>
+          <p>Senior consultants and principals who have performed the roles we support.</p>
+        </div>
+        <div class="team-strip reveal-group">
+          {team.map((person) => (
+            <TeamStripItem
+              name={person.name}
+              role={person.role}
+              photo={person.photo}
+              initials={person.initials}
+            />
+          ))}
+        </div>
+        <div class="section-head center section-head-after-grid">
+          <a class="section-head-link" href="/team-biographies">Meet the Full Team &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="photo-band" aria-label="Global Air Operations Group in the field">
+      <img class="photo-band-img" src="/assets/photo-band-ridge-fire.jpg" alt="" aria-hidden="true" />
+      <video class="photo-band-img photo-band-video" autoplay muted loop playsinline
+             preload="auto" poster="/assets/ridge-fire-poster.jpg"
+             aria-hidden="true" tabindex="-1">
+        <source src="/assets/ridge-fire-loop-mobile.mp4" type="video/mp4" media="(max-width: 640px)" />
+        <source src="/assets/ridge-fire-loop.mp4" type="video/mp4" />
+      </video>
+      <p class="photo-band-line">Fireline Experience. Program-Level Results.</p>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="cta-band cta-band-light">
+          <div class="cta-copy">
+            <p class="eyebrow">Get In Touch</p>
+            <h2 id="contact-heading">Tell us about your program, business, goals, and needs</h2>
+            <p>Reach senior consultants and principals with careers built at CAL FIRE, the U.S. Forest Service, Orange County Fire Authority, and the U.S. Coast Guard. We typically reply within one business day.</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="/contact">Go to Contact Page</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

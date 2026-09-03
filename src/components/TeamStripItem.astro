@@ -1,0 +1,22 @@
+---
+interface Props {
+  name: string;
+  role: string;
+  photo?: string;
+  initials: string;
+}
+
+const { name, role, photo, initials } = Astro.props;
+---
+
+<a class="team-strip-item" href="/team-biographies">
+  <span class="team-strip-photo">
+    {photo ? (
+      <img src={photo} alt={name} loading="lazy" />
+    ) : (
+      initials
+    )}
+  </span>
+  <span class="team-strip-name">{name}</span>
+  <span class="team-strip-role">{role}</span>
+</a>

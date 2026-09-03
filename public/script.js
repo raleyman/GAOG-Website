@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var header = document.querySelector(".site-header");
   var hero = document.querySelector(".hero");
   if (header && hero) {
-    document.body.classList.add("has-hero");
     var updateHeader = function () {
       var threshold = Math.max(hero.offsetHeight - header.offsetHeight, 40);
       if (window.scrollY > threshold) {
@@ -32,15 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("scroll", updateHeader, { passive: true });
     window.addEventListener("resize", updateHeader);
   }
-
-  // Mark current nav link active
-  var path = window.location.pathname.replace(/\/index\.html$/, "/").replace(/\.html$/, "");
-  if (path === "" ) path = "/";
-  document.querySelectorAll(".nav-links a[data-path]").forEach(function (a) {
-    if (a.getAttribute("data-path") === path) {
-      a.classList.add("is-active");
-    }
-  });
 
   // Team biography modal (click a photo / "Read Full Biography" to open)
   var overlay = document.getElementById("bioModalOverlay");

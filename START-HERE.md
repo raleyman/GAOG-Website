@@ -20,7 +20,7 @@ Just tell Claude (or whoever's helping you) what you want, for example:
 - "Here's a new article we wrote, can you publish it as a blog post?"
 - "Add this to Insights: [link], and here's why it matters: [a sentence or two]."
 
-That person edits one of the files below and runs one command (`python3 generate.py`) to rebuild the pages — nothing else needs to change, and nothing gets accidentally broken.
+That person edits one of the files below and runs one command (`pnpm build`) to rebuild the site — nothing else needs to change, and nothing gets accidentally broken.
 
 ### The files that drive the site (all in `content/`)
 
@@ -31,21 +31,22 @@ That person edits one of the files below and runs one command (`python3 generate
   - `"type": "article"` — points at an entry in `content/articles.json` by its `slug`, plus your own `date` and `take` ("why it matters") for how it should read on the feed. Use this to feature one of your full articles.
   - `"type": "watch"` — a curated outside story: `source` (the outlet's name), `url` (link to the original story — opens in a new tab), `date`, `title` (the headline, written or copied as-is), and `take` (a sentence or two, in your own voice, on why it matters to someone in this field). This is the weekly routine: find a story, add one of these entries at the top of the list, write your one or two sentences, done.
   - A couple of ground rules for `take`: don't copy the source article's own text into it — write your own reaction; and don't reproduce the source's paragraphs anywhere on the site, since that's their copyrighted work. A link plus your own short commentary is exactly the right amount to use.
-  - Order in the file is display order — newest or most important at the top. There's no automatic date sorting, so just add new entries where you want them to appear.
+  - Featured entries stay at the top; everything else is sorted newest-first by date automatically at build time.
 
-### The one command: `generate.py`
+### The one command: `pnpm build`
 
 After any of those files change, running:
 
 ```
-python3 generate.py
+pnpm install   # first time only, or after dependencies change
+pnpm build
 ```
 
-from inside this folder rebuilds the affected pages (homepage services teaser, the services index and every individual service page, team page, the Insights feed and every individual article page) and refreshes `sitemap.xml` automatically. It never touches your hand-written page design, navigation, or footer — only the content blocks marked for it. If you're not comfortable running this yourself, just ask Claude to do it for you — that's the normal way this will work going forward.
+from inside this folder rebuilds the whole site (homepage, services, team page, Insights feed, every article and service page) and refreshes the sitemap automatically. For local preview while editing, use `pnpm dev` and open the local address it prints. If you're not comfortable running this yourself, just ask Claude to do it for you — that's the normal way this will work going forward.
 
 ## Team photos
 
-Every consultant now has a real headshot on the Team Biographies page (`assets/team/`), cropped square and optimized for the web. To swap a photo or add one for a new hire, drop the image anywhere handy, ask Claude to crop and add it, and it'll update `content/team.json`'s `photo` field and re-run the generator.
+Every consultant now has a real headshot on the Team Biographies page (`public/assets/team/`), cropped square and optimized for the web. To swap a photo or add one for a new hire, drop the image anywhere handy, ask Claude to crop and add it, and it'll update `content/team.json`'s `photo` field and re-run the build.
 
 I also noticed the GAOG Google Drive has some internal files unrelated to the website (an operations/billing workbook and a Perimeter Solutions field binder marked proprietary) sitting in the same shared folder as the site assets. I didn't use or touch those — just flagging in case you want the website assets kept in a more separate folder going forward.
 
@@ -53,7 +54,7 @@ I also noticed the GAOG Google Drive has some internal files unrelated to the we
 
 1. Go to vercel.com and sign up for a free account (you can sign up with just an email or a GitHub account).
 2. Once logged in, click **"Add New Project"**.
-3. Vercel will offer to let you drag-and-drop a folder, or import from GitHub. For a simple site like this, dragging this whole folder onto the upload area is the fastest path — Vercel detects it's a static site automatically.
+3. Vercel will offer to import from GitHub. Connect the repo — Vercel detects Astro automatically and runs `pnpm build`, outputting the `dist/` folder.
 4. Click Deploy. Within about a minute you'll get a free web address like `global-air-operations.vercel.app` — that's your staging link. Share that with me or anyone else to preview it before it's public.
 5. **Important:** the pages currently have a "noindex" tag in them so Google doesn't index the staging link. Tell me when you're ready to go live and I'll remove that before the final switch.
 
@@ -69,4 +70,4 @@ When you're happy with the staging version:
 
 ## Making changes later
 
-Once it's live, you never need to touch code. Just come back and tell me what you want changed — new consultant, new service, new blog post, updated bio, different wording — and I'll edit the content files, run the generator, and send you the updated version to re-deploy (or, if you connect your computer/GitHub, I can push updates more directly).
+Once it's live, you never need to touch code. Just come back and tell me what you want changed — new consultant, new service, new blog post, updated bio, different wording — and I'll edit the content files, run the build, and push the update (or send you the updated version to re-deploy).

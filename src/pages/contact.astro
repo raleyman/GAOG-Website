@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const contactLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  url: 'https://www.globalairoperations.com/contact',
+  about: {
+    '@type': 'Organization',
+    name: 'Global Air Operations Group',
+    email: 'info@globalairoperations.com',
+  },
+};
+---
+
+<BaseLayout
+  title="Contact | Global Air Operations Group"
+  description="Get in touch with Global Air Operations Group about aviation operations, incident support, training, or a new program. We reply within one business day."
+  canonical="https://www.globalairoperations.com/contact"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(contactLd)} />
+
+  <main id="main">
+    <div class="page-header">
+      <div class="container">
+        <p class="eyebrow">Get In Touch</p>
+        <h1>Let's Talk About Your Program</h1>
+        <p>Tell us about your program, business, goals, and needs. We typically reply within one business day.</p>
+      </div>
+      <img class="page-header-watermark" src="/assets/logo-icon-reverse.png" alt="" aria-hidden="true" />
+    </div>
+
+    <section>
+      <div class="container contact-grid">
+        <div class="contact-card">
+          <div class="contact-row">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z" opacity="0"/><path d="M3 6l9 7 9-7M3 6v12h18V6"/></svg></span>
+            <div>
+              <h2>Email</h2>
+              <a href="mailto:info@globalairoperations.com">info@globalairoperations.com</a>
+            </div>
+          </div>
+          <div class="contact-row">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <div>
+              <h2>Phone</h2>
+              <a href="tel:+15309499868">530-949-9868</a>
+            </div>
+          </div>
+          <div class="contact-row">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 9-9M3 12l4-2M3 12l2 4M12 7v5l3 2"/></svg></span>
+            <div>
+              <h2>Response Time</h2>
+              <span>We typically reply within one business day</span>
+            </div>
+          </div>
+          <div class="contact-row">
+            <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <div>
+              <h2>Our Team</h2>
+              <a href="/team-biographies">Meet the consultants</a>
+            </div>
+          </div>
+          <div class="contact-card-note">Prefer to reach a specific consultant? Mention them in your message and we'll route it directly.</div>
+        </div>
+
+        <form class="contact-card" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="7e2dbfed-9b5a-48ae-bb15-2c994f1a15dc" />
+          <input type="hidden" name="subject" value="New Consulting Inquiry — GAOG Website" />
+          <input type="hidden" name="from_name" value="GAOG Website Contact Form" />
+          <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" aria-hidden="true" autocomplete="off" />
+          <div class="form-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required autocomplete="name" />
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email" />
+          </div>
+          <div class="form-field">
+            <label for="organization">Organization</label>
+            <input type="text" id="organization" name="organization" autocomplete="organization" />
+          </div>
+          <div class="form-field">
+            <label for="topic">What can we help with?</label>
+            <select id="topic" name="topic">
+              <option value="" selected disabled>Select a topic</option>
+              <option>Operational Strategy &amp; Incident Support</option>
+              <option>Policy &amp; Program Development</option>
+              <option>Training &amp; Exercises</option>
+              <option>AAR &amp; Continuous Improvement</option>
+              <option>Business Consulting</option>
+              <option>Something Else</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="form-note" id="form-note-default">Your message is sent directly to our team. We typically reply within one business day.</p>
+          <p class="form-result form-result-success" id="form-success" role="status" hidden>Thanks — your message has been sent. We'll be in touch soon.</p>
+          <p class="form-result form-result-error" id="form-error" role="alert" hidden>Something went wrong sending your message. Please email us directly at <a href="mailto:info@globalairoperations.com">info@globalairoperations.com</a>.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script is:inline src="/contact-form.js" slot="scripts"></script>
+</BaseLayout>

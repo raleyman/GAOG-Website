@@ -1,0 +1,24 @@
+---
+interface Props {
+  block: {
+    type: string;
+    text?: string;
+    value?: string;
+    detail?: string;
+  };
+}
+
+const { block } = Astro.props;
+---
+
+{block.type === 'h3' && <h2>{block.text}</h2>}
+{block.type === 'quote' && (
+  <blockquote class="pull-quote article-pull-quote">{block.text}</blockquote>
+)}
+{block.type === 'stat' && (
+  <div class="article-stat-callout">
+    <span class="stat-value">{block.value}</span>
+    <span class="stat-detail">{block.detail}</span>
+  </div>
+)}
+{block.type === 'p' && <p>{block.text}</p>}

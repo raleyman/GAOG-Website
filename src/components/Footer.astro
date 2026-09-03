@@ -1,0 +1,45 @@
+---
+import services from '../../content/services.json';
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand"><img class="footer-logo" src="/assets/logo-icon-reverse.png" alt="Global Air Operations Group logo" /> Global Air Operations Group</div>
+        <p class="footer-tagline">Strategic Consulting&nbsp;&middot;&nbsp;Operational Planning&nbsp;&middot;&nbsp;Incident Support</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h2>Site</h2>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="/insights">Insights</a></li>
+            <li><a href="/team-biographies">Team Biographies</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Contact</h2>
+          <ul>
+            <li><a href="mailto:info@globalairoperations.com">info@globalairoperations.com</a></li>
+            <li><a href="tel:+15309499868">530-949-9868</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h2>Services</h2>
+          <ul>
+            {services.map((svc) => (
+              <li><a href={`/services/${svc.slug}`}>{svc.title}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; {new Date().getFullYear()} Global Air Operations Group. All Rights Reserved.</span>
+    </div>
+  </div>
+</footer>

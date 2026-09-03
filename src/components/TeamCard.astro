@@ -1,0 +1,42 @@
+---
+import { slugify } from '../lib/content.js';
+
+interface Props {
+  name: string;
+  role: string;
+  bio: string;
+  photo?: string;
+  initials: string;
+  fullBio?: string[];
+}
+
+const { name, role, bio, photo, initials, fullBio } = Astro.props;
+const bioId = `bio-${slugify(name)}`;
+const hasFull = Boolean(fullBio?.length);
+---
+
+<article class="team-card">
+  <div
+    class="team-photo"
+    data-bio-open={hasFull ? bioId : undefined}
+    role={hasFull ? 'button' : undefined}
+    tabindex={hasFull ? 0 : undefined}
+    aria-label={hasFull ? `Read full biography for ${name}` : undefined}
+  >
+    {photo ? (
+      <img src={photo} alt={name} loading="lazy" />
+    ) : (
+      initials
+    )}
+  </div>
+  <div class="team-body">
+    <h2>{name}</h2>
+    <div class="team-role">{role}</div>
+    <p class="team-bio clamp">{bio}</p>
+    {hasFull && (
+      <button type="button" class="team-readmore" data-bio-open={bioId}>
+        Read Full Biography &rarr;
+      </button>
+    )}
+  </div>
+</article>

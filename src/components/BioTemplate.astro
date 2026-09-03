@@ -1,0 +1,30 @@
+---
+import { slugify } from '../lib/content.js';
+
+interface Props {
+  name: string;
+  role: string;
+  initials: string;
+  photo?: string;
+  education?: string | null;
+  fullBio?: string[];
+  bio: string;
+}
+
+const { name, role, initials, photo, education, fullBio, bio } = Astro.props;
+if (!fullBio?.length) return null;
+
+const bioId = `bio-${slugify(name)}`;
+const paragraphs = fullBio;
+---
+
+<template
+  id={bioId}
+  data-name={name}
+  data-role={role}
+  data-initials={initials}
+  data-photo={photo ?? ''}
+  data-edu={education ?? ''}
+>
+  {paragraphs.map((p) => <p>{p}</p>)}
+</template>

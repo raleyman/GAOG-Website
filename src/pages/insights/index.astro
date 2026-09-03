@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import InsightItem from '../../components/InsightItem.astro';
+import insightsEntries from '../../../content/insights.json';
+import articles from '../../../content/articles.json';
+import { DOMAIN, sortInsightsEntries } from '../../lib/content.js';
+
+const articlesBySlug = Object.fromEntries(articles.map((a) => [a.slug, a]));
+const analysisEntries = sortInsightsEntries(
+  insightsEntries.filter((e) => e.type === 'article')
+);
+const curatedEntries = sortInsightsEntries(
+  insightsEntries.filter((e) => e.type === 'watch')
+);
+
+const insightsLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Insights',
+  url: `${DOMAIN}/insights`,
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'Global Air Operations Group',
+    url: DOMAIN,
+  },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: Object.values(articlesBySlug).map((a, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'Article',
+        headline: a.title,
+        url: `${DOMAIN}/insights/${a.slug}`,
+        description: a.description,
+      },
+    })),
+  },
+};
+---
+
+<BaseLayout
+  title="Insights | Global Air Operations Group"
+  description="Original analysis from Global Air Operations Group, plus a curated watch on wildfire, aviation, and business news worth your attention."
+  canonical={`${DOMAIN}/insights`}
+  scrollReveal={true}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(insightsLd)} />
+
+  <main id="main">
+    <div class="page-header page-header-photo">
+      <img class="page-header-photo-img page-header-photo-img--insights" src="/assets/insights-hero.jpg" alt="" aria-hidden="true" />
+      <div class="container">
+        <p class="eyebrow">Insights</p>
+        <h1>Wildfire, Aviation &amp; Business Insights</h1>
+        <p>Original analysis from our consultants, plus a running, curated watch on the industry news, reports, and business moves we think are worth your time.</p>
+      </div>
+    </div>
+
+    <section aria-labelledby="watch-list-heading">
+      <div class="container">
+        <h2 id="watch-list-heading" class="visually-hidden">Latest Insights</h2>
+
+        <div class="watch-tier watch-tier-analysis">
+          <div class="watch-tier-head">
+            <h2>Original Analysis</h2>
+            <p class="watch-tier-note">Written by our own consultants</p>
+          </div>
+          <div class="watch-list reveal-group">
+            {analysisEntries.length > 0 ? (
+              analysisEntries.map((entry) => (
+                <InsightItem
+                  entry={entry}
+                  article={entry.slug ? articlesBySlug[entry.slug] : undefined}
+                />
+              ))
+            ) : (
+              <div class="pub-empty">More original analysis is on the way.</div>
+            )}
+          </div>
+        </div>
+
+        <div class="watch-tier watch-tier-curated">
+          <div class="watch-tier-head">
+            <h2>Industry Watch</h2>
+            <p class="watch-tier-note">Curated news &amp; announcements worth your attention</p>
+          </div>
+          <div class="watch-list reveal-group">
+            {curatedEntries.length > 0 ? (
+              curatedEntries.map((entry) => (
+                <InsightItem entry={entry} />
+              ))
+            ) : (
+              <div class="pub-empty">More entries are on the way.</div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

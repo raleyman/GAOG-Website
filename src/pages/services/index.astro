@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import services from '../../../content/services.json';
+import { DOMAIN } from '../../lib/content.js';
+
+const servicesLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  itemListElement: services.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Service',
+      name: s.title,
+      url: `${DOMAIN}/services/${s.slug}`,
+      provider: { '@type': 'Organization', name: 'Global Air Operations Group' },
+      description: s.summary || s.description,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  title="Services | Global Air Operations Group"
+  description="Consulting from Global Air Operations Group: operational strategy, policy and program development, training, after-action review, and business consulting."
+  canonical={`${DOMAIN}/services`}
+  scrollReveal={true}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(servicesLd)} />
+
+  <main id="main">
+    <div class="page-header page-header-photo">
+      <img class="page-header-photo-img" src="/assets/services-hero.jpg" alt="" aria-hidden="true" />
+      <div class="container">
+        <p class="eyebrow">What We Do</p>
+        <h1>Consulting Services</h1>
+        <p>Services built around aviation operations, program and business development, led by consultants who have done the work themselves.</p>
+      </div>
+    </div>
+
+    <section aria-labelledby="svc-list-heading">
+      <div class="container">
+        <h2 id="svc-list-heading" class="visually-hidden">Our Services</h2>
+        <div class="grid-svc reveal-group">
+          {services.map((svc) => (
+            <a class="svc-card" href={`/services/${svc.slug}`}>
+              {svc.card_bg_image && (
+                <img class="svc-card-bg" src={svc.card_bg_image} alt="" aria-hidden="true" />
+              )}
+              <div class="svc-card-body">
+                <h3>{svc.title}</h3>
+                <p>{svc.summary || svc.description}</p>
+                <span class="svc-card-more">Learn more &rarr;</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section-alt" aria-labelledby="svc-contact-heading">
+      <div class="container">
+        <div class="cta-band">
+          <div class="cta-copy">
+            <p class="eyebrow">Get In Touch</p>
+            <h2 id="svc-contact-heading">Tell us about your program, business, goals, and needs</h2>
+            <p>Not sure which service fits? Reach out and we'll help point you in the right direction.</p>
+          </div>
+          <a class="btn btn-primary" href="/contact">Go to Contact Page</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

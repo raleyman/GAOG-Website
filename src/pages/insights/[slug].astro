@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleBodyBlock from '../../components/ArticleBodyBlock.astro';
+import articles from '../../../content/articles.json';
+import { DOMAIN, getArticleHeroImage } from '../../lib/content.js';
+
+export function getStaticPaths() {
+  return articles.map((pub) => ({ params: { slug: pub.slug }, props: { pub } }));
+}
+
+const { pub } = Astro.props;
+const bylineAuthors = pub.authors.join(' and ');
+const heroImage = getArticleHeroImage(pub);
+const authorsLd = pub.authors.map((a) => ({ '@type': 'Person', name: a }));
+const publisherLd =
+  pub.featured_in && pub.featured_in_url
+    ? { '@type': 'Organization', name: pub.featured_in }
+    : { '@type': 'Organization', name: 'Global Air Operations Group' };
+
+const articleLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: pub.title,
+  author: authorsLd,
+  publisher: publisherLd,
+  mainEntityOfPage: `${DOMAIN}/insights/${pub.slug}`,
+  description: pub.description,
+};
+if (pub.featured_in && pub.featured_in_url) {
+  articleLd.isBasedOn = pub.featured_in_url;
+}
+---
+
+<BaseLayout
+  title={`${pub.seo_title || pub.title} | Global Air Operations Group`}
+  description={pub.description}
+  canonical={`${DOMAIN}/insights/${pub.slug}`}
+  ogType="article"
+  ogTitle={pub.seo_title || pub.title}
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(articleLd)} />
+
+  <main id="main">
+    <div class="page-header page-header-photo">
+      <img class="page-header-photo-img" src={heroImage} alt="" aria-hidden="true" />
+      <div class="container">
+        <p class="eyebrow"><a href="/insights" style="color:inherit;">Insights</a></p>
+        <h1>{pub.title}</h1>
+        <p>
+          By {bylineAuthors} · {pub.date}
+          {pub.featured_in && pub.featured_in_url && (
+            <>
+              {' · Featured in '}
+              <a href={pub.featured_in_url} target="_blank" rel="noopener">
+                {pub.featured_in}{' '}
+                <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+              </a>
+            </>
+          )}
+          {pub.featured_in && !pub.featured_in_url && (
+            <> · Featured in {pub.featured_in}</>
+          )}
+        </p>
+      </div>
+    </div>
+
+    <section class="section-alt">
+      <div class="container">
+        {pub.pdf && (
+          <div class="pub-list" style="margin-bottom:40px;">
+            <a class="pub-item" href={`/assets/${pub.pdf}`} target="_blank" rel="noopener">
+              <span class="pub-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></svg>
+              </span>
+              <div class="pub-meta">
+                <p class="pub-title">Download as PDF</p>
+                <span>Formatted with letterhead · {pub.date}</span>
+              </div>
+            </a>
+          </div>
+        )}
+        <article class="article-body" id="full-article">
+          {pub.body.map((block) => <ArticleBodyBlock block={block} />)}
+          <p class="article-signature">
+            Written by {bylineAuthors}<br />Global Air Operations Group
+          </p>
+          {pub.featured_in && pub.featured_in_url && (
+            <div class="related-link">
+              <span class="related-link-label">Originally Published</span>
+              <a href={pub.featured_in_url} target="_blank" rel="noopener">
+                Read in {pub.featured_in}{' '}
+                <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+              </a>
+            </div>
+          )}
+          <div class="related-link">
+            <span class="related-link-label">Continue Reading</span>
+            <a href="/insights">More from Insights &rarr;</a>
+          </div>
+          <div class="related-link">
+            <span class="related-link-label">Have a Program or Project in Mind?</span>
+            <a href="/contact">Talk to Our Consultants &rarr;</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

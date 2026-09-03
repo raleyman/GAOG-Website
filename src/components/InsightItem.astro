@@ -1,0 +1,89 @@
+---
+import {
+  INSIGHT_CATEGORY_LABELS,
+  getArticleCardImage,
+  getInsightTakeLabel,
+  formatByline,
+} from '../lib/content.js';
+
+interface Props {
+  entry: {
+    type: 'article' | 'watch';
+    slug?: string;
+    url?: string;
+    date: string;
+    title?: string;
+    source?: string;
+    category?: string;
+    featured?: boolean;
+    take: string;
+  };
+  article?: {
+    title: string;
+    authors?: string[];
+    featured_in?: string;
+  };
+}
+
+const { entry, article } = Astro.props;
+const takeLabel = getInsightTakeLabel(entry);
+const showFeatured = entry.featured && entry.type !== 'article';
+
+let itemClass = 'watch-item';
+let cardImage = '';
+
+if (entry.type === 'article' && entry.slug) {
+  cardImage = getArticleCardImage(entry.slug) ?? '';
+  if (cardImage) itemClass = 'watch-item watch-item-featured';
+}
+---
+
+<article class={itemClass}>
+  {cardImage && (
+    <img class="watch-item-image" src={cardImage} alt="" aria-hidden="true" />
+  )}
+  <div class="watch-item-content">
+    <div class="watch-meta">
+      {showFeatured && <span class="watch-featured">Featured</span>}
+      {entry.type === 'article' ? (
+        <span class="watch-source watch-source-own">Our Analysis</span>
+      ) : (
+        <>
+          <span class={`watch-category watch-category-${entry.category ?? 'article'}`}>
+            {INSIGHT_CATEGORY_LABELS[entry.category ?? 'article'] ?? 'Article'}
+          </span>
+          <span class="watch-source-name">{entry.source}</span>
+        </>
+      )}
+      <span class="watch-date">{entry.date}</span>
+    </div>
+    <h3>
+      {entry.type === 'article' && article && entry.slug ? (
+        <a href={`/insights/${entry.slug}`}>{article.title}</a>
+      ) : (
+        <a href={entry.url} target="_blank" rel="noopener">
+          {entry.title}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+        </a>
+      )}
+    </h3>
+    <p class="watch-take"><strong>{takeLabel}</strong> {entry.take}</p>
+    {entry.type === 'article' && article?.authors?.length && (
+      <p class="watch-byline">
+        {article.featured_in && entry.url ? (
+          <>
+            {formatByline(article.authors)} &middot; Originally published in{' '}
+            <a href={entry.url} target="_blank" rel="noopener">
+              {article.featured_in}{' '}
+              <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </a>
+          </>
+        ) : article.featured_in ? (
+          `${formatByline(article.authors)}, as featured in ${article.featured_in}`
+        ) : (
+          formatByline(article.authors)
+        )}
+      </p>
+    )}
+  </div>
+</article>
