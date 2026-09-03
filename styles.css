@@ -255,8 +255,14 @@ body.has-hero .site-header.is-scrolled .nav-toggle { color: var(--color-ink); }
 .nav-links a:hover { color: var(--color-ink); background: var(--color-surface-alt); }
 /* A pale-pink chip read as a disabled state sitting next to the solid-red
    Contact button — a crisp underline reads as "selected" without competing
-   with that button's visual weight (see stylistic review, Aug 2026). */
-.nav-links a.is-active { color: var(--color-red-500); background: none; box-shadow: inset 0 -2px 0 var(--color-red-500); border-radius: 4px; }
+   with that button's visual weight (see stylistic review, Aug 2026).
+   border-radius: 0 here (overriding the 8px on .nav-links a) is deliberate:
+   an inset box-shadow underline is clipped by the element's own corner
+   radius, so a rounded box turns a straight line into one that curls
+   upward at both ends. Flattened to 0 so the underline reads as a plain
+   straight line — the curled version was flagged as an AI-generated-site
+   tell (Sept 2026). */
+.nav-links a.is-active { color: var(--color-red-500); background: none; box-shadow: inset 0 -2px 0 var(--color-red-500); border-radius: 0; }
 .nav-cta { margin-left: 8px; }
 .nav-cta .btn.btn-primary {
   color: #ffffff;
