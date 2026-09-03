@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import IncludedList from '../../components/IncludedList.astro';
 import services from '../../../content/services.json';
 import articles from '../../../content/articles.json';
 import { DOMAIN, getServiceHeroImage } from '../../lib/content.js';
@@ -15,6 +16,7 @@ const relatedPub = svc.related_publication
   : null;
 const otherServices = services.filter((s) => s.slug !== svc.slug);
 const heroImage = getServiceHeroImage(svc);
+const hasIncluded = Boolean(svc.included?.length);
 
 const serviceLd = {
   '@context': 'https://schema.org',
@@ -50,20 +52,10 @@ const serviceLd = {
     <section class="section-alt">
       <div class="container svc-detail-layout">
         <article class="article-body">
-          {svc.body.map((p) => <p>{p}</p>)}
-          {svc.included?.length > 0 && (
-            <>
-              <h3>What's Included</h3>
-              <ul class="included-list">
-                {svc.included.map((item) => (
-                  <li>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
+          {svc.body.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+          {hasIncluded ? <IncludedList items={svc.included} /> : null}
           {svc.credentials_note && (
             <div class="credentials-note">{svc.credentials_note}</div>
           )}

@@ -6,12 +6,12 @@
    Mark any container with class="reveal-group"; its direct children
    animate in the first time they scroll into view, once each, staggered
    left-to-right within their own visual row. */
-(function () {
-  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+(() => {
+  var reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-  document.querySelectorAll('.reveal-group').forEach(function (group) {
+  document.querySelectorAll('.reveal-group').forEach((group) => {
     var kids = Array.prototype.slice.call(group.children);
-    kids.forEach(function (el) { el.classList.add('reveal'); });
+    kids.forEach((el) => { el.classList.add('reveal'); });
 
     // Stagger by VISUAL ROW so the sweep restarts left-to-right on each
     // row instead of continuing (or wrapping) across the whole grid.
@@ -24,7 +24,7 @@
     var ROW_TOLERANCE = 4; // px
     var rowTops = [];
     var rows = [];
-    kids.forEach(function (el) {
+    kids.forEach((el) => {
       var top = el.offsetTop;
       var rowIndex = -1;
       for (var i = 0; i < rowTops.length; i++) {
@@ -37,8 +37,8 @@
         rows[rowIndex].push(el);
       }
     });
-    rows.forEach(function (row) {
-      row.forEach(function (el, i) {
+    rows.forEach((row) => {
+      row.forEach((el, i) => {
         el.style.setProperty('--reveal-i', Math.min(i, 7)); // cap so a long row doesn't crawl in for seconds
       });
     });
@@ -48,7 +48,7 @@
     // Reduced motion, or a very old browser with no observer support:
     // reveal everything immediately rather than leaving it to a scroll
     // that may never trigger an observer.
-    document.querySelectorAll('.reveal').forEach(function (el) {
+    document.querySelectorAll('.reveal').forEach((el) => {
       el.classList.add('is-visible');
     });
     return;
@@ -74,8 +74,8 @@
   // animation and it's a rare way to scroll anyway (Sept 2026, fourth
   // pass — measured across slow/moderate/fast scroll speeds before
   // shipping this time, not just reasoned about).
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
+  var io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
         io.unobserve(entry.target); // reveal once — re-triggering on every scroll up/down reads as busy, not polished
@@ -83,5 +83,5 @@
     });
   }, { threshold: 0.01, rootMargin: '0px' });
 
-  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  document.querySelectorAll('.reveal').forEach((el) => { io.observe(el); });
 })();

@@ -16,19 +16,28 @@ const hasFull = Boolean(fullBio?.length);
 ---
 
 <article class="team-card">
-  <div
-    class="team-photo"
-    data-bio-open={hasFull ? bioId : undefined}
-    role={hasFull ? 'button' : undefined}
-    tabindex={hasFull ? 0 : undefined}
-    aria-label={hasFull ? `Read full biography for ${name}` : undefined}
-  >
-    {photo ? (
-      <img src={photo} alt={name} loading="lazy" />
-    ) : (
-      initials
-    )}
-  </div>
+  {hasFull ? (
+    <button
+      type="button"
+      class="team-photo"
+      data-bio-open={bioId}
+      aria-label={`Read full biography for ${name}`}
+    >
+      {photo ? (
+        <img src={photo} alt={name} loading="lazy" />
+      ) : (
+        initials
+      )}
+    </button>
+  ) : (
+    <div class="team-photo">
+      {photo ? (
+        <img src={photo} alt={name} loading="lazy" />
+      ) : (
+        initials
+      )}
+    </div>
+  )}
   <div class="team-body">
     <h2>{name}</h2>
     <div class="team-role">{role}</div>

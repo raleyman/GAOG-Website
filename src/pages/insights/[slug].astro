@@ -53,7 +53,7 @@ if (pub.featured_in && pub.featured_in_url) {
               {' · Featured in '}
               <a href={pub.featured_in_url} target="_blank" rel="noopener">
                 {pub.featured_in}{' '}
-                <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+                <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
               </a>
             </>
           )}
@@ -70,7 +70,7 @@ if (pub.featured_in && pub.featured_in_url) {
           <div class="pub-list" style="margin-bottom:40px;">
             <a class="pub-item" href={`/assets/${pub.pdf}`} target="_blank" rel="noopener">
               <span class="pub-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></svg>
               </span>
               <div class="pub-meta">
                 <p class="pub-title">Download as PDF</p>
@@ -89,7 +89,7 @@ if (pub.featured_in && pub.featured_in_url) {
               <span class="related-link-label">Originally Published</span>
               <a href={pub.featured_in_url} target="_blank" rel="noopener">
                 Read in {pub.featured_in}{' '}
-                <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+                <svg class="external-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M7 7h10v10"/></svg>
               </a>
             </div>
           )}

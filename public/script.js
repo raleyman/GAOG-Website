@@ -1,14 +1,14 @@
 // Mobile nav toggle
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   var toggle = document.querySelector(".nav-toggle");
   var links = document.querySelector(".nav-links");
   if (toggle && links) {
-    toggle.addEventListener("click", function () {
+    toggle.addEventListener("click", () => {
       var isOpen = links.classList.toggle("is-open");
       toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
     });
-    links.querySelectorAll("a").forEach(function (a) {
-      a.addEventListener("click", function () {
+    links.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => {
         links.classList.remove("is-open");
         toggle.setAttribute("aria-expanded", "false");
       });
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var header = document.querySelector(".site-header");
   var hero = document.querySelector(".hero");
   if (header && hero) {
-    var updateHeader = function () {
+    var updateHeader = () => {
       var threshold = Math.max(hero.offsetHeight - header.offsetHeight, 40);
       if (window.scrollY > threshold) {
         header.classList.add("is-scrolled");
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var selector = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
       return Array.prototype.filter.call(
         overlay.querySelectorAll(selector),
-        function (el) { return el.offsetParent !== null; }
+        (el) => el.offsetParent !== null
       );
     }
 
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
       lastFocused = document.activeElement;
       var photo = tpl.getAttribute("data-photo") || "";
       if (photo) {
-        modalAvatar.innerHTML = '<img src="' + photo + '" alt="" />';
+        modalAvatar.innerHTML = `<img src="${photo}" alt="" />`;
       } else {
         modalAvatar.textContent = tpl.getAttribute("data-initials") || "";
       }
@@ -90,14 +90,14 @@ document.addEventListener("DOMContentLoaded", function () {
     function closeBio() {
       overlay.hidden = true;
       document.body.style.overflow = "";
-      if (lastFocused && lastFocused.focus) lastFocused.focus();
+      if (lastFocused?.focus) lastFocused.focus();
     }
 
-    document.querySelectorAll("[data-bio-open]").forEach(function (el) {
-      el.addEventListener("click", function () {
+    document.querySelectorAll("[data-bio-open]").forEach((el) => {
+      el.addEventListener("click", () => {
         openBio(el.getAttribute("data-bio-open"));
       });
-      el.addEventListener("keydown", function (e) {
+      el.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           openBio(el.getAttribute("data-bio-open"));
@@ -106,10 +106,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     closeBtn.addEventListener("click", closeBio);
-    overlay.addEventListener("click", function (e) {
+    overlay.addEventListener("click", (e) => {
       if (e.target === overlay) closeBio();
     });
-    document.addEventListener("keydown", function (e) {
+    document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && !overlay.hidden) closeBio();
       trapFocus(e);
     });

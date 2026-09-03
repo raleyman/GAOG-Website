@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
   var f = document.getElementById('contact-form');
   if (!f) return;
 
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var successMsg = document.getElementById('form-success');
   var errorMsg = document.getElementById('form-error');
 
-  f.addEventListener('submit', function (e) {
+  f.addEventListener('submit', (e) => {
     e.preventDefault();
 
     successMsg.hidden = true;
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var formData = new FormData(f);
     var topic = document.getElementById('topic').value;
-    formData.set('subject', 'New Consulting Inquiry: ' + (topic || 'General') + ' — GAOG Website');
+    formData.set('subject', `New Consulting Inquiry: ${topic || 'General'} — GAOG Website`);
 
     var originalText = submitBtn.textContent;
     submitBtn.textContent = 'Sending…';
@@ -26,13 +26,9 @@ document.addEventListener('DOMContentLoaded', function () {
       body: formData,
       headers: { Accept: 'application/json' },
     })
-      .then(function (response) {
-        return response.json().then(function (data) {
-          return { ok: response.ok, data: data };
-        });
-      })
-      .then(function (result) {
-        if (result.ok && result.data && result.data.success) {
+      .then((response) => response.json().then((data) => ({ ok: response.ok, data: data })))
+      .then((result) => {
+        if (result.ok && result.data?.success) {
           f.reset();
           defaultNote.hidden = true;
           successMsg.hidden = false;
@@ -40,10 +36,10 @@ document.addEventListener('DOMContentLoaded', function () {
           errorMsg.hidden = false;
         }
       })
-      .catch(function () {
+      .catch(() => {
         errorMsg.hidden = false;
       })
-      .then(function () {
+      .then(() => {
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
       });
