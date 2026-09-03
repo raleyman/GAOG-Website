@@ -1,8 +1,8 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import InsightItem from '../../components/InsightItem.astro';
-import insightsEntries from '../../../content/insights.json';
 import articles from '../../../content/articles.json';
+import insightsEntries from '../../../content/insights.json';
+import InsightItem from '../../components/InsightItem.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { DOMAIN, sortInsightsEntries } from '../../lib/content.js';
 
 const articlesBySlug = Object.fromEntries(articles.map((a) => [a.slug, a]));
