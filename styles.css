@@ -334,10 +334,26 @@ body.has-hero .site-header.is-scrolled .nav-toggle { color: var(--color-ink); }
   /* Shifted down from 45% so the aircraft wing/engine in the frame's lower
      right — the detail that actually earns this photo its aviation-led
      story — survives the crop instead of falling below it (see stylistic
-     review, Aug 2026). Filter lifts overall exposure slightly so the photo
-     reads through the gradient instead of going murky. */
+     review, Aug 2026). */
   object-position: 62% 62%;
-  filter: brightness(1.16) contrast(1.02);
+  /* The smoke plume is the photo's whole reason for being here, and it was
+     losing its own texture: brightness(1.16) was a flat multiply across
+     every pixel, which does nothing useful under the ::before scrim (a
+     94%-opaque black overlay crushes a brightened pixel exactly as dark as
+     an unbrightened one) but blows out the plume's highlights everywhere
+     the scrim is thin — measured at 15.4% of the frame pushed to
+     near-white and 22.0% of pixels clipping a channel, against 1.7%/4.8%
+     in the source file. Fixed at the source instead of papering over it
+     with a filter: hero-photo.jpg now carries a baked-in micro-sharpen
+     (UnsharpMask r=1.6/70%) plus a large-radius, low-percent "clarity"
+     pass (r=45/35%) that restores the plume's folds and edge definition
+     without an across-the-board exposure lift. The filter here dropped to
+     a plain contrast bump for a little more punch against the dark scrim;
+     with the baked-in clarity pass this still lands at only 7.5%/11.7% —
+     well below the old flat-brightness look, without the murky-under-the-
+     gradient tradeoff a straight revert to the unenhanced file would have
+     made (see hero photo review, Sept 2026). */
+  filter: contrast(1.05);
   z-index: 0;
 }
 .hero::before {
