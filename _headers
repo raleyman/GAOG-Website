@@ -1,0 +1,15 @@
+# Cloudflare Workers static-asset headers file — applies to every response
+# served from this site (see /workers/static-assets/headers/ in Cloudflare's
+# docs). Added per the Sept 2026 site audit: the site was shipping with none
+# of these, low risk for a brochure site but free to add.
+#
+# Strict-Transport-Security here only takes effect once a visitor has
+# actually reached the site over HTTPS — it does not by itself redirect a
+# plain http:// request. That redirect still has to be turned on separately
+# in Cloudflare (SSL/TLS > Edge Certificates > "Always Use HTTPS"), which is
+# a dashboard setting, not something this file can do.
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
