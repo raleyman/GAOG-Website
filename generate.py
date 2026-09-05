@@ -66,6 +66,26 @@ def esc(s):
              .replace('"', "&quot;"))
 
 
+def render_take(text):
+    """Escape a "take" string for output, while supporting one lightweight
+    marker for an inline link: {{link:URL}}display text{{/link}}. Everything
+    outside a marker is escaped normally via esc(); the URL and display text
+    inside a marker are escaped individually before being wrapped in an
+    <a> tag, so this never opens a path for raw/unescaped HTML — it just
+    lets a take reference one of our own pages inline instead of only via
+    the item's own headline link."""
+    pattern = re.compile(r"\{\{link:(.*?)\}\}(.*?)\{\{/link\}\}")
+    parts = []
+    pos = 0
+    for m in pattern.finditer(text):
+        parts.append(esc(text[pos:m.start()]))
+        url, label = m.group(1), m.group(2)
+        parts.append(f'<a href="{esc(url)}">{esc(label)}</a>')
+        pos = m.end()
+    parts.append(esc(text[pos:]))
+    return "".join(parts)
+
+
 # ---------------------------------------------------------------- services
 def render_service_card(svc):
     bg_html = ""
@@ -612,7 +632,7 @@ def render_insight_item(entry, articles_by_slug):
               <span class="watch-date">{esc(entry['date'])}</span>
             </div>
             <h3><a href="{esc(href)}"{link_attrs}>{esc(title)}{icon}</a></h3>
-            <p class="watch-take"><strong>{take_label}</strong> {esc(entry['take'])}</p>{byline_html}
+            <p class="watch-take"><strong>{take_label}</strong> {render_take(entry['take'])}</p>{byline_html}
           </div>
         </article>
 """

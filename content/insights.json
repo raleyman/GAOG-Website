@@ -9,6 +9,15 @@
   },
   {
     "type": "watch",
+    "category": "article",
+    "source": "Texas A&M Forest Service",
+    "url": "https://tfsweb.tamu.edu/ross-fire-becomes-largest-summer-wildfire-in-texas/",
+    "date": "Sep 4, 2026",
+    "title": "Ross Fire Becomes Largest Summer Wildfire in Texas",
+    "take": "At 90,400 acres, the Ross Fire is now the largest summertime wildfire Texas has recorded since 2005, but the number worth reading past is buried in the same release: Texas A&M Forest Service applied ground-based retardant along 4.5 miles of Highway 16 on August 31, the first time it's been used in a Texas wildfire response. That's the exact case we made in {{link:/insights/retardant-is-not-just-for-airtankers-anymore}}our own piece on ground-applied retardant{{/link}}, deployed here on a fire big enough that every tool in the response mattered."
+  },
+  {
+    "type": "watch",
     "category": "business",
     "featured": true,
     "source": "Lockheed Martin Newsroom",
