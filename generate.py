@@ -113,19 +113,6 @@ def render_svc_index_card(svc):
 """
 
 
-def render_included_list(items):
-    if not items:
-        return ""
-    lis = "".join(
-        f'          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>{esc(item)}</li>\n'
-        for item in items
-    )
-    return f"""        <h3>What's Included</h3>
-        <ul class="included-list">
-{lis}        </ul>
-"""
-
-
 def build_services_index(services):
     cards = "\n".join(render_svc_index_card(s) for s in services)
     nav = NAV.format(insights_active="", svc_active=' class="is-active"')
@@ -138,7 +125,7 @@ def build_services_index(services):
 
 
 <title>Services | Global Air Operations Group</title>
-<meta name="description" content="Consulting from Global Air Operations Group: operational strategy, policy and program development, training, after-action review, and business consulting." />
+<meta name="description" content="Consulting from Global Air Operations Group: operational strategy, policy and program development, training, after-action review, and business development." />
 <link rel="canonical" href="{DOMAIN}/services" />
 
 <meta property="og:type" content="website" />
@@ -234,7 +221,6 @@ SERVICE_HERO_PHOTOS = {
 
 def build_service_page(svc, articles_by_slug, all_services):
     body_html = "".join(f"        <p>{esc(p)}</p>\n" for p in svc["body"])
-    included_html = render_included_list(svc.get("included"))
     credentials_html = ""
     if svc.get("credentials_note"):
         credentials_html = f'        <div class="credentials-note">{esc(svc["credentials_note"])}</div>\n'
@@ -329,7 +315,7 @@ def build_service_page(svc, articles_by_slug, all_services):
   <section class="section-alt">
     <div class="container svc-detail-layout">
       <article class="article-body">
-{body_html}{included_html}{credentials_html}{related_html}        <p class="article-signature"><a href="/team-biographies">Meet the consultants behind our work &rarr;</a></p>
+{body_html}{credentials_html}{related_html}        <p class="article-signature"><a href="/team-biographies">Meet the consultants behind our work &rarr;</a></p>
       </article>
 {sidebar_html}    </div>
   </section>
@@ -496,7 +482,7 @@ FOOTER = """<footer class="site-footer">
             <li><a href="/services/policy-program-development">Policy &amp; Program Development</a></li>
             <li><a href="/services/training-exercises">Training &amp; Exercises</a></li>
             <li><a href="/services/aar-continuous-improvement">AAR &amp; Continuous Improvement</a></li>
-            <li><a href="/services/business-consulting">Business Consulting</a></li>
+            <li><a href="/services/business-consulting">Business Development &amp; Innovation</a></li>
           </ul>
         </div>
       </div>
