@@ -18,6 +18,15 @@
   },
   {
     "type": "watch",
+    "category": "article",
+    "source": "National Interagency Fire Center",
+    "url": "https://www.nifc.gov/nicc-files/predictive/outlooks/monthly_seasonal_outlook.pdf",
+    "date": "Sep 1, 2026",
+    "title": "September–December 2026 Wildland Fire Outlook",
+    "take": "NIFC's latest outlook keeps the Northwest and far northern California at above normal fire potential through September. The bigger flag for planning purposes is what happens after: below normal precipitation and above normal temperatures are expected clear through December, with cured fine fuels staying critically dry well past when programs typically start standing resources down. A slow transition into the wet season is exactly the scenario that catches staffing and aircraft availability flat footed heading into what's usually treated as the off season."
+  },
+  {
+    "type": "watch",
     "category": "business",
     "featured": true,
     "source": "Lockheed Martin Newsroom",
