@@ -528,6 +528,13 @@ def sort_insights_entries(entries):
 ARTICLE_CARD_IMAGES = {
     "retardant-is-not-just-for-airtankers-anymore": "/assets/publications/retardant-featured-card.jpg",
 }
+# Actual pixel dimensions of the images above, so the article page's
+# og:image:width/height and Article schema stay accurate instead of
+# claiming the generic site default's 1200x630 for a differently-shaped
+# image (see SEO pass, Sept 2026).
+ARTICLE_CARD_IMAGE_DIMS = {
+    "retardant-is-not-just-for-airtankers-anymore": (1000, 391),
+}
 
 
 def render_insight_item(entry, articles_by_slug):
@@ -802,6 +809,28 @@ def build_article_page(pub):
     else:
         publisher_ld = json.dumps({"@type": "Organization", "name": "Global Air Operations Group"})
         is_based_on_line = ""
+    # SEO, Sept 2026 pass: Google's own Article structured-data guidelines
+    # list "image" as a required property and "datePublished" as strongly
+    # recommended for rich-result eligibility; this schema previously had
+    # neither. article_image reuses the same card image already shown for
+    # this piece in the Insights feed (ARTICLE_CARD_IMAGES), so the schema
+    # points at an image that's actually representative of the piece
+    # instead of nothing at all. Falls back to the site's default OG image
+    # for any future article that doesn't have its own card image yet.
+    article_image = ARTICLE_CARD_IMAGES.get(pub["slug"])
+    if article_image:
+        image_url = f"{DOMAIN}{article_image}"
+        image_dims = ARTICLE_CARD_IMAGE_DIMS.get(pub["slug"], (1200, 630))
+    else:
+        image_url = OG_IMAGE
+        image_dims = (1200, 630)
+    image_meta_tags = (
+        f'<meta property="og:image" content="{image_url}" />\n'
+        f'<meta property="og:image:width" content="{image_dims[0]}" />\n'
+        f'<meta property="og:image:height" content="{image_dims[1]}" />'
+    )
+    image_ld_line = f'\n  "image": {json.dumps(image_url)},'
+    date_published_line = f'\n  "datePublished": {json.dumps(pub["date_iso"])},' if pub.get("date_iso") else ""
     nav = NAV.format(insights_active=' class="is-active"', svc_active="")
 
     return f"""<!doctype html>
@@ -820,7 +849,7 @@ def build_article_page(pub):
 <meta property="og:title" content="{esc(pub.get('seo_title') or pub['title'])}" />
 <meta property="og:description" content="{esc(pub['description'])}" />
 <meta property="og:url" content="{DOMAIN}/insights/{pub['slug']}" />
-{OG_IMAGE_TAGS}
+{image_meta_tags}
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
@@ -834,7 +863,7 @@ def build_article_page(pub):
 {{
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": {json.dumps(pub['title'])},
+  "headline": {json.dumps(pub['title'])},{image_ld_line}{date_published_line}
   "author": {authors_ld},
   "publisher": {publisher_ld},{is_based_on_line}
   "mainEntityOfPage": "{DOMAIN}/insights/{pub['slug']}",
@@ -891,8 +920,13 @@ def build_sitemap(articles, services):
         ("/privacy", "0.3"),
     ] + [(f"/services/{s['slug']}", "0.7") for s in services] \
       + [(f"/insights/{p['slug']}", "0.6") for p in articles]
+    # lastmod: stamped with the generation date rather than tracked per file,
+    # since this is a plain generate.py run with no CMS behind it — an
+    # honest "regenerated as of this date" beats the missing tag this had
+    # before (see SEO pass, Sept 2026).
+    build_date = datetime.now().strftime("%Y-%m-%d")
     entries = "\n".join(
-        f"  <url>\n    <loc>{DOMAIN}{path}</loc>\n    <changefreq>monthly</changefreq>\n    <priority>{prio}</priority>\n  </url>"
+        f"  <url>\n    <loc>{DOMAIN}{path}</loc>\n    <lastmod>{build_date}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>{prio}</priority>\n  </url>"
         for path, prio in urls
     )
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{entries}\n</urlset>\n'
