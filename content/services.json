@@ -26,7 +26,7 @@
     "body": [
       "Good policy has to survive contact with a real incident. We help agencies and organizations draft new policy, review existing programs against current best practices and interagency and regulatory standards, and carry that work through implementation and the change management it takes to actually make it stick, not just a binder that sits on a shelf.",
       "Our team's experience includes leading interagency policy efforts and program rewrites at the state and national level, giving us a practical sense of where policy tends to break down and how to write it so it doesn't.",
-      "Whether you're standing up a new aviation program, running an existing one through an audit against current best practices, or updating one that hasn't kept pace with your operations, we work alongside your team through drafting, review, and rollout."
+      "Whether you're developing new policy, reviewing an existing program against current standards, or updating guidance that hasn't kept pace with your operations, we work alongside your team through drafting, review, implementation, and change management."
     ],
     "credentials_note": "Team experience includes leading initiatives such as the CAL FIRE Aviation Policy Rewrite Committee and the National Interagency Aviation Committee."
   },
@@ -71,5 +71,21 @@
       "That means an honest look at business concept and market vetting: where the idea is strong, where it needs work, and what it will actually take to operate in this industry, from regulatory and certification pathways to who the real decision-makers are inside the agencies and companies that would actually buy or adopt it.",
       "We work with investors and innovators evaluating the space, established companies developing new capabilities, and individuals and small teams at the earliest stages of a new venture, including startup planning, positioning, and introductions within the fire and aviation industry when they're useful."
     ]
+  },
+  {
+    "slug": "aerial-firefighting-programs",
+    "icon": "<path d=\"M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.2.6-.6.5-1.1z\"/>",
+    "title": "Aerial Firefighting Programs",
+    "seo_title": "Aerial Firefighting Program Development & Modernization",
+    "description": "Program development and modernization for agencies standing up or expanding an aerial firefighting capability.",
+    "summary": "Building and modernizing aerial firefighting programs, led by consultants who have stood these programs up, acquired the aircraft, and run what they built.",
+    "seo_description": "Aerial firefighting program development and modernization, led by consultants who have stood these programs up, acquired the aircraft, and run what they built.",
+    "body": [
+      "More agencies are standing up an aerial firefighting capability, and more existing programs are flying longer seasons over more exposure than they were built for. We help you decide what your program actually has to do, then build the thing that does it.",
+      "That covers the program on paper and the program in the air. Concept of operations, organizational structure, policy and SOPs, cost and funding models, and interagency agreements. Aircraft mix, acquisition, and contracting. Air base siting and retardant infrastructure. Airspace coordination, aerial supervision, dispatch and communications, and the qualification system that keeps your people current after we're gone.",
+      "We've done this from the inside. We know where a program gets expensive for no good reason, and which pieces you can't put off until year two.",
+      "Whether you're starting with nothing, adding aircraft to a program that's outgrown its structure, or bringing an existing operation up to current standards, we work alongside your team through planning, build-out, and the first seasons of flying it."
+    ],
+    "credentials_note": "Team experience includes leading CAL FIRE's aerial firefighting fleet and its Black Hawk transition, the Firehawk and C-130 airtanker acquisitions, U.S. Forest Service regional aviation programs, and Coast Guard aviation standards and training."
   }
 ]

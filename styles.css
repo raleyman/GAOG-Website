@@ -489,28 +489,15 @@ section { padding: 88px 0; }
 /* -------------------- Service cards -------------------- */
 .grid-services {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
-/* Featuring the first card (Operational Strategy) rather than whichever one
-   happens to land last — with 5 services the old :last-child rule gave the
-   full-width slot to Business Consulting by accident of list order, making
-   it read as the headline offering (see stylistic review round 2, Aug
-   2026). */
-.grid-services > :first-child { grid-column: 1 / -1; }
-/* The featured slot needs its own treatment so it reads as a deliberate
-   intro banner rather than a normal card stretched wide with empty space
-   beside it (see stylistic review round 2, Aug 2026). */
-.grid-services > :first-child.service-card {
-  padding: 40px 56px;
-  text-align: center;
-}
-.grid-services > :first-child.service-card h3,
-.grid-services > :first-child.service-card p {
-  max-width: 640px;
-  margin-left: auto;
-  margin-right: auto;
-}
+/* Six services divide evenly into a 3x2 grid, so no card is left alone in
+   a part-empty row. That retires the first-child feature treatment added
+   in Aug 2026, which existed only to stop an odd card count from handing
+   one service an accidental headline slot (stylistic review round 2, Aug
+   2026). If the service count goes back to an odd number, revisit this. */
+@media (max-width: 1000px) { .grid-services { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .grid-services { grid-template-columns: 1fr; } }
 
 .service-card {
@@ -556,24 +543,12 @@ section { padding: 88px 0; }
 /* -------------------- Services index grid -------------------- */
 .grid-svc {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
-/* Same fix as .grid-services — feature the first card instead of whichever
-   one lands last (see stylistic review round 2, Aug 2026). */
-.grid-svc > :first-child { grid-column: 1 / -1; }
-/* Same reasoning as .grid-services — an intentional banner treatment for
-   the featured slot instead of a card stretched wide with dead space
-   beside it (see stylistic review round 2, Aug 2026). */
-.grid-svc > :first-child.svc-card {
-  padding: 40px 56px;
-  justify-content: center;
-  text-align: center;
-}
-.grid-svc > :first-child .svc-card-body {
-  max-width: 640px;
-  margin: 0 auto;
-}
+/* Same change as .grid-services: six cards fill a 3x2 grid evenly, so the
+   first-child feature treatment is no longer needed. */
+@media (max-width: 1000px) { .grid-svc { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .grid-svc { grid-template-columns: 1fr; } }
 
 .svc-card {
